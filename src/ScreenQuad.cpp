@@ -1,78 +1,51 @@
 #include "ScreenQuad.h"
-#include <ngl/ShaderLib.h>
-#include <ngl/NGLassert.h>
 
-static int s_pixels=4;
+#include <iostream>
+
+#include <ngl/ShaderLib.h>
 
 ScreenQuad::ScreenQuad(const std::string &_shader)
 {
+  static ngl::Vec3 vertexData[] = {
+                                  // Vertices
+                                  ngl::Vec3(-1.0f, -1.0f, 0.0f),
+                                  ngl::Vec3(1.0f, -1.0f, 0.0f),
+                                  ngl::Vec3(1.0f, 1.0f, 0.0f),
+                                  ngl::Vec3(1.0f, 1.0f, 0.0f),
+                                  ngl::Vec3(-1.0f, -1.0f, 0.0f),
+                                  ngl::Vec3(-1.0f, 1.0f, 0.0f),
+                                  
+                                  // UVs
+                                  ngl::Vec3(0.0f, 1.0f, 0.0f),
+                                  ngl::Vec3(1.0f, 1.0f, 0.0f),
+                                  ngl::Vec3(1.0f, 0.0f, 0.0f),
+                                  ngl::Vec3(1.0f, 0.0f, 0.0f),
+                                  ngl::Vec3(0.0f, 1.0f, 0.0f),
+                                  ngl::Vec3(0.0f, 0.0f, 0.0f)
+                                  };
 
-static ngl::Vec3 verts[]=
-                        {
-                          ngl::Vec3(-1.0f,-1.0f,0.0f),
-                          ngl::Vec3(1.0f,-1.0f,0.0f),
-                          ngl::Vec3(1.0f,1.0f,0.0f),
-                          ngl::Vec3(1.0f,1.0f,0.0f),
-                          ngl::Vec3(-1.0f,-1.0f,0.0f),
-                          ngl::Vec3(-1.0f,1.0f,0.0f)
-                        };
-static ngl::Vec2 uv[]=
-                      {
-                        ngl::Vec2(0.0f,1.0f),
-                        ngl::Vec2(1.0f,1.0f),
-                        ngl::Vec2(1.0f,0.0f),
-                        ngl::Vec2(1.0f,0.0f),
-                        ngl::Vec2(0.0f,1.0f),
-                        ngl::Vec2(0.0f,0.0f)
-                      };
-  m_shader=_shader;
+  m_shader = _shader;
 
-  glGenVertexArrays(1,&m_vao);
-  glBindVertexArray(m_vao);
-
-  GLuint vbo[2];
-  glGenBuffers(2,vbo);
-  glBindBuffer(GL_ARRAY_BUFFER,vbo[0]);
-  glBufferData(GL_ARRAY_BUFFER,6*sizeof(ngl::Vec3),&verts[0].m_x,GL_STATIC_DRAW);
-
-  glVertexAttribPointer(0, // atrib 0
-                        3, // with x,y,z
-                        GL_FLOAT, // what type
-                        GL_FALSE, // normalize?
-                        0, // stride
-                        0 // start ptr
-                        );
-  glEnableVertexAttribArray(0);
-
-  glBindBuffer(GL_ARRAY_BUFFER,vbo[1]);
-  glBufferData(GL_ARRAY_BUFFER,6*sizeof(ngl::Vec2),&uv[0].m_x,GL_STATIC_DRAW);
-
-  glVertexAttribPointer(1, // atrib 0
-                        2, // with x,y,z
-                        GL_FLOAT, // what type
-                        GL_FALSE, // normalize?
-                        0, // stride
-                        0 // start ptr
-                        );
-  glEnableVertexAttribArray(1);
-
-
-
-  glBindVertexArray(0);
-
-
+  std::cout << "Building VAO...\n";
+  m_vao = ngl::VAOFactory::createVAO(ngl::simpleVAO, GL_TRIANGLES);
+  m_vao->bind();
+  m_vao->setData(ngl::SimpleVAO::VertexData(12 * sizeof(ngl::Vec3), vertexData[0].m_x));
+  m_vao->setVertexAttributePointer(0, 3, GL_FLOAT, 0, 0);   // Vertices
+  m_vao->setVertexAttributePointer(1, 3, GL_FLOAT, 0, 6 * 3);   // Normals
+  m_vao->setNumIndices(6);
+  m_vao->unbind();
+  std::cout << "VAO built!\n";
 }
 
 ScreenQuad::~ScreenQuad()
 {
-  glDeleteVertexArrays(1,&m_vao);
+  m_vao->removeVAO();
 }
 
 void ScreenQuad::draw()
 {
-
- ngl::ShaderLib::use(m_shader);
-  glBindVertexArray(m_vao);
-  glDrawArrays(GL_TRIANGLES,0,6);
-  glBindVertexArray(0);
+  ngl::ShaderLib::use(m_shader);
+  m_vao->bind();
+  m_vao->draw();
+  m_vao->unbind();
 }

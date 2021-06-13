@@ -16,6 +16,10 @@ set(CMAKE_CXX_EXTENSIONS ON)
 # Run moc automatically (Qt projects ONLY)
 set(CMAKE_AUTOMOC ON)
 
+# Run the uic tools and search in the ui folder
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTOUIC_SEARCH_PATHS ${PROJECT_SOURCE_DIR}/ui)
+
 # Find packages
 find_package(Qt5Widgets)
 find_package(fmt CONFIG REQUIRED)
@@ -33,9 +37,12 @@ target_sources(${TargetName} PRIVATE
 	${PROJECT_SOURCE_DIR}/src/NGLScene.cpp
 	${PROJECT_SOURCE_DIR}/src/ScreenQuad.cpp
     ${PROJECT_SOURCE_DIR}/src/NGLSceneMouseControls.cpp
+	${PROJECT_SOURCE_DIR}/src/MainWindow.cpp
 	# .h
 	${PROJECT_SOURCE_DIR}/include/NGLScene.h
 	${PROJECT_SOURCE_DIR}/include/ScreenQuad.h
+	${PROJECT_SOURCE_DIR}/include/MainWindow.h
+	${PROJECT_SOURCE_DIR}/include/WindowParams.h
 	#.glsl
 	${PROJECT_SOURCE_DIR}/shaders/RayMarchFragment.glsl
 	${PROJECT_SOURCE_DIR}/shaders/RayMarchVertex.glsl

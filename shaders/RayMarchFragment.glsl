@@ -1,6 +1,6 @@
 #version 400 core
-/// @brief our output fragment colour
-layout (location =0) out vec4 fragColour;
+
+layout (location = 0) out vec4 fragColour;
 
 uniform vec3 cam_pos;
 uniform float time;

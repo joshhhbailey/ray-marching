@@ -1,24 +1,23 @@
-#ifndef SCREEN_QUAD_H__
-#define SCREEN_QUAD_H__
+#ifndef SCREEN_QUAD_H_
+#define SCREEN_QUAD_H_
+
+#include <ngl/SimpleVAO.h>
+#include <ngl/VAOFactory.h>
 #include <ngl/Vec2.h>
 #include <ngl/Vec3.h>
+
 #include <string>
+
 class ScreenQuad
 {
-  public :
-  /// @brief ctor, note this will scale to any screen size so
-  /// the width and height are for the texture image passed in
-    ScreenQuad(const std::string &_shader );
+  public:
+    ScreenQuad(const std::string &_shader);
     ~ScreenQuad();
     void draw();
 
-  private :
-    GLuint m_vao;
+  private:
+    std::unique_ptr<ngl::AbstractVAO> m_vao;
     std::string m_shader;
-
 };
 
-
-
-
-#endif
+#endif  // _SCREEN_QUAD_H_
