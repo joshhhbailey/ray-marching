@@ -9,10 +9,8 @@ uniform float time;
 uniform vec2 resolution;
 uniform vec2 mouse;
 
-
 void main()
 {
     uv = inUV;
-    // calculate the vertex position
     gl_Position = vec4(inVert, 1.0f);
 }

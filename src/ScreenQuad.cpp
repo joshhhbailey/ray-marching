@@ -30,7 +30,7 @@ ScreenQuad::ScreenQuad(const std::string &_shader)
   m_vao = ngl::VAOFactory::createVAO(ngl::simpleVAO, GL_TRIANGLES);
   m_vao->bind();
   m_vao->setData(ngl::SimpleVAO::VertexData(12 * sizeof(ngl::Vec3), vertexData[0].m_x));
-  m_vao->setVertexAttributePointer(0, 3, GL_FLOAT, 0, 0);   // Vertices
+  m_vao->setVertexAttributePointer(0, 3, GL_FLOAT, 0, 0);       // Vertices
   m_vao->setVertexAttributePointer(1, 3, GL_FLOAT, 0, 6 * 3);   // Normals
   m_vao->setNumIndices(6);
   m_vao->unbind();
