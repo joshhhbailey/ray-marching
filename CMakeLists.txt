@@ -8,6 +8,12 @@ endif()
 project(ray-marching-build)
 set(TargetName ray-marching)
 
+# Find Qt packages on Mac (change Qt version depending on your system)
+if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+	set(CMAKE_PREFIX_PATH "~/Qt/5.12.11/clang_64/")
+	find_package(Qt5 COMPONENTS Widgets OpenGL Core Gui REQUIRED)
+endif()
+
 # Use C++ 17
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)

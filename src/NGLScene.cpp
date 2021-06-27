@@ -11,8 +11,8 @@
 
 NGLScene::NGLScene()
 {
-  setFocusPolicy(Qt::FocusPolicy::ClickFocus);
-  QSurfaceFormat format;
+  //setFocusPolicy(Qt::FocusPolicy::ClickFocus);
+  /*QSurfaceFormat format;
   format.setSamples(4);
 
   #if defined(__APPLE__)
@@ -25,7 +25,7 @@ NGLScene::NGLScene()
   #endif
       format.setProfile(QSurfaceFormat::CoreProfile);
       format.setDepthBufferSize(24);
-      setFormat(format);
+      setFormat(format);*/
 }
 
 void NGLScene::resizeGL(int _w, int _h)
