@@ -14,28 +14,31 @@ class SyntaxHighlighter : public QSyntaxHighlighter
 {
     Q_OBJECT
 public:
-    SyntaxHighlighter(QTextDocument *parent = 0);
+    SyntaxHighlighter(QTextDocument *_parent = 0);
 
 protected:
-    void highlightBlock(const QString &text) override;
+    void highlightBlock(const QString &_text) override;
 
 private:
     struct HighlightingRule
     {
-        QRegularExpression pattern;
-        QTextCharFormat format;
+        QRegularExpression m_pattern;
+        QTextCharFormat m_format;
     };
-    QVector<HighlightingRule> highlightingRules;
 
-    QRegularExpression commentStartExpression;
-    QRegularExpression commentEndExpression;
+    QVector<HighlightingRule> m_highlightingRules;
 
-    QTextCharFormat keywordFormat;
-    QTextCharFormat classFormat;
-    QTextCharFormat singleLineCommentFormat;
-    QTextCharFormat multiLineCommentFormat;
-    QTextCharFormat quotationFormat;
-    QTextCharFormat functionFormat;
+    // Multi-line comment start and end
+    QRegularExpression m_commentStartExpression;
+    QRegularExpression m_commentEndExpression;
+
+    QTextCharFormat m_keywordsInterface;
+    QTextCharFormat m_keywordsOther;
+    QTextCharFormat m_singleLineCommentFormat;
+    QTextCharFormat m_multiLineCommentFormat;
+    QTextCharFormat m_quotationFormat;
+    QTextCharFormat m_functionFormat;
+    QTextCharFormat m_numberFormat;
 };
 
 #endif // HIGHLIGHTER_H
