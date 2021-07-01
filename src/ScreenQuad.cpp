@@ -4,7 +4,7 @@
 
 #include <ngl/ShaderLib.h>
 
-ScreenQuad::ScreenQuad(const std::string &_shader)
+ScreenQuad::ScreenQuad()
 {
   static ngl::Vec3 vertexData[] = {
                                   // Vertices
@@ -24,8 +24,6 @@ ScreenQuad::ScreenQuad(const std::string &_shader)
                                   ngl::Vec3(0.0f, 0.0f, 0.0f)
                                   };
 
-  m_shader = _shader;
-
   std::cout << "Building VAO...\n";
   m_vao = ngl::VAOFactory::createVAO(ngl::simpleVAO, GL_TRIANGLES);
   m_vao->bind();
@@ -42,9 +40,9 @@ ScreenQuad::~ScreenQuad()
   m_vao->removeVAO();
 }
 
-void ScreenQuad::draw()
+void ScreenQuad::draw(const std::string &_shader)
 {
-  ngl::ShaderLib::use(m_shader);
+  ngl::ShaderLib::use(_shader);
   m_vao->bind();
   m_vao->draw();
   m_vao->unbind();

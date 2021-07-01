@@ -12,16 +12,19 @@ class ShaderCodeWidget : public QGroupBox
 {
     Q_OBJECT
 public:
-    ShaderCodeWidget();
+    ShaderCodeWidget(NGLScene *_scene);
+
+public slots:
+    void compileButtonClicked();
 
 private:
     void createWidgets();
     void createLayouts();
     void createConnections();
 
-    void compileShaderCode();
-
     CodeEditorWidget *m_codeEditorWidget;
     SyntaxHighlighter *m_syntaxHighlighter;
     QPushButton *m_compileButton;
+
+    NGLScene *m_scene;
 };

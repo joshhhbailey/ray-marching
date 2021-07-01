@@ -41,7 +41,7 @@ void Window::createWidgets()
     m_scene = new NGLScene();
 
     // Create Container widget
-    m_shaderEditorContainer = new ContainerWidget();
+    m_shaderEditorContainer = new ContainerWidget(m_scene);
 
     // Create dockable widget
     m_shaderEditorDock = new QDockWidget(tr("Shader Editor"), this);

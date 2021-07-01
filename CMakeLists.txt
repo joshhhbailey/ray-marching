@@ -55,8 +55,8 @@ target_sources(${TargetName} PRIVATE
 	${PROJECT_SOURCE_DIR}/include/CodeEditorWidget.h
 	${PROJECT_SOURCE_DIR}/include/SyntaxHighlighter.h
 	#.glsl
-	${PROJECT_SOURCE_DIR}/shaders/RayMarchFragment.glsl
-	${PROJECT_SOURCE_DIR}/shaders/RayMarchVertex.glsl
+	${PROJECT_SOURCE_DIR}/shaders/DefaultFragment.glsl
+	${PROJECT_SOURCE_DIR}/shaders/DefaultVertex.glsl
 )
 
 # Platform specific definitions

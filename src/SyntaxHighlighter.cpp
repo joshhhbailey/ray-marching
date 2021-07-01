@@ -46,7 +46,7 @@ SyntaxHighlighter::SyntaxHighlighter(QTextDocument *_parent) : QSyntaxHighlighte
         QStringLiteral("\\bbvec2\\b"), QStringLiteral("\\bbvec3\\b"), QStringLiteral("\\bbvec4\\b"),
         QStringLiteral("\\bsampler1D\\b"), QStringLiteral("\\bsampler2D\\b"), QStringLiteral("\\bsampler3D\\b"),
         QStringLiteral("\\bsamplerCube\\b"), QStringLiteral("\\bsampler1DShadow\\b"), QStringLiteral("\\bsampler2DShadow\\b"),
-        QStringLiteral("\\bstruct\\b")
+        QStringLiteral("\\bstruct\\b"), QStringLiteral("\\blayout\\b")
     };
 
     for (const QString &pattern : GLSLkeywordsOther)
@@ -80,10 +80,10 @@ SyntaxHighlighter::SyntaxHighlighter(QTextDocument *_parent) : QSyntaxHighlighte
     m_highlightingRules.append(rule);
 
     // Numbers - light green
-    m_numberFormat.setForeground(QColor(127, 179, 71));
+    /*m_numberFormat.setForeground(QColor(127, 179, 71));
     rule.m_pattern = QRegularExpression(QStringLiteral("^[+-]?\\d*\\.\\d+$|^[+-]?\\d+(\\.\\d*)?$"));
     rule.m_format = m_numberFormat;
-    m_highlightingRules.append(rule);
+    m_highlightingRules.append(rule);*/
 }
 
 void SyntaxHighlighter::highlightBlock(const QString &_text)

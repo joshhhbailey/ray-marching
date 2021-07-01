@@ -21,7 +21,7 @@ int main(int argc, char **argv)
       format.setMinorVersion(1);
   #else
       format.setMajorVersion(4);
-      format.setMinorVersion(3);
+      format.setMinorVersion(6);
   #endif
   
   format.setProfile(QSurfaceFormat::CoreProfile);

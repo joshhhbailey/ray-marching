@@ -2,8 +2,11 @@
 
 #include <QtWidgets/QFormLayout>
 
-ShaderCodeWidget::ShaderCodeWidget()
+#include <iostream>
+
+ShaderCodeWidget::ShaderCodeWidget(NGLScene *_scene)
 {
+    m_scene = _scene;
     setTitle("Shader Code");
     createWidgets();
     createLayouts();
@@ -25,10 +28,26 @@ void ShaderCodeWidget::createLayouts()
 }
 void ShaderCodeWidget::createConnections()
 {
-    connect(this->m_compileButton, SIGNAL(clicked()), this, SLOT(compileShaderCode()));
+    connect(this->m_compileButton, SIGNAL(clicked()), this, SLOT(compileButtonClicked()));
 }
 
-void ShaderCodeWidget::compileShaderCode()
+void ShaderCodeWidget::compileButtonClicked()
 {
-    // 
+    std::cout << "Retrieving shader code...\n";
+    
+    // Boiler plate code (not visible to user)
+    const char code[] =
+    "#version 410 core"
+    "\n"
+    "layout (location = 0) out vec4 fragColour;\n"
+    "\n"
+    "uniform vec3 cam_pos;\n"
+    "uniform float time;\n"
+    "uniform vec2 resolution;\n"
+    "uniform vec2 mouse;\n"
+    "in vec2 uv;\n"
+    "\n";
+
+    QString shaderCode = code + m_codeEditorWidget->retrieveShaderCode();
+    m_scene->compileShaderCode(shaderCode);
 }

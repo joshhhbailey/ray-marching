@@ -18,6 +18,15 @@ CodeEditorWidget::CodeEditorWidget() : QPlainTextEdit()
     setLineWrapMode(QPlainTextEdit::NoWrap);
     setTabStopDistance(m_fontSize * 2);
 
+    // Default code when app launches
+    const char code[] =
+    "void main()\n"
+    "{\n"
+	"   fragColour = vec4(1.0, 1.0, 1.0, 1.0);\n"
+    "}";
+
+    setPlainText(code);
+
     // Initialise line number area width and highlight first line
     connect(this, &CodeEditorWidget::blockCountChanged, this, &CodeEditorWidget::updateLineNumberAreaWidth);
     connect(this, &CodeEditorWidget::updateRequest, this, &CodeEditorWidget::updateLineNumberArea);
@@ -40,6 +49,11 @@ int CodeEditorWidget::lineNumberAreaWidth()
     int space = 10 + fontMetrics().horizontalAdvance(QLatin1Char('9')) * digits;
 
     return space;
+}
+
+QString CodeEditorWidget::retrieveShaderCode()
+{
+    return this->toPlainText();
 }
 
 void CodeEditorWidget::updateLineNumberAreaWidth()

@@ -15,6 +15,8 @@ public:
     CodeEditorWidget();
     void lineNumberAreaPaintEvent(QPaintEvent *_event);
     int lineNumberAreaWidth();
+    
+    QString retrieveShaderCode();
 
 protected:
     void resizeEvent(QResizeEvent *_event) override;

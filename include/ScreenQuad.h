@@ -11,13 +11,12 @@
 class ScreenQuad
 {
   public:
-    ScreenQuad(const std::string &_shader);
+    ScreenQuad();
     ~ScreenQuad();
-    void draw();
+    void draw(const std::string &_shader);
 
   private:
     std::unique_ptr<ngl::AbstractVAO> m_vao;
-    std::string m_shader;
 };
 
 #endif  // _SCREEN_QUAD_H_
