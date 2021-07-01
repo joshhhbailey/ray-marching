@@ -18,6 +18,11 @@ CodeEditorWidget::CodeEditorWidget() : QPlainTextEdit()
     setLineWrapMode(QPlainTextEdit::NoWrap);
     setTabStopDistance(m_fontSize * 2);
 
+    // Stretch text editor to bottom of window
+    QSizePolicy policy = sizePolicy();
+    policy.setVerticalStretch(1);
+    setSizePolicy(policy);
+
     // Default code when app launches
     const char code[] =
     "void main()\n"

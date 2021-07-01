@@ -19,6 +19,5 @@ void ContainerWidget::createLayouts()
 {
     QVBoxLayout *mainLayout = new QVBoxLayout();
     mainLayout->addWidget(m_shaderCodeWidget);
-    mainLayout->addStretch();
     setLayout(mainLayout);
 }

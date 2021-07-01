@@ -37,7 +37,7 @@ void ShaderCodeWidget::compileButtonClicked()
     
     // Boiler plate code (not visible to user)
     const char code[] =
-    "#version 410 core"
+    "#version 400 core"
     "\n"
     "layout (location = 0) out vec4 fragColour;\n"
     "\n"

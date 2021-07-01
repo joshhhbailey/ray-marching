@@ -66,9 +66,7 @@ void NGLScene::initializeGL()
 void NGLScene::paintGL()
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);   // Clear the screen and depth buffer
-
   ngl::ShaderLib::use(m_currentShader);
-
   //loadMatricesToShader();
   m_screenQuad->draw(m_currentShader);
 }
@@ -161,8 +159,8 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
 void NGLScene::timerEvent(QTimerEvent *_event)
 {
   static float t = 0.0f;
-  /*ngl::ShaderLib::use(m_currentShader);
-  ngl::ShaderLib::setUniform("time", t);
+  ngl::ShaderLib::use(m_currentShader);
+  /*ngl::ShaderLib::setUniform("time", t);
   t += 0.01f;
 
   if (t > 5.0f)
