@@ -15,14 +15,14 @@ ShaderCodeWidget::ShaderCodeWidget(NGLScene *_scene)
 
 void ShaderCodeWidget::createWidgets()
 {
-    m_codeEditorWidget = new CodeEditorWidget();
-    m_syntaxHighlighter = new SyntaxHighlighter(m_codeEditorWidget->document());
+    m_codeEditor = new CodeEditor();
+    m_syntaxHighlighter = new SyntaxHighlighter(m_codeEditor->document());
     m_compileButton = new QPushButton("Compile");
 }
 void ShaderCodeWidget::createLayouts()
 {
     QFormLayout *mainLayout = new QFormLayout();
-    mainLayout->addWidget(m_codeEditorWidget);
+    mainLayout->addWidget(m_codeEditor);
     mainLayout->addRow(m_compileButton);
     setLayout(mainLayout);
 }
@@ -34,20 +34,7 @@ void ShaderCodeWidget::createConnections()
 void ShaderCodeWidget::compileButtonClicked()
 {
     std::cout << "Retrieving shader code...\n";
-    
-    // Boiler plate code (not visible to user)
-    const char code[] =
-    "#version 400 core"
-    "\n"
-    "layout (location = 0) out vec4 fragColour;\n"
-    "\n"
-    "uniform vec3 cam_pos;\n"
-    "uniform float time;\n"
-    "uniform vec2 resolution;\n"
-    "uniform vec2 mouse;\n"
-    "in vec2 uv;\n"
-    "\n";
 
-    QString shaderCode = code + m_codeEditorWidget->retrieveShaderCode();
+    QString shaderCode = m_boilerPlateCode + m_codeEditor->getShaderCode();
     m_scene->compileShaderCode(shaderCode);
 }

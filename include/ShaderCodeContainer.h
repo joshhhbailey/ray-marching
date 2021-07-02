@@ -4,16 +4,24 @@
 
 #include <QtWidgets/QWidget>
 
-class ContainerWidget : public QWidget
+class ShaderCodeContainer : public QWidget
 {
+    Q_OBJECT
 public:
-    ContainerWidget(NGLScene *_scene);
+    ShaderCodeContainer(NGLScene *_scene);
+
+public slots:
+    void openFile();
+    void saveFile();
+    void saveAsFile();
 
 private:
     void createWidgets();
     void createLayouts();
 
     ShaderCodeWidget *m_shaderCodeWidget;
+
+    QString m_filename;
 
     NGLScene *m_scene;
 };

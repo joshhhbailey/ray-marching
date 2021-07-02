@@ -3,12 +3,12 @@
 // Available from: https://doc.qt.io/qt-5/qtwidgets-widgets-codeeditor-example.html
 // Accessed [17 June 2021]
 
-#include "CodeEditorWidget.h"
+#include "CodeEditor.h"
 
 #include <QPainter>
 #include <QTextBlock>
 
-CodeEditorWidget::CodeEditorWidget() : QPlainTextEdit()
+CodeEditor::CodeEditor() : QPlainTextEdit()
 {
     m_lineNumberArea = new LineNumberArea(this);
 
@@ -33,13 +33,13 @@ CodeEditorWidget::CodeEditorWidget() : QPlainTextEdit()
     setPlainText(code);
 
     // Initialise line number area width and highlight first line
-    connect(this, &CodeEditorWidget::blockCountChanged, this, &CodeEditorWidget::updateLineNumberAreaWidth);
-    connect(this, &CodeEditorWidget::updateRequest, this, &CodeEditorWidget::updateLineNumberArea);
+    connect(this, &CodeEditor::blockCountChanged, this, &CodeEditor::updateLineNumberAreaWidth);
+    connect(this, &CodeEditor::updateRequest, this, &CodeEditor::updateLineNumberArea);
 
     updateLineNumberAreaWidth();
 }
 
-int CodeEditorWidget::lineNumberAreaWidth()
+int CodeEditor::lineNumberAreaWidth()
 {
     int digits = 1;                     // Maximum line number digits
     int max = qMax(1, blockCount());    // Maximum line number
@@ -56,17 +56,12 @@ int CodeEditorWidget::lineNumberAreaWidth()
     return space;
 }
 
-QString CodeEditorWidget::retrieveShaderCode()
-{
-    return this->toPlainText();
-}
-
-void CodeEditorWidget::updateLineNumberAreaWidth()
+void CodeEditor::updateLineNumberAreaWidth()
 {
     setViewportMargins(lineNumberAreaWidth(), 0, 0, 0);
 }
 
-void CodeEditorWidget::updateLineNumberArea(const QRect &_rect, int _dy)
+void CodeEditor::updateLineNumberArea(const QRect &_rect, int _dy)
 {
     // Scroll line numbers
     if (_dy)
@@ -84,7 +79,7 @@ void CodeEditorWidget::updateLineNumberArea(const QRect &_rect, int _dy)
     }
 }
 
-void CodeEditorWidget::resizeEvent(QResizeEvent *_e)
+void CodeEditor::resizeEvent(QResizeEvent *_e)
 {
     // When editor changes size, resize line number area
     QPlainTextEdit::resizeEvent(_e);
@@ -93,7 +88,7 @@ void CodeEditorWidget::resizeEvent(QResizeEvent *_e)
     m_lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), lineNumberAreaWidth(), cr.height()));
 }
 
-void CodeEditorWidget::lineNumberAreaPaintEvent(QPaintEvent *_event)
+void CodeEditor::lineNumberAreaPaintEvent(QPaintEvent *_event)
 {
     // Paint margin background
     QPainter painter(m_lineNumberArea);

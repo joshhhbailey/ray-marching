@@ -8,15 +8,16 @@
 
 #include <QPlainTextEdit>
 
-class CodeEditorWidget : public QPlainTextEdit
+class CodeEditor : public QPlainTextEdit
 {
     Q_OBJECT
 public:
-    CodeEditorWidget();
+    CodeEditor();
     void lineNumberAreaPaintEvent(QPaintEvent *_event);
     int lineNumberAreaWidth();
     
-    QString retrieveShaderCode();
+    QString getShaderCode() { return toPlainText(); }
+    void setShaderCode(QString _code) { setPlainText(_code); }
 
 protected:
     void resizeEvent(QResizeEvent *_event) override;
@@ -36,7 +37,7 @@ private:
 class LineNumberArea : public QWidget
 {
 public:
-    LineNumberArea(CodeEditorWidget *_editor) : QWidget(_editor), m_codeEditor(_editor)
+    LineNumberArea(CodeEditor *_editor) : QWidget(_editor), m_codeEditor(_editor)
     {}
 
     QSize sizeHint() const override
@@ -51,7 +52,7 @@ protected:
     }
 
 private:
-    CodeEditorWidget *m_codeEditor;
+    CodeEditor *m_codeEditor;
 };
 
 #endif

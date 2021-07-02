@@ -5,12 +5,12 @@
 #include <QtGui/QPalette>
 
 #include "NGLScene.h"
-#include "ContainerWidget.h"
+#include "ShaderCodeContainer.h"
 
 class Window : public QMainWindow
 {
 public:
-    Window();
+    Window(QApplication *_application);
     static QPalette *darkPalette();
 
 private:
@@ -20,10 +20,19 @@ private:
     void createLayouts();
     void createConnections();
 
+    QApplication *m_application;
     NGLScene *m_scene;
+
+    QAction *m_openFileAction;
+    QAction *m_saveAction;
+    QAction *m_saveAsAction;
+    QAction *m_exitAction;
+
     QAction *m_shaderEditorAction;
+
     QDockWidget *m_shaderEditorDock;
-    ContainerWidget *m_shaderEditorContainer;
+    ShaderCodeContainer *m_shaderCodeContainer;
+
     QVBoxLayout *m_windowLayout;
     QWidget *m_windowWidget;
 };

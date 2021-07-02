@@ -40,9 +40,9 @@ target_sources(${TargetName} PRIVATE
 	${PROJECT_SOURCE_DIR}/src/ScreenQuad.cpp
     ${PROJECT_SOURCE_DIR}/src/NGLSceneMouseControls.cpp
 	${PROJECT_SOURCE_DIR}/src/Window.cpp
-	${PROJECT_SOURCE_DIR}/src/ContainerWidget.cpp
+	${PROJECT_SOURCE_DIR}/src/ShaderCodeContainer.cpp
 	${PROJECT_SOURCE_DIR}/src/ShaderCodeWidget.cpp
-	${PROJECT_SOURCE_DIR}/src/CodeEditorWidget.cpp
+	${PROJECT_SOURCE_DIR}/src/CodeEditor.cpp
 	${PROJECT_SOURCE_DIR}/src/SyntaxHighlighter.cpp
 	# .h
 	${PROJECT_SOURCE_DIR}/include/NGLScene.h
@@ -50,9 +50,9 @@ target_sources(${TargetName} PRIVATE
 	${PROJECT_SOURCE_DIR}/include/Window.h
 	${PROJECT_SOURCE_DIR}/include/WindowParams.h
 	${PROJECT_SOURCE_DIR}/include/Window.h
-	${PROJECT_SOURCE_DIR}/include/ContainerWidget.h
+	${PROJECT_SOURCE_DIR}/include/ShaderCodeContainer.h
 	${PROJECT_SOURCE_DIR}/include/ShaderCodeWidget.h
-	${PROJECT_SOURCE_DIR}/include/CodeEditorWidget.h
+	${PROJECT_SOURCE_DIR}/include/CodeEditor.h
 	${PROJECT_SOURCE_DIR}/include/SyntaxHighlighter.h
 	#.glsl
 	${PROJECT_SOURCE_DIR}/shaders/DefaultFragment.glsl

@@ -5,7 +5,7 @@
 #include <QtWidgets/QPushButton>
 
 #include "NGLScene.h"
-#include "CodeEditorWidget.h"
+#include "CodeEditor.h"
 #include "SyntaxHighlighter.h"
 
 class ShaderCodeWidget : public QGroupBox
@@ -13,6 +13,9 @@ class ShaderCodeWidget : public QGroupBox
     Q_OBJECT
 public:
     ShaderCodeWidget(NGLScene *_scene);
+    CodeEditor* getCodeEditor() { return m_codeEditor; }
+    
+    QString getBoilerPlateCode() { return m_boilerPlateCode; }
 
 public slots:
     void compileButtonClicked();
@@ -22,9 +25,21 @@ private:
     void createLayouts();
     void createConnections();
 
-    CodeEditorWidget *m_codeEditorWidget;
+    CodeEditor *m_codeEditor;
     SyntaxHighlighter *m_syntaxHighlighter;
     QPushButton *m_compileButton;
 
     NGLScene *m_scene;
+
+    QString m_boilerPlateCode =
+    "#version 400 core"
+    "\n"
+    "layout (location = 0) out vec4 fragColour;\n"
+    "\n"
+    "uniform vec3 cam_pos;\n"
+    "uniform float time;\n"
+    "uniform vec2 resolution;\n"
+    "uniform vec2 mouse;\n"
+    "in vec2 uv;\n"
+    "\n";
 };

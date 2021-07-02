@@ -29,7 +29,7 @@ int main(int argc, char **argv)
   QSurfaceFormat::setDefaultFormat(format);
 
   // Create application window
-  Window window;
+  Window window(&app);
   window.resize(1024, 720);
   window.show();
 
