@@ -6,6 +6,18 @@
 
 #include "NGLScene.h"
 #include "ShaderCodeContainer.h"
+#include "NodeEditorContainer.h"
+/*
+#include <nodes/NodeData>
+#include <nodes/FlowScene>
+#include <nodes/FlowView>
+#include <nodes/DataModelRegistry>
+#include <nodes/ConnectionStyle>
+
+using QtNodes::DataModelRegistry;
+using QtNodes::FlowScene;
+using QtNodes::FlowView;
+using QtNodes::ConnectionStyle;*/
 
 class Window : public QMainWindow
 {
@@ -14,6 +26,8 @@ public:
     static QPalette *darkPalette();
 
 private:
+    void resizeEvent(QResizeEvent *_event) override;
+
     void createActions();
     void createMenuBar();
     void createWidgets();
@@ -21,7 +35,6 @@ private:
     void createConnections();
 
     QApplication *m_application;
-    NGLScene *m_scene;
 
     QAction *m_openFileAction;
     QAction *m_saveAction;
@@ -29,10 +42,19 @@ private:
     QAction *m_exitAction;
 
     QAction *m_shaderEditorAction;
-
-    QDockWidget *m_shaderEditorDock;
-    ShaderCodeContainer *m_shaderCodeContainer;
+    QAction *m_nodeEditorAction;
 
     QVBoxLayout *m_windowLayout;
-    QWidget *m_windowWidget;
+
+    // Widgets
+    QWidget *m_window;
+    NGLScene *m_scene;
+
+    NodeEditorContainer *m_nodeEditorContainer;
+    QDockWidget *m_nodeEditorDock;
+    //QtNodes::FlowScene *m_nodeEditorScene;
+    //QtNodes::FlowView *m_nodeEditorView;
+
+    ShaderCodeContainer *m_shaderCodeContainer;
+    QDockWidget *m_shaderEditorDock;
 };

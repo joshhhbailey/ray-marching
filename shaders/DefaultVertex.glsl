@@ -12,5 +12,5 @@ uniform vec2 mouse;
 void main()
 {
     uv = inUV;
-    gl_Position = vec4(inVert, 1.0f);
+    gl_Position = vec4(inVert, 1.0);
 }

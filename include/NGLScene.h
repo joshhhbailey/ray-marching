@@ -19,7 +19,8 @@ class NGLScene : public QOpenGLWidget
     void initializeGL() override;
     void paintGL() override;
     void resizeGL(int _w, int _h) override;
-    void compileShaderCode(QString _shaderCode);
+    bool compileShaderCode(QString _shaderCode);
+    std::vector<GLchar> getShaderErrorMessage() { return m_shaderErrorMessage; }
 
 private:
     void keyPressEvent(QKeyEvent *_event) override;
@@ -39,6 +40,8 @@ private:
     std::string m_currentShader = "ShaderProgram_A";
     std::string m_nextShader = "ShaderProgram_B";
     std::string m_nextFragment = "Fragment_B";
+
+    std::vector<GLchar> m_shaderErrorMessage;
 };
 
 #endif

@@ -31,8 +31,10 @@ find_package(freetype CONFIG REQUIRED)
 # Set the name of the executable we want to build
 add_executable(${TargetName})
 
-# Add NGL include path
-include_directories(include $ENV{HOME}/NGL/include)
+# Add NGL and nodeeditor include paths
+#include_directories(include $ENV{HOME}/NGL/include)
+#include_directories(include $ENV{HOME}/nodeeditor/include)
+
 target_sources(${TargetName} PRIVATE
 	# .cpp
 	${PROJECT_SOURCE_DIR}/src/main.cpp
@@ -44,6 +46,7 @@ target_sources(${TargetName} PRIVATE
 	${PROJECT_SOURCE_DIR}/src/ShaderCodeWidget.cpp
 	${PROJECT_SOURCE_DIR}/src/CodeEditor.cpp
 	${PROJECT_SOURCE_DIR}/src/SyntaxHighlighter.cpp
+	${PROJECT_SOURCE_DIR}/src/NodeEditorContainer.cpp
 	# .h
 	${PROJECT_SOURCE_DIR}/include/NGLScene.h
 	${PROJECT_SOURCE_DIR}/include/ScreenQuad.h
@@ -54,6 +57,8 @@ target_sources(${TargetName} PRIVATE
 	${PROJECT_SOURCE_DIR}/include/ShaderCodeWidget.h
 	${PROJECT_SOURCE_DIR}/include/CodeEditor.h
 	${PROJECT_SOURCE_DIR}/include/SyntaxHighlighter.h
+	${PROJECT_SOURCE_DIR}/include/NodeEditorContainer.h
+	#${PROJECT_SOURCE_DIR}/include/models.hpp
 	#.glsl
 	${PROJECT_SOURCE_DIR}/shaders/DefaultFragment.glsl
 	${PROJECT_SOURCE_DIR}/shaders/DefaultVertex.glsl
@@ -76,17 +81,22 @@ elseif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
 elseif(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 	include_directories(include $ENV{HOMEDRIVE}/$ENV{HOMEPATH}/NGL/include)
-	link_directories($ENV{HOMEDRIVE}/$ENV{HOMEPATH}/NGL/lib)	
+	include_directories(include $ENV{HOMEDRIVE}/$ENV{HOMEPATH}/nodeeditor/include)
+	link_directories($ENV{HOMEDRIVE}/$ENV{HOMEPATH}/NGL/lib)
+	link_directories($ENV{HOMEDRIVE}/$ENV{HOMEPATH}/nodeeditor/lib)
 	target_link_libraries(${TargetName} PRIVATE $ENV{HOMEDRIVE}/$ENV{HOMEPATH}/NGL/lib/NGL.lib)
+	#target_link_libraries(${TargetName} PRIVATE $ENV{HOMEDRIVE}/$ENV{HOMEPATH}/nodeeditor/lib/nodes.lib)
 	add_compile_definitions(_USE_MATH_DEFINES)
 	add_compile_definitions(NOMINMAX)
+	# NODE_EDITOR_SHARED/STATIC
 	target_compile_definitions(${TargetName} PRIVATE /wd4251)
 	# Need to define this when building shared library or suffer dllimport errors
 	add_compile_definitions(BUILDING_DLL)
 endif()
 
-# Link NGL
+# Link NGL and nodeeditor
 target_link_directories(${TargetName} PRIVATE $ENV{HOME}/NGL/lib)
+#target_link_directories(${TargetName} PRIVATE $ENV{HOME}/nodeeditor/lib)
 
 # Link packages
 target_link_libraries(${TargetName} PRIVATE OpenImageIO::OpenImageIO OpenImageIO::OpenImageIO_Util)

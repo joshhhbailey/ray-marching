@@ -3,6 +3,7 @@
 #include <QtWidgets/QSpinBox>
 #include <QtWidgets/QDoubleSpinBox>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QLabel>
 
 #include "NGLScene.h"
 #include "CodeEditor.h"
@@ -27,7 +28,10 @@ private:
 
     CodeEditor *m_codeEditor;
     SyntaxHighlighter *m_syntaxHighlighter;
+    QLabel *m_fontSizeLabel;
+    QSpinBox *m_fontSize;
     QPushButton *m_compileButton;
+    QLabel *m_outputLabel;
 
     NGLScene *m_scene;
 

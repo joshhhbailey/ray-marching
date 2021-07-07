@@ -77,7 +77,7 @@ void NGLScene::resizeGL(int _w, int _h)
   m_win.height = static_cast<int>( _h * devicePixelRatio());
 }
 
-void NGLScene::compileShaderCode(QString _shaderCode)
+bool NGLScene::compileShaderCode(QString _shaderCode)
 {
   std::cout << "Compiling shader code...\n";
   //qDebug("%s", qUtf8Printable(_shaderCode));
@@ -127,7 +127,10 @@ void NGLScene::compileShaderCode(QString _shaderCode)
     glGetShaderiv(id, GL_INFO_LOG_LENGTH, &maxLength);
     std::vector<GLchar> errorLog(maxLength);
     glGetShaderInfoLog(id, maxLength, &maxLength, &errorLog[0]);
+    m_shaderErrorMessage = errorLog;
+    return false;
   }
+  return true;
 }
 
 void NGLScene::loadMatricesToShader()

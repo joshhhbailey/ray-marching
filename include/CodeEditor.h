@@ -19,6 +19,9 @@ public:
     QString getShaderCode() { return toPlainText(); }
     void setShaderCode(QString _code) { setPlainText(_code); }
 
+public slots:
+    void setFontSize(int _size);
+
 protected:
     void resizeEvent(QResizeEvent *_event) override;
 
@@ -27,6 +30,8 @@ private slots:
     void updateLineNumberArea(const QRect &_rect, int _dy);
 
 private:
+    void updateFont();
+
     QWidget *m_lineNumberArea;
 
     // Font settings

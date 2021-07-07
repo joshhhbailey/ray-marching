@@ -13,10 +13,8 @@ CodeEditor::CodeEditor() : QPlainTextEdit()
     m_lineNumberArea = new LineNumberArea(this);
 
     // Text edit settings
-    QFont font(m_fontName, m_fontSize);
-    setFont(font);
+    updateFont();
     setLineWrapMode(QPlainTextEdit::NoWrap);
-    setTabStopDistance(m_fontSize * 2);
 
     // Stretch text editor to bottom of window
     QSizePolicy policy = sizePolicy();
@@ -114,4 +112,17 @@ void CodeEditor::lineNumberAreaPaintEvent(QPaintEvent *_event)
         bottom = top + qRound(blockBoundingRect(block).height());
         ++blockNumber;
     }
+}
+
+void CodeEditor::updateFont()
+{
+    QFont font(m_fontName, m_fontSize);
+    setFont(font);
+    setTabStopDistance(m_fontSize * 2);
+}
+
+void CodeEditor::setFontSize(int _size)
+{
+    m_fontSize = _size;
+    updateFont();
 }
