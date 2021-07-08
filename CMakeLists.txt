@@ -22,7 +22,7 @@ set(CMAKE_CXX_EXTENSIONS ON)
 # Run moc automatically (Qt projects ONLY)
 set(CMAKE_AUTOMOC ON)
 
-# Find packages
+# Find vcpkg packages
 find_package(Qt5Widgets)
 find_package(fmt CONFIG REQUIRED)
 find_package(OpenImageIO CONFIG REQUIRED)
@@ -30,10 +30,6 @@ find_package(freetype CONFIG REQUIRED)
 
 # Set the name of the executable we want to build
 add_executable(${TargetName})
-
-# Add NGL and nodeeditor include paths
-#include_directories(include $ENV{HOME}/NGL/include)
-#include_directories(include $ENV{HOME}/nodeeditor/include)
 
 target_sources(${TargetName} PRIVATE
 	# .cpp
@@ -63,9 +59,12 @@ target_sources(${TargetName} PRIVATE
 	${PROJECT_SOURCE_DIR}/shaders/DefaultVertex.glsl
 )
 
-# Platform specific definitions
+# Add NGL and nodeeditor include paths
+include_directories(include $ENV{HOME}/NGL/include)
+include_directories(include $ENV{HOME}/nodeeditor/include)
+
+# Mac specific setup
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-	message("Mac build")
   	find_library(MACGL OpenGL)
   	find_package(IlmBase CONFIG REQUIRED)
 	find_package(OpenEXR CONFIG REQUIRED)
@@ -73,14 +72,12 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 	target_link_libraries(${TargetName} PRIVATE IlmBase::Iex IlmBase::Half IlmBase::Imath IlmBase::IexMath)
 	target_link_libraries(${TargetName} PRIVATE OpenEXR::IlmImf OpenEXR::IlmImfUtil OpenEXR::IlmImfConfig)
 	add_definitions(-DGL_SCILENCE_DEPRICATION)
-	set(PROJECT_LINK_LIBS ${MACGL} NGL)
+	set(PROJECT_LINK_LIBS ${MACGL} NGL nodes)
+	target_compile_definitions(${TargetName} PRIVATE NODE_EDITOR_SHARED)
+	target_link_directories(${TargetName} PRIVATE $ENV{HOME}/nodeeditor/build/lib)
 
-elseif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-	set(PROJECT_LINK_LIBS -lGL NGL)
-
+# Windows specific setup
 elseif(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-	include_directories(include $ENV{HOMEDRIVE}/$ENV{HOMEPATH}/NGL/include)
-	include_directories(include $ENV{HOMEDRIVE}/$ENV{HOMEPATH}/nodeeditor/include)
 	link_directories($ENV{HOMEDRIVE}/$ENV{HOMEPATH}/NGL/lib)
 	link_directories($ENV{HOMEDRIVE}/$ENV{HOMEPATH}/nodeeditor/lib)
 	target_link_libraries(${TargetName} PRIVATE $ENV{HOMEDRIVE}/$ENV{HOMEPATH}/NGL/lib/NGL.lib)
@@ -91,11 +88,11 @@ elseif(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 	target_compile_definitions(${TargetName} PRIVATE /wd4251 NODE_EDITOR_SHARED)
 	# Need to define this when building shared library or suffer dllimport errors
 	add_compile_definitions(BUILDING_DLL)
+	target_link_directories(${TargetName} PRIVATE $ENV{HOME}/nodeeditor/lib)
 endif()
 
 # Link NGL and nodeeditor
 target_link_directories(${TargetName} PRIVATE $ENV{HOME}/NGL/lib)
-target_link_directories(${TargetName} PRIVATE $ENV{HOME}/nodeeditor/lib)
 
 # Link packages
 target_link_libraries(${TargetName} PRIVATE OpenImageIO::OpenImageIO OpenImageIO::OpenImageIO_Util)
