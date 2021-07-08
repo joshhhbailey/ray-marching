@@ -60,8 +60,8 @@ target_sources(${TargetName} PRIVATE
 )
 
 # Add NGL and nodeeditor include paths
-include_directories(include $ENV{HOME}/NGL/include)
-include_directories(include $ENV{HOME}/nodeeditor/include)
+include_directories(include $ENV{HOMEDRIVE}/$ENV{HOMEPATH}/NGL/include)
+include_directories(include $ENV{HOMEDRIVE}/$ENV{HOMEPATH}/nodeeditor/include)
 
 # Mac specific setup
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
@@ -88,11 +88,11 @@ elseif(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 	target_compile_definitions(${TargetName} PRIVATE /wd4251 NODE_EDITOR_SHARED)
 	# Need to define this when building shared library or suffer dllimport errors
 	add_compile_definitions(BUILDING_DLL)
-	target_link_directories(${TargetName} PRIVATE $ENV{HOME}/nodeeditor/lib)
+	target_link_directories(${TargetName} PRIVATE $ENV{HOMEDRIVE}/$ENV{HOMEPATH}/nodeeditor/lib)
 endif()
 
 # Link NGL and nodeeditor
-target_link_directories(${TargetName} PRIVATE $ENV{HOME}/NGL/lib)
+target_link_directories(${TargetName} PRIVATE $ENV{HOMEDRIVE}/$ENV{HOMEPATH}/NGL/lib)
 
 # Link packages
 target_link_libraries(${TargetName} PRIVATE OpenImageIO::OpenImageIO OpenImageIO::OpenImageIO_Util)
