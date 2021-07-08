@@ -7,17 +7,6 @@
 #include "NGLScene.h"
 #include "ShaderCodeContainer.h"
 #include "NodeEditorContainer.h"
-/*
-#include <nodes/NodeData>
-#include <nodes/FlowScene>
-#include <nodes/FlowView>
-#include <nodes/DataModelRegistry>
-#include <nodes/ConnectionStyle>
-
-using QtNodes::DataModelRegistry;
-using QtNodes::FlowScene;
-using QtNodes::FlowView;
-using QtNodes::ConnectionStyle;*/
 
 class Window : public QMainWindow
 {
@@ -52,8 +41,6 @@ private:
 
     NodeEditorContainer *m_nodeEditorContainer;
     QDockWidget *m_nodeEditorDock;
-    //QtNodes::FlowScene *m_nodeEditorScene;
-    //QtNodes::FlowView *m_nodeEditorView;
 
     ShaderCodeContainer *m_shaderCodeContainer;
     QDockWidget *m_shaderEditorDock;

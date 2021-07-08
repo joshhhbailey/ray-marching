@@ -31,7 +31,7 @@ SyntaxHighlighter::SyntaxHighlighter(QTextDocument *_parent) : QSyntaxHighlighte
     // Other keywords - light blue
     m_keywordsOther.setForeground(QColor(86, 156, 214));
 
-    // The OpenGL Shading Language (v. 4.10)
+    // The OpenGL Shading Language (v4.10)
     // https://www.khronos.org/registry/OpenGL/specs/gl/GLSLangSpec.4.10.pdf
     const QString GLSLkeywordsOther[] =
     {

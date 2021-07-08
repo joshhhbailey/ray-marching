@@ -75,11 +75,9 @@ void Window::createWidgets()
 
     // Create Node Editor Container dockable widget
     m_nodeEditorContainer = new NodeEditorContainer();
-    //m_nodeEditorScene = new QtNodes::FlowScene(registerDataModels(), m_window);
-    //m_nodeEditorView = new QtNodes::FlowView(m_nodeEditorScene);
     m_nodeEditorDock = new QDockWidget(tr("Node Editor"), this);
     m_nodeEditorDock->setAllowedAreas(Qt::RightDockWidgetArea | Qt::LeftDockWidgetArea);
-    //m_nodeEditorDock->setWidget(m_nodeEditorView);
+    m_nodeEditorDock->setWidget(m_nodeEditorContainer);
     addDockWidget(Qt::LeftDockWidgetArea, m_nodeEditorDock);
     m_nodeEditorDock->hide();
 }
@@ -119,34 +117,3 @@ QPalette *Window::darkPalette()
     darkPalette->setColor(QPalette::Link, Qt::gray);
     return darkPalette;
 }
-
-/*static std::shared_ptr<DataModelRegistry> registerDataModels()
-{
-  auto ret = std::make_shared<DataModelRegistry>();
-
-  ret->registerModel<NaiveDataModel>();
-
-  /*
-     We could have more models registered.
-     All of them become items in the context meny of the scene.
-
-     ret->registerModel<AnotherDataModel>();
-     ret->registerModel<OneMoreDataModel>();
-
-   //
-
-  return ret;
-}
-
-
-static void setStyle()
-{
-  ConnectionStyle::setConnectionStyle(
-    R"(
-  {
-    "ConnectionStyle": {
-      "UseDataDefinedColors": true
-    }
-  }
-  )");
-}*/

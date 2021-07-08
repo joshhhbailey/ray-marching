@@ -58,7 +58,6 @@ target_sources(${TargetName} PRIVATE
 	${PROJECT_SOURCE_DIR}/include/CodeEditor.h
 	${PROJECT_SOURCE_DIR}/include/SyntaxHighlighter.h
 	${PROJECT_SOURCE_DIR}/include/NodeEditorContainer.h
-	#${PROJECT_SOURCE_DIR}/include/models.hpp
 	#.glsl
 	${PROJECT_SOURCE_DIR}/shaders/DefaultFragment.glsl
 	${PROJECT_SOURCE_DIR}/shaders/DefaultVertex.glsl
@@ -85,18 +84,18 @@ elseif(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 	link_directories($ENV{HOMEDRIVE}/$ENV{HOMEPATH}/NGL/lib)
 	link_directories($ENV{HOMEDRIVE}/$ENV{HOMEPATH}/nodeeditor/lib)
 	target_link_libraries(${TargetName} PRIVATE $ENV{HOMEDRIVE}/$ENV{HOMEPATH}/NGL/lib/NGL.lib)
-	#target_link_libraries(${TargetName} PRIVATE $ENV{HOMEDRIVE}/$ENV{HOMEPATH}/nodeeditor/lib/nodes.lib)
+	target_link_libraries(${TargetName} PRIVATE $ENV{HOMEDRIVE}/$ENV{HOMEPATH}/nodeeditor/lib/nodes.lib)
 	add_compile_definitions(_USE_MATH_DEFINES)
 	add_compile_definitions(NOMINMAX)
 	# NODE_EDITOR_SHARED/STATIC
-	target_compile_definitions(${TargetName} PRIVATE /wd4251)
+	target_compile_definitions(${TargetName} PRIVATE /wd4251 NODE_EDITOR_SHARED)
 	# Need to define this when building shared library or suffer dllimport errors
 	add_compile_definitions(BUILDING_DLL)
 endif()
 
 # Link NGL and nodeeditor
 target_link_directories(${TargetName} PRIVATE $ENV{HOME}/NGL/lib)
-#target_link_directories(${TargetName} PRIVATE $ENV{HOME}/nodeeditor/lib)
+target_link_directories(${TargetName} PRIVATE $ENV{HOME}/nodeeditor/lib)
 
 # Link packages
 target_link_libraries(${TargetName} PRIVATE OpenImageIO::OpenImageIO OpenImageIO::OpenImageIO_Util)
