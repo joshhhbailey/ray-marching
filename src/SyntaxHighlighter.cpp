@@ -18,6 +18,7 @@ SyntaxHighlighter::SyntaxHighlighter(QTextDocument *_parent) : QSyntaxHighlighte
         QStringLiteral("\\bbreak\\b"), QStringLiteral("\\bcontinue\\b"), QStringLiteral("\\bdo\\b"),
         QStringLiteral("\\bfor\\b"), QStringLiteral("\\bwhile\\b"), QStringLiteral("\\bif\\b"),
         QStringLiteral("\\belse\\b"), QStringLiteral("\\discard\\b"), QStringLiteral("\\breturn\\b"),
+        QStringLiteral("\\bswitch\\b"), QStringLiteral("\\bcase\\b"), QStringLiteral("\\bdefault\\b")
     };
 
     for (const QString &pattern : GLSLkeywordsInterface)
@@ -30,6 +31,8 @@ SyntaxHighlighter::SyntaxHighlighter(QTextDocument *_parent) : QSyntaxHighlighte
     // Other keywords - light blue
     m_keywordsOther.setForeground(QColor(86, 156, 214));
 
+    // The OpenGL Shading Language (v. 4.10)
+    // https://www.khronos.org/registry/OpenGL/specs/gl/GLSLangSpec.4.10.pdf
     const QString GLSLkeywordsOther[] =
     {
         QStringLiteral("\\battribute\\b"), QStringLiteral("\\bconst\\b"), QStringLiteral("\\buniform\\b"),
@@ -38,15 +41,37 @@ SyntaxHighlighter::SyntaxHighlighter(QTextDocument *_parent) : QSyntaxHighlighte
         QStringLiteral("\\bint\\b"), QStringLiteral("\\bvoid\\b"), QStringLiteral("\\bbool\\b"),
         QStringLiteral("\\btrue\\b"), QStringLiteral("\\bfalse\\b"), QStringLiteral("\\binvariant\\b"),
         QStringLiteral("\\bmat2\\b"), QStringLiteral("\\bmat3\\b"), QStringLiteral("\\bmat4\\b"),
+        QStringLiteral("\\bdmat2\\b"), QStringLiteral("\\bdmat3\\b"), QStringLiteral("\\bdmat4\\b"),
         QStringLiteral("\\bmat2x2\\b"), QStringLiteral("\\bmat2x3\\b"), QStringLiteral("\\bmat2x4\\b"),
         QStringLiteral("\\bmat3x2\\b"), QStringLiteral("\\bmat3x3\\b"), QStringLiteral("\\bmat3x4\\b"),
         QStringLiteral("\\bmat4x2\\b"), QStringLiteral("\\bmat4x3\\b"), QStringLiteral("\\bmat4x4\\b"),
+        QStringLiteral("\\bdmat2x2\\b"), QStringLiteral("\\bdmat2x3\\b"), QStringLiteral("\\bdmat2x4\\b"),
+        QStringLiteral("\\bdmat3x2\\b"), QStringLiteral("\\bdmat3x3\\b"), QStringLiteral("\\bdmat3x4\\b"),
+        QStringLiteral("\\bdmat4x2\\b"), QStringLiteral("\\bdmat4x3\\b"), QStringLiteral("\\bdmat4x4\\b"),
         QStringLiteral("\\bvec2\\b"), QStringLiteral("\\bvec3\\b"), QStringLiteral("\\bvec4\\b"),
         QStringLiteral("\\bivec2\\b"), QStringLiteral("\\bivec3\\b"), QStringLiteral("\\bivec4\\b"),
         QStringLiteral("\\bbvec2\\b"), QStringLiteral("\\bbvec3\\b"), QStringLiteral("\\bbvec4\\b"),
+        QStringLiteral("\\bdvec2\\b"), QStringLiteral("\\bdvec3\\b"), QStringLiteral("\\bdvec4\\b"),
+        QStringLiteral("\\buvec2\\b"), QStringLiteral("\\buvec3\\b"), QStringLiteral("\\buvec4\\b"),
         QStringLiteral("\\bsampler1D\\b"), QStringLiteral("\\bsampler2D\\b"), QStringLiteral("\\bsampler3D\\b"),
-        QStringLiteral("\\bsamplerCube\\b"), QStringLiteral("\\bsampler1DShadow\\b"), QStringLiteral("\\bsampler2DShadow\\b"),
-        QStringLiteral("\\bstruct\\b"), QStringLiteral("\\blayout\\b")
+        QStringLiteral("\\bisampler1D\\b"), QStringLiteral("\\bisampler2D\\b"), QStringLiteral("\\bisampler3D\\b"),
+        QStringLiteral("\\busampler1D\\b"), QStringLiteral("\\busampler2D\\b"), QStringLiteral("\\busampler3D\\b"),
+        QStringLiteral("\\bsamplerCube\\b"), QStringLiteral("\\bisamplerCube\\b"), QStringLiteral("\\busamplerCube\\b"), 
+        QStringLiteral("\\bsampler1DShadow\\b"), QStringLiteral("\\bsampler2DShadow\\b"), QStringLiteral("\\bsamplerCubeShadow\\b"),
+        QStringLiteral("\\bsampler1DArray\\b"), QStringLiteral("\\bsampler2DArray\\b"), QStringLiteral("\\bisampler1DArray\\b"),
+        QStringLiteral("\\bisampler2DArray\\b"), QStringLiteral("\\busampler1DArray\\b"), QStringLiteral("\\busampler2DArray\\b"),
+        QStringLiteral("\\bsampler1DArrayShadow\\b"), QStringLiteral("\\bsampler2DArrayShadow\\b"), QStringLiteral("\\bisampler1DArray\\b"),
+        QStringLiteral("\\bisampler2DArray\\b"), QStringLiteral("\\bsampler2DRect\\b"), QStringLiteral("\\bsampler2DRectShadow\\b"),
+        QStringLiteral("\\bisampler2DRect\\b"), QStringLiteral("\\busampler2DRect\\b"), QStringLiteral("\\bsampleBuffer\\b"),
+        QStringLiteral("\\bisampleBuffer\\b"), QStringLiteral("\\busampleBuffer\\b"), QStringLiteral("\\bsampler2DMS\\b"),
+        QStringLiteral("\\bisampler2DMS\\b"), QStringLiteral("\\busampler2DMS\\b"), QStringLiteral("\\bsampler2DMSArray\\b"),
+        QStringLiteral("\\bisampler2DMSArray\\b"), QStringLiteral("\\busampler2DMSArray\\b"), QStringLiteral("\\bsamplerCubeArray\\b"),
+        QStringLiteral("\\bsamplerCubeArrayShadow\\b"), QStringLiteral("\\bisamplerCubeArray\\b"), QStringLiteral("\\busamplerCubeArray\\b"),
+        QStringLiteral("\\bstruct\\b"), QStringLiteral("\\blayout\\b"), QStringLiteral("\\bflat\\b"),
+        QStringLiteral("\\bsmooth\\b"), QStringLiteral("\\bnoperspective\\b"), QStringLiteral("\\bpatch\\b"),
+        QStringLiteral("\\bsample\\b"), QStringLiteral("\\bsubroutine\\b"), QStringLiteral("\\bdouble\\b"),
+        QStringLiteral("\\blowp\\b"), QStringLiteral("\\bmediump\\b"), QStringLiteral("\\bhighp\\b"),
+        QStringLiteral("\\bprecision\\b")
     };
 
     for (const QString &pattern : GLSLkeywordsOther)
