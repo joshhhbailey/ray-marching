@@ -60,8 +60,8 @@ target_sources(${TargetName} PRIVATE
 )
 
 # Add NGL and nodeeditor include paths
-include_directories(include $ENV{HOMEDRIVE}/$ENV{HOMEPATH}/NGL/include)
-include_directories(include $ENV{HOMEDRIVE}/$ENV{HOMEPATH}/nodeeditor/include)
+include_directories(include $ENV{HOMEDRIVE}/$ENV{HOMEPATH}/$ENV{HOME}/NGL/include)
+include_directories(include $ENV{HOMEDRIVE}/$ENV{HOMEPATH}/$ENV{HOME}/nodeeditor/include)
 
 # Mac specific setup
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
@@ -92,7 +92,7 @@ elseif(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 endif()
 
 # Link NGL and nodeeditor
-target_link_directories(${TargetName} PRIVATE $ENV{HOMEDRIVE}/$ENV{HOMEPATH}/NGL/lib)
+target_link_directories(${TargetName} PRIVATE $ENV{HOMEDRIVE}/$ENV{HOMEPATH}/$ENV{HOME}/NGL/lib)
 
 # Link packages
 target_link_libraries(${TargetName} PRIVATE OpenImageIO::OpenImageIO OpenImageIO::OpenImageIO_Util)
