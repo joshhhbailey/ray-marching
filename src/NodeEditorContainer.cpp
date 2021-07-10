@@ -1,4 +1,5 @@
 #include "NodeEditorContainer.h"
+#include "TestNode.h"
 
 #include <QtWidgets/QVBoxLayout>
 
@@ -25,18 +26,15 @@ void NodeEditorContainer::createLayouts()
 
 std::shared_ptr<DataModelRegistry> NodeEditorContainer::registerDataModels()
 {
-    auto ret = std::make_shared<DataModelRegistry>();
+    std::shared_ptr<DataModelRegistry> dataModels = std::make_shared<DataModelRegistry>();
+    
+    dataModels->registerModel<TestNode>("Tests");
 
-/*
-    //ret->registerModel<NaiveDataModel>();
-    We could have more models registered.
-    All of them become items in the context meny of the scene.
+    /*dataModels->registerModel<Union>("Boolean Operators");
+    dataModels->registerModel<Intersection>("Boolean Operators");
+    dataModels->registerModel<Difference>("Boolean Operators");*/
 
-    ret->registerModel<AnotherDataModel>();
-    ret->registerModel<OneMoreDataModel>();
-*/
-
-  return ret;
+  return dataModels;
 }
 
 
