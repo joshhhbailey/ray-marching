@@ -1,16 +1,14 @@
-#version 400 core
+#version 410 core
 
 layout (location = 0) in vec3 inVert;
 layout (location = 1) in vec2 inUV;
 
-out vec2 uv;
-uniform vec3 cam_pos;
-uniform float time;
-uniform vec2 resolution;
-uniform vec2 mouse;
+out vec2 iUV;
+uniform float iTime;
+uniform vec2 iMouse;
 
 void main()
 {
-    uv = inUV;
+    iUV = inUV;
     gl_Position = vec4(inVert, 1.0);
 }

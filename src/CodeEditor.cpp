@@ -23,9 +23,18 @@ CodeEditor::CodeEditor() : QPlainTextEdit()
 
     // Default code when app launches
     const char code[] =
+    "// Shader Inputs:\n"
+    "// in vec2         iUV;        Normalized pixel coordinates (from 0 to 1)\n"
+    "// uniform float   iTime;      Shader playback time (in seconds)\n"
+    "// uniform vec2    iMouse      Mouse pixel coordinates (if LMB down);\n"
+    "\n"
     "void main()\n"
     "{\n"
-	"   fragColour = vec4(1.0, 1.0, 1.0, 1.0);\n"
+    "   // Time varying pixel colour\n"
+	"   vec3 colour = 0.5 + 0.5 * cos(iTime + iUV.xyx + vec3(0, 2, 4));\n"
+    "\n"
+	"   // Output to screen\n"
+	"   fragColour = vec4(colour, 1.0);\n"
     "}";
 
     setPlainText(code);

@@ -1,14 +1,16 @@
-#version 400 core
+#version 410 core
 
 layout (location = 0) out vec4 fragColour;
 
-uniform vec3 cam_pos;
-uniform float time;
-uniform vec2 resolution;
-uniform vec2 mouse;
-in vec2 uv;
+in vec2 iUV;
+uniform float iTime;
+uniform vec2 iMouse;
 
 void main()
 {
-	fragColour = vec4(1.0, 1.0, 1.0, 1.0);
+	// Time varying pixel colour
+	vec3 colour = 0.5 + 0.5 * cos(iTime + iUV.xyx + vec3(0, 2, 4));
+
+	// Output to screen
+	fragColour = vec4(colour, 1.0);
 }

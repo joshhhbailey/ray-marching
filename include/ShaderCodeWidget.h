@@ -25,6 +25,7 @@ private:
     void createWidgets();
     void createLayouts();
     void createConnections();
+    void timerEvent(QTimerEvent *_event);
 
     CodeEditor *m_codeEditor;
     SyntaxHighlighter *m_syntaxHighlighter;
@@ -32,18 +33,17 @@ private:
     QSpinBox *m_fontSize;
     QPushButton *m_compileButton;
     QLabel *m_outputLabel;
+    QLabel *m_compilationLabel;
 
     NGLScene *m_scene;
 
     QString m_boilerPlateCode =
-    "#version 400 core"
+    "#version 410 core"
     "\n"
     "layout (location = 0) out vec4 fragColour;\n"
     "\n"
-    "uniform vec3 cam_pos;\n"
-    "uniform float time;\n"
-    "uniform vec2 resolution;\n"
-    "uniform vec2 mouse;\n"
-    "in vec2 uv;\n"
+    "in vec2 iUV;\n"
+    "uniform float iTime;\n"
+    "uniform vec2 iMouse;\n"
     "\n";
 };

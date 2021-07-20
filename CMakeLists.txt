@@ -36,7 +36,6 @@ target_sources(${TargetName} PRIVATE
 	${PROJECT_SOURCE_DIR}/src/main.cpp
 	${PROJECT_SOURCE_DIR}/src/NGLScene.cpp
 	${PROJECT_SOURCE_DIR}/src/ScreenQuad.cpp
-    ${PROJECT_SOURCE_DIR}/src/NGLSceneMouseControls.cpp
 	${PROJECT_SOURCE_DIR}/src/Window.cpp
 	${PROJECT_SOURCE_DIR}/src/ShaderCodeContainer.cpp
 	${PROJECT_SOURCE_DIR}/src/ShaderCodeWidget.cpp

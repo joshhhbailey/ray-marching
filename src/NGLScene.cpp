@@ -10,6 +10,7 @@
 #include "NGLScene.h"
 
 #include <iostream>
+#include <math.h>
 
 NGLScene::NGLScene()
 {
@@ -44,10 +45,7 @@ void NGLScene::buildShaders()
   ngl::ShaderLib::linkProgramObject("ShaderProgram_A");
   ngl::ShaderLib::use("ShaderProgram_A");
 
-  // Set shader variables
-  /*ngl::ShaderLib::setUniform("mouse", ngl::Vec2(23, 23));
-  ngl::ShaderLib::setUniform("cam_pos", ngl::Vec3(0.0f, 0.0f, 4.0f));
-  ngl::ShaderLib::setUniform("time", 0.0f);*/
+  resetUniforms();
 }
 
 void NGLScene::initializeGL()
@@ -61,20 +59,23 @@ void NGLScene::initializeGL()
   m_screenQuad.reset(new ScreenQuad());   // Create quad to draw shaders to
   glViewport(0, 0, width(), height());    // Set viewport
   startTimer(10);
+
+  m_compilationTime.start();
 }
 
 void NGLScene::paintGL()
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);   // Clear the screen and depth buffer
   ngl::ShaderLib::use(m_currentShader);
-  //loadMatricesToShader();
+  updateUniforms();
   m_screenQuad->draw(m_currentShader);
+  //std::cout << (m_compilationTime.elapsed() / 1000.0f) << std::endl;
 }
 
 void NGLScene::resizeGL(int _w, int _h)
 {
-  m_win.width  = static_cast<int>( _w * devicePixelRatio());
-  m_win.height = static_cast<int>( _h * devicePixelRatio());
+  m_win.m_winWidth = static_cast<int>(_w * devicePixelRatio());
+  m_win.m_winHeight = static_cast<int>(_h * devicePixelRatio());
 }
 
 bool NGLScene::compileShaderCode(QString _shaderCode)
@@ -130,13 +131,22 @@ bool NGLScene::compileShaderCode(QString _shaderCode)
     m_shaderErrorMessage = errorLog;
     return false;
   }
+  // Reset shader inputs
+  m_compilationTime.restart();
+  resetUniforms();
   return true;
 }
 
-void NGLScene::loadMatricesToShader()
+void NGLScene::updateUniforms()
 {
-  ngl::ShaderLib::setUniform("mouse", ngl::Vec2(m_win.spinXFace, m_win.spinYFace));
-  ngl::ShaderLib::setUniform("cam_pos", ngl::Vec3(0.0f, 0.0f, 4.0f));
+  ngl::ShaderLib::setUniform("iTime", float(m_compilationTime.elapsed() / 1000.0f));
+  ngl::ShaderLib::setUniform("iMouse", ngl::Vec2(m_win.m_mouseXPos, m_win.m_mouseYPos));
+}
+
+void NGLScene::resetUniforms()
+{
+  ngl::ShaderLib::setUniform("iTime", float(0.0f));
+  ngl::ShaderLib::setUniform("iMouse", ngl::Vec2(0.0f, 0.0f));
 }
 
 void NGLScene::keyPressEvent(QKeyEvent *_event)
@@ -161,15 +171,26 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
 
 void NGLScene::timerEvent(QTimerEvent *_event)
 {
-  static float t = 0.0f;
-  ngl::ShaderLib::use(m_currentShader);
-  /*ngl::ShaderLib::setUniform("time", t);
-  t += 0.01f;
-
-  if (t > 5.0f)
-  {
-    t = 0.0f;
-  }*/
-
   update();
+}
+
+void NGLScene::mouseMoveEvent(QMouseEvent* _event)
+{
+  if (_event->buttons() == Qt::LeftButton)
+  {
+    // Clamp mouse position to OpenGL window dimensions
+    m_win.m_mouseXPos = std::clamp(_event->x(), 0, m_win.m_winWidth);
+    m_win.m_mouseYPos = std::clamp(_event->y(), 0, m_win.m_winHeight);
+
+    update();
+  }
+}
+
+void NGLScene::mousePressEvent(QMouseEvent* _event)
+{
+  if (_event->button() == Qt::LeftButton)
+  {
+    m_win.m_mouseXPos = _event->x();
+    m_win.m_mouseYPos = _event->y();
+  }
 }

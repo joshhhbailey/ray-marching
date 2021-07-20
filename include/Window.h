@@ -33,6 +33,8 @@ private:
     QAction *m_shaderEditorAction;
     QAction *m_nodeEditorAction;
 
+    QAction *m_aboutAction;
+
     QVBoxLayout *m_windowLayout;
 
     // Widgets

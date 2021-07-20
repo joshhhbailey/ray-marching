@@ -35,6 +35,8 @@ void Window::createActions()
 
     m_shaderEditorAction = new QAction("Shader Editor");
     m_nodeEditorAction = new QAction("Node Editor");
+
+    m_aboutAction = new QAction("About");
 }
 
 void Window::createMenuBar()
@@ -43,18 +45,24 @@ void Window::createMenuBar()
     setMenuBar(new QMenuBar());
     QMenu *fileMenu = new QMenu("File");
     QMenu *windowsMenu = new QMenu("Windows");
+    QMenu *helpMenu = new QMenu("Help");
 
     // Add actions to menus
     fileMenu->addAction(m_openFileAction);
+    fileMenu->addSeparator();
     fileMenu->addAction(m_saveAction);
     fileMenu->addAction(m_saveAsAction);
+    fileMenu->addSeparator();
     fileMenu->addAction(m_exitAction);
 
     windowsMenu->addAction(m_shaderEditorAction);
     windowsMenu->addAction(m_nodeEditorAction);
 
+    helpMenu->addAction(m_aboutAction);
+
     menuBar()->addMenu(fileMenu);
     menuBar()->addMenu(windowsMenu);
+    menuBar()->addMenu(helpMenu);
 }
 
 void Window::createWidgets()
