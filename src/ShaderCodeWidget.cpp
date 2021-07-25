@@ -30,6 +30,7 @@ void ShaderCodeWidget::createWidgets()
     m_fontSize->setMaximum(48);
 
     m_compileButton = new QPushButton("Compile");
+    m_pauseButton = new QPushButton("Pause/Unpause");
 
     m_outputLabel = new QLabel();
     m_outputLabel->setText("[" + QTime::currentTime().toString() + "] Welcome to fragOut!");
@@ -43,7 +44,8 @@ void ShaderCodeWidget::createLayouts()
     mainLayout->addWidget(m_codeEditor, 0, 0, 1, 2);
     mainLayout->addWidget(m_fontSizeLabel, 1, 0, 1, 1);
     mainLayout->addWidget(m_fontSize, 1, 1, 1, 1);
-    mainLayout->addWidget(m_compileButton, 2, 0, 1, 2);
+    mainLayout->addWidget(m_compileButton, 2, 0, 1, 1);
+    mainLayout->addWidget(m_pauseButton, 2, 1, 1, 1);
     mainLayout->addWidget(m_outputLabel, 3, 0, 1, 2);
     mainLayout->addWidget(m_compilationLabel, 4, 0, 1, 2);
     setLayout(mainLayout);
@@ -52,6 +54,7 @@ void ShaderCodeWidget::createConnections()
 {
     connect(m_fontSize, SIGNAL(valueChanged(int)), m_codeEditor, SLOT(setFontSize(int)));
     connect(m_compileButton, SIGNAL(clicked()), this, SLOT(compileButtonClicked()));
+    connect(m_pauseButton, SIGNAL(clicked()), this, SLOT(pauseButtonClicked()));
 }
 
 void ShaderCodeWidget::compileButtonClicked()
@@ -64,6 +67,8 @@ void ShaderCodeWidget::compileButtonClicked()
     if (m_scene->compileShaderCode(shaderCode))
     {
         string += "Shader compilation successful!";
+        m_pausedTime = 0;
+        m_pauseTime = false;
     }
     else
     {
@@ -76,11 +81,28 @@ void ShaderCodeWidget::compileButtonClicked()
     m_outputLabel->setText("[" + QTime::currentTime().toString() + string);
 }
 
+void ShaderCodeWidget::pauseButtonClicked()
+{
+    if (!m_pauseTime)
+    {
+        m_pausedTime += m_scene->pauseTime();
+        m_pauseTime = true;
+    }
+    else
+    {
+        m_scene->unpauseTime(m_pausedTime);
+        m_pauseTime = false;
+    }
+}
+
 void ShaderCodeWidget::timerEvent(QTimerEvent *_event)
 {
     // Update compilation timer
-    QString compTime = QString::number(m_scene->getCompilationTime());
-    m_compilationLabel->setText(compTime);
+    if (!m_pauseTime)
+    {
+        QString compTime = QString::number(m_scene->getCompilationTime() + (m_pausedTime / 1000.0f));
+        m_compilationLabel->setText(compTime);
+    }
 
     update();
 }

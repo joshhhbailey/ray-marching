@@ -132,21 +132,39 @@ bool NGLScene::compileShaderCode(QString _shaderCode)
     return false;
   }
   // Reset shader inputs
-  m_compilationTime.restart();
+  m_pausedTime = 0;
+  m_pauseTime = false;
+  m_compilationTime.start();
   resetUniforms();
   return true;
 }
 
 void NGLScene::updateUniforms()
 {
-  ngl::ShaderLib::setUniform("iTime", float(m_compilationTime.elapsed() / 1000.0f));
-  ngl::ShaderLib::setUniform("iMouse", ngl::Vec2(m_win.m_mouseXPos, m_win.m_mouseYPos));
+  if (!m_pauseTime)
+  {
+    ngl::ShaderLib::setUniform("iTime", float((m_compilationTime.elapsed() + m_pausedTime) / 1000.0f));
+    ngl::ShaderLib::setUniform("iMouse", ngl::Vec2(m_win.m_mouseXPos, m_win.m_mouseYPos));
+  }
 }
 
 void NGLScene::resetUniforms()
 {
   ngl::ShaderLib::setUniform("iTime", float(0.0f));
   ngl::ShaderLib::setUniform("iMouse", ngl::Vec2(0.0f, 0.0f));
+}
+
+qint64 NGLScene::pauseTime()
+{
+  m_pauseTime = true;
+  return m_compilationTime.elapsed();
+}
+
+void NGLScene::unpauseTime(qint64 _pausedTime)
+{
+  m_pauseTime = false;
+  m_pausedTime = _pausedTime;
+  m_compilationTime.restart();
 }
 
 void NGLScene::keyPressEvent(QKeyEvent *_event)

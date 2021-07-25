@@ -18,7 +18,8 @@ SyntaxHighlighter::SyntaxHighlighter(QTextDocument *_parent) : QSyntaxHighlighte
         QStringLiteral("\\bbreak\\b"), QStringLiteral("\\bcontinue\\b"), QStringLiteral("\\bdo\\b"),
         QStringLiteral("\\bfor\\b"), QStringLiteral("\\bwhile\\b"), QStringLiteral("\\bif\\b"),
         QStringLiteral("\\belse\\b"), QStringLiteral("\\discard\\b"), QStringLiteral("\\breturn\\b"),
-        QStringLiteral("\\bswitch\\b"), QStringLiteral("\\bcase\\b"), QStringLiteral("\\bdefault\\b")
+        QStringLiteral("\\bswitch\\b"), QStringLiteral("\\bcase\\b"), QStringLiteral("\\bdefault\\b"),
+        QStringLiteral("\\bdefine\\b")
     };
 
     for (const QString &pattern : GLSLkeywordsInterface)

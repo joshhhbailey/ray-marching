@@ -23,6 +23,8 @@ class NGLScene : public QOpenGLWidget
     bool compileShaderCode(QString _shaderCode);
     std::vector<GLchar> getShaderErrorMessage() { return m_shaderErrorMessage; }
     float getCompilationTime() { return (m_compilationTime.elapsed() / 1000.0f); }
+    qint64 pauseTime();
+    void unpauseTime(qint64 _pausedTime);
 
 private:
     void keyPressEvent(QKeyEvent *_event) override;
@@ -44,7 +46,10 @@ private:
 
     std::vector<GLchar> m_shaderErrorMessage;
 
+    // Compilation timer
     QElapsedTimer m_compilationTime;
+    bool m_pauseTime = false;
+    qint64 m_pausedTime = 0;
 };
 
 #endif

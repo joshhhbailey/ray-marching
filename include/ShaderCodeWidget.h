@@ -20,6 +20,7 @@ public:
 
 public slots:
     void compileButtonClicked();
+    void pauseButtonClicked();
 
 private:
     void createWidgets();
@@ -32,8 +33,12 @@ private:
     QLabel *m_fontSizeLabel;
     QSpinBox *m_fontSize;
     QPushButton *m_compileButton;
+    QPushButton *m_pauseButton;
     QLabel *m_outputLabel;
     QLabel *m_compilationLabel;
+
+    bool m_pauseTime = false;
+    qint64 m_pausedTime = 0;
 
     NGLScene *m_scene;
 
