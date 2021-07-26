@@ -22,8 +22,7 @@ Window::Window(QApplication *_application)
 
 void Window::timerEvent(QTimerEvent *_event)
 {
-    // When docked limit window width (25-50%)
-    // Otherwise uncapped
+    // When docked limit window width (25-50%), otherwise uncapped
     if (!m_shaderEditorDock->isWindow())
     {
         m_shaderEditorDock->setMinimumWidth(size().width() / 4);
@@ -50,17 +49,20 @@ void Window::timerEvent(QTimerEvent *_event)
 
 void Window::createActions()
 {
+    // Shader editor
     m_openGLSLAction = new QAction("GLSL Shader");
-    m_openNodesAction = new QAction("Node Graph");
     m_saveGLSLAction = new QAction("GLSL Shader");
-    m_saveNodesAction = new QAction("Node Graph");
     m_saveAsGLSLAction = new QAction("GLSL Shader");
-    m_saveAsNodesAction = new QAction("Node Graph");
-    m_exitAction = new QAction("Exit");
 
+    // Node editor
+    m_openNodesAction = new QAction("Node Graph");
+    m_saveNodesAction = new QAction("Node Graph");
+    m_saveAsNodesAction = new QAction("Node Graph");
+    
+    // Other
+    m_exitAction = new QAction("Exit");
     m_shaderEditorAction = new QAction("Shader Editor");
     m_nodeEditorAction = new QAction("Node Editor");
-
     m_aboutAction = new QAction("About");
 }
 
@@ -137,11 +139,18 @@ void Window::createLayouts()
 
 void Window::createConnections()
 {
+    // Shader Editor
     connect(m_openGLSLAction, SIGNAL(triggered()), m_shaderCodeContainer, SLOT(openFile()));
     connect(m_saveGLSLAction, SIGNAL(triggered()), m_shaderCodeContainer, SLOT(saveFile()));
     connect(m_saveAsGLSLAction, SIGNAL(triggered()), m_shaderCodeContainer, SLOT(saveAsFile()));
-    connect(m_exitAction, SIGNAL(triggered()), m_application, SLOT(quit()));
 
+    // Node Editor
+    connect(m_openNodesAction, SIGNAL(triggered()), m_nodeEditorContainer, SLOT(openFile()));
+    connect(m_saveNodesAction, SIGNAL(triggered()), m_nodeEditorContainer, SLOT(saveFile()));
+    connect(m_saveAsNodesAction, SIGNAL(triggered()), m_nodeEditorContainer, SLOT(saveAsFile()));
+
+    // Other
+    connect(m_exitAction, SIGNAL(triggered()), m_application, SLOT(quit()));
     connect(m_shaderEditorAction, SIGNAL(triggered()), m_shaderEditorDock, SLOT(show()));
     connect(m_nodeEditorAction, SIGNAL(triggered()), m_nodeEditorDock, SLOT(show()));
 }

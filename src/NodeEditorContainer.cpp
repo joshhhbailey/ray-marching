@@ -53,3 +53,18 @@ void NodeEditorContainer::setStyle()
   }
   )");
 }
+
+void NodeEditorContainer::openFile()
+{
+  m_nodeEditorScene->load();
+}
+
+void NodeEditorContainer::saveFile()
+{
+  std::cout << "Save file not yet implemented.\n";
+}
+
+void NodeEditorContainer::saveAsFile()
+{
+  m_nodeEditorScene->save();
+}

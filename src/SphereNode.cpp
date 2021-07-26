@@ -41,6 +41,11 @@ NodeDataType SphereNode::dataType(PortType _portType, PortIndex _portIndex) cons
     return SphereData().type();
 }
 
+void SphereNode::setInData(std::shared_ptr<NodeData>, int)
+{
+
+}
+
 std::shared_ptr<NodeData> SphereNode::outData(PortIndex)
 {
     return std::make_shared<SphereData>();
@@ -51,30 +56,14 @@ QWidget* SphereNode::embeddedWidget()
     return nullptr;
 }
 
-/*QJsonObject SphereNode::save() const
+QJsonObject SphereNode::save() const
 {
   QJsonObject modelJson = NodeDataModel::save();
-
-  if (_number)
-    modelJson["number"] = QString::number(_number->number());
 
   return modelJson;
 }
 
 void SphereNode::restore(QJsonObject const &_p)
 {
-  QJsonValue v = _p["number"];
-
-  if (!v.isUndefined())
-  {
-    QString strNum = v.toString();
-
-    bool   ok;
-    double d = strNum.toDouble(&ok);
-    if (ok)
-    {
-      _number = std::make_shared<DecimalData>(d);
-      _lineEdit->setText(strNum);
-    }
-  }
-}*/
+  
+}

@@ -80,30 +80,14 @@ QWidget* RayMarchNode::embeddedWidget()
     return m_compileButton;
 }
 
-/*QJsonObject RayMarchNode::save() const
+QJsonObject RayMarchNode::save() const
 {
   QJsonObject modelJson = NodeDataModel::save();
-
-  if (_number)
-    modelJson["number"] = QString::number(_number->number());
 
   return modelJson;
 }
 
 void RayMarchNode::restore(QJsonObject const &_p)
 {
-  QJsonValue v = _p["number"];
-
-  if (!v.isUndefined())
-  {
-    QString strNum = v.toString();
-
-    bool   ok;
-    double d = strNum.toDouble(&ok);
-    if (ok)
-    {
-      _number = std::make_shared<DecimalData>(d);
-      _lineEdit->setText(strNum);
-    }
-  }
-}*/
+  
+}

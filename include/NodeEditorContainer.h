@@ -17,6 +17,11 @@ class NodeEditorContainer : public QWidget
 public:
     NodeEditorContainer();
 
+public slots:
+    void openFile();
+    void saveFile();
+    void saveAsFile();
+
 private:
     void createWidgets();
     void createLayouts();

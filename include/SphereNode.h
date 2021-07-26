@@ -28,14 +28,14 @@ class SphereNode : public NodeDataModel
 
 public:
   virtual ~SphereNode() {}
-  QString caption() const;
-  QString name() const;
-  unsigned int nPorts(PortType portType) const;
-  NodeDataType dataType(PortType portType, PortIndex portIndex) const;
-  void setInData(std::shared_ptr<NodeData>, int) {}
-  std::shared_ptr<NodeData> outData(PortIndex);
-  QWidget* embeddedWidget();
+  QString caption() const override;
+  QString name() const override;
+  unsigned int nPorts(PortType portType) const override;
+  NodeDataType dataType(PortType portType, PortIndex portIndex) const override;
+  void setInData(std::shared_ptr<NodeData>, int) override;
+  std::shared_ptr<NodeData> outData(PortIndex) override;
+  QWidget* embeddedWidget() override;
 
-  /*QJsonObject save() const override;
-  void restore(QJsonObject const &_p) override;*/
+  QJsonObject save() const override;
+  void restore(QJsonObject const &_p) override;
 };

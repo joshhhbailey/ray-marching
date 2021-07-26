@@ -70,5 +70,9 @@ void ShaderCodeContainer::saveFile()
 void ShaderCodeContainer::saveAsFile()
 {
     m_filename = QFileDialog::getSaveFileName(this, "Save As", "ShaderOutput", tr("GLSL (*.glsl)"));
+    if (!m_filename.endsWith("glsl", Qt::CaseInsensitive))
+    {
+        m_filename += ".glsl";
+    }
     saveFile();
 }
