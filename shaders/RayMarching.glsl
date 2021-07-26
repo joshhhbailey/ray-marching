@@ -1,21 +1,35 @@
+// The following code is from:
+// The Art of Code, 2018. Ray Marching for Dummies! [video, online]. YouTube.
+// Available from: https://youtu.be/PGtv-dBi2wE
+// Accessed [25 July 2021]
+
 #define MAX_STEPS 100
 #define MAX_DISTANCE 100.0
 #define SURFACE_DISTANCE 0.01
 
+float sdSphere(vec3 _p, vec3 _pos, float _r)
+{
+    vec4 sphere = vec4(_pos, _r);
+    return length(_p - sphere.xyz) - sphere.w;
+}
+
+float sdPlane(vec3 _p, float _y)
+{
+    return _p.y - _y;
+}
+
 float GetDistance(vec3 _p)
 {
-    // Define sphere (x, y, z, radius)
-    vec4 sphere = vec4(0, 1, 6, 1);
+    float plane = sdPlane(_p, 0);
+    float sphere = sdSphere(_p, vec3(0, 1, 6), 1.0);
+    //float capsule = sdCapsule(_p, vec3(0, 1, 6), vec3(1, 2, 6), 0.2);
+    
 
-    // Distance between current marching point and sphere
-    float sphereDistance = length(_p - sphere.xyz) - sphere.w;
-
-    // Distance between current marching point and plane
-    // Plane is aligned parallel to y-axis, in this case
-    float planeDistance = _p.y;
 
     // Return distance of closest scene object
-    float closestDistance = min(sphereDistance, planeDistance);
+    float closestDistance = min(sphere, plane);
+    //closestDistance = min(closestDistance, capsule);
+
     return closestDistance;
 }
 

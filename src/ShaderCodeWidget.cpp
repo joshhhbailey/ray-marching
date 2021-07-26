@@ -38,6 +38,7 @@ void ShaderCodeWidget::createWidgets()
     m_compilationLabel = new QLabel();
     
 }
+
 void ShaderCodeWidget::createLayouts()
 {
     QGridLayout *mainLayout = new QGridLayout();
@@ -50,6 +51,7 @@ void ShaderCodeWidget::createLayouts()
     mainLayout->addWidget(m_compilationLabel, 4, 0, 1, 2);
     setLayout(mainLayout);
 }
+
 void ShaderCodeWidget::createConnections()
 {
     connect(m_fontSize, SIGNAL(valueChanged(int)), m_codeEditor, SLOT(setFontSize(int)));

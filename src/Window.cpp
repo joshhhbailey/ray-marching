@@ -16,21 +16,46 @@ Window::Window(QApplication *_application)
     createWidgets();
     createLayouts();
     createConnections();
+
+    startTimer(10);
 }
 
-void Window::resizeEvent(QResizeEvent *_event)
+void Window::timerEvent(QTimerEvent *_event)
 {
-    m_shaderEditorDock->setMinimumWidth(size().width() / 4);
-    m_shaderEditorDock->setMaximumWidth(size().width() / 2);
-    m_nodeEditorDock->setMinimumWidth(size().width() / 4);
-    m_nodeEditorDock->setMaximumWidth(size().width() / 2);
+    // When docked limit window width (25-50%)
+    // Otherwise uncapped
+    if (!m_shaderEditorDock->isWindow())
+    {
+        m_shaderEditorDock->setMinimumWidth(size().width() / 4);
+        m_shaderEditorDock->setMaximumWidth(size().width() / 2);
+    }
+    else
+    {
+        m_shaderEditorDock->setMinimumWidth(0);
+        m_shaderEditorDock->setMaximumWidth(QWIDGETSIZE_MAX);
+    }
+    if (!m_nodeEditorDock->isWindow())
+    {
+        m_nodeEditorDock->setMinimumWidth(size().width() / 4);
+        m_nodeEditorDock->setMaximumWidth(size().width() / 2);
+    }
+    else
+    {
+        m_nodeEditorDock->setMinimumWidth(0);
+        m_nodeEditorDock->setMaximumWidth(QWIDGETSIZE_MAX);
+    }
+
+    update();
 }
 
 void Window::createActions()
 {
-    m_openFileAction = new QAction("Open file...");
-    m_saveAction = new QAction("Save");
-    m_saveAsAction = new QAction("Save as...");
+    m_openGLSLAction = new QAction("GLSL Shader");
+    m_openNodesAction = new QAction("Node Graph");
+    m_saveGLSLAction = new QAction("GLSL Shader");
+    m_saveNodesAction = new QAction("Node Graph");
+    m_saveAsGLSLAction = new QAction("GLSL Shader");
+    m_saveAsNodesAction = new QAction("Node Graph");
     m_exitAction = new QAction("Exit");
 
     m_shaderEditorAction = new QAction("Shader Editor");
@@ -44,14 +69,26 @@ void Window::createMenuBar()
     // Create menus
     setMenuBar(new QMenuBar());
     QMenu *fileMenu = new QMenu("File");
+    QMenu *openMenu = new QMenu("Open...");
+    QMenu *saveMenu = new QMenu("Save");
+    QMenu *saveAsMenu = new QMenu("Save As...");
     QMenu *windowsMenu = new QMenu("Windows");
     QMenu *helpMenu = new QMenu("Help");
 
     // Add actions to menus
-    fileMenu->addAction(m_openFileAction);
+    openMenu->addAction(m_openGLSLAction);
+    openMenu->addAction(m_openNodesAction);
+
+    saveMenu->addAction(m_saveGLSLAction);
+    saveMenu->addAction(m_saveNodesAction);
+
+    saveAsMenu->addAction(m_saveAsGLSLAction);
+    saveAsMenu->addAction(m_saveAsNodesAction);
+
+    fileMenu->addMenu(openMenu);
     fileMenu->addSeparator();
-    fileMenu->addAction(m_saveAction);
-    fileMenu->addAction(m_saveAsAction);
+    fileMenu->addMenu(saveMenu);
+    fileMenu->addMenu(saveAsMenu);
     fileMenu->addSeparator();
     fileMenu->addAction(m_exitAction);
 
@@ -100,9 +137,9 @@ void Window::createLayouts()
 
 void Window::createConnections()
 {
-    connect(m_openFileAction, SIGNAL(triggered()), m_shaderCodeContainer, SLOT(openFile()));
-    connect(m_saveAction, SIGNAL(triggered()), m_shaderCodeContainer, SLOT(saveFile()));
-    connect(m_saveAsAction, SIGNAL(triggered()), m_shaderCodeContainer, SLOT(saveAsFile()));
+    connect(m_openGLSLAction, SIGNAL(triggered()), m_shaderCodeContainer, SLOT(openFile()));
+    connect(m_saveGLSLAction, SIGNAL(triggered()), m_shaderCodeContainer, SLOT(saveFile()));
+    connect(m_saveAsGLSLAction, SIGNAL(triggered()), m_shaderCodeContainer, SLOT(saveAsFile()));
     connect(m_exitAction, SIGNAL(triggered()), m_application, SLOT(quit()));
 
     connect(m_shaderEditorAction, SIGNAL(triggered()), m_shaderEditorDock, SLOT(show()));

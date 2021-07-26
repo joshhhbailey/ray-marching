@@ -15,7 +15,7 @@ public:
     static QPalette *darkPalette();
 
 private:
-    void resizeEvent(QResizeEvent *_event) override;
+    void timerEvent(QTimerEvent *_event) override;
 
     void createActions();
     void createMenuBar();
@@ -25,9 +25,12 @@ private:
 
     QApplication *m_application;
 
-    QAction *m_openFileAction;
-    QAction *m_saveAction;
-    QAction *m_saveAsAction;
+    QAction *m_openGLSLAction;
+    QAction *m_openNodesAction;
+    QAction *m_saveGLSLAction;
+    QAction *m_saveNodesAction;
+    QAction *m_saveAsGLSLAction;
+    QAction *m_saveAsNodesAction;
     QAction *m_exitAction;
 
     QAction *m_shaderEditorAction;

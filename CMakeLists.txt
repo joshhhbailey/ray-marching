@@ -43,6 +43,8 @@ target_sources(${TargetName} PRIVATE
 	${PROJECT_SOURCE_DIR}/src/SyntaxHighlighter.cpp
 	${PROJECT_SOURCE_DIR}/src/NodeEditorContainer.cpp
 	${PROJECT_SOURCE_DIR}/src/TestNode.cpp
+	${PROJECT_SOURCE_DIR}/src/SphereNode.cpp
+	${PROJECT_SOURCE_DIR}/src/RayMarchNode.cpp
 	# .h
 	${PROJECT_SOURCE_DIR}/include/NGLScene.h
 	${PROJECT_SOURCE_DIR}/include/ScreenQuad.h
@@ -55,9 +57,14 @@ target_sources(${TargetName} PRIVATE
 	${PROJECT_SOURCE_DIR}/include/SyntaxHighlighter.h
 	${PROJECT_SOURCE_DIR}/include/NodeEditorContainer.h
 	${PROJECT_SOURCE_DIR}/include/TestNode.h
+	${PROJECT_SOURCE_DIR}/include/SphereNode.h
+	${PROJECT_SOURCE_DIR}/include/RayMarchNode.h
 	#.glsl
 	${PROJECT_SOURCE_DIR}/shaders/DefaultFragment.glsl
 	${PROJECT_SOURCE_DIR}/shaders/DefaultVertex.glsl
+	${PROJECT_SOURCE_DIR}/shaders/SDFs/Capsule.glsl
+	${PROJECT_SOURCE_DIR}/shaders/SDFs/Plane.glsl
+	${PROJECT_SOURCE_DIR}/shaders/SDFs/Sphere.glsl
 )
 
 # Add NGL and nodeeditor include paths

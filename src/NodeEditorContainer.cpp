@@ -1,5 +1,7 @@
 #include "NodeEditorContainer.h"
 #include "TestNode.h"
+#include "SphereNode.h"
+#include "RayMarchNode.h"
 
 #include <QtWidgets/QVBoxLayout>
 
@@ -29,6 +31,8 @@ std::shared_ptr<DataModelRegistry> NodeEditorContainer::registerDataModels()
     std::shared_ptr<DataModelRegistry> dataModels = std::make_shared<DataModelRegistry>();
     
     dataModels->registerModel<TestNode>("Tests");
+    dataModels->registerModel<SphereNode>("SDFs");
+    dataModels->registerModel<RayMarchNode>("RayMarching");
 
     /*dataModels->registerModel<Union>("Boolean Operators");
     dataModels->registerModel<Intersection>("Boolean Operators");
