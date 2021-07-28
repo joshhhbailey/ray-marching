@@ -11,6 +11,7 @@ public:
     NodeEditorContainer(NGLScene *_scene);
 
 public slots:
+    void newFile();
     void openFile();
     void saveFile();
     void saveAsFile();

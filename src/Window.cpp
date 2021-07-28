@@ -50,11 +50,13 @@ void Window::timerEvent(QTimerEvent *_event)
 void Window::createActions()
 {
     // Shader editor
+    m_newGLSLAction = new QAction("GLSL Shader");
     m_openGLSLAction = new QAction("GLSL Shader");
     m_saveGLSLAction = new QAction("GLSL Shader");
     m_saveAsGLSLAction = new QAction("GLSL Shader");
 
     // Node editor
+    m_newNodesAction = new QAction("Node Graph");
     m_openNodesAction = new QAction("Node Graph");
     m_saveNodesAction = new QAction("Node Graph");
     m_saveAsNodesAction = new QAction("Node Graph");
@@ -70,6 +72,7 @@ void Window::createMenuBar()
 {
     // Create menus
     setMenuBar(new QMenuBar());
+    QMenu *newMenu = new QMenu("New...");
     QMenu *fileMenu = new QMenu("File");
     QMenu *openMenu = new QMenu("Open...");
     QMenu *saveMenu = new QMenu("Save");
@@ -78,6 +81,9 @@ void Window::createMenuBar()
     QMenu *helpMenu = new QMenu("Help");
 
     // Add actions to menus
+    newMenu->addAction(m_newGLSLAction);
+    newMenu->addAction(m_newNodesAction);
+
     openMenu->addAction(m_openGLSLAction);
     openMenu->addAction(m_openNodesAction);
 
@@ -87,6 +93,8 @@ void Window::createMenuBar()
     saveAsMenu->addAction(m_saveAsGLSLAction);
     saveAsMenu->addAction(m_saveAsNodesAction);
 
+    fileMenu->addMenu(newMenu);
+    fileMenu->addSeparator();
     fileMenu->addMenu(openMenu);
     fileMenu->addSeparator();
     fileMenu->addMenu(saveMenu);
@@ -140,11 +148,13 @@ void Window::createLayouts()
 void Window::createConnections()
 {
     // Shader Editor
+    connect(m_newGLSLAction, SIGNAL(triggered()), m_shaderCodeContainer, SLOT(newFile()));
     connect(m_openGLSLAction, SIGNAL(triggered()), m_shaderCodeContainer, SLOT(openFile()));
     connect(m_saveGLSLAction, SIGNAL(triggered()), m_shaderCodeContainer, SLOT(saveFile()));
     connect(m_saveAsGLSLAction, SIGNAL(triggered()), m_shaderCodeContainer, SLOT(saveAsFile()));
 
     // Node Editor
+    connect(m_newNodesAction, SIGNAL(triggered()), m_nodeEditorContainer, SLOT(newFile()));
     connect(m_openNodesAction, SIGNAL(triggered()), m_nodeEditorContainer, SLOT(openFile()));
     connect(m_saveNodesAction, SIGNAL(triggered()), m_nodeEditorContainer, SLOT(saveFile()));
     connect(m_saveAsNodesAction, SIGNAL(triggered()), m_nodeEditorContainer, SLOT(saveAsFile()));

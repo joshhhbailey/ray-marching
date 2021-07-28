@@ -25,12 +25,18 @@ private:
 
     QApplication *m_application;
 
+    // Shader Editor
+    QAction *m_newGLSLAction;
     QAction *m_openGLSLAction;
-    QAction *m_openNodesAction;
     QAction *m_saveGLSLAction;
-    QAction *m_saveNodesAction;
     QAction *m_saveAsGLSLAction;
+
+    // Node Editor
+    QAction *m_newNodesAction;
+    QAction *m_openNodesAction;
+    QAction *m_saveNodesAction;
     QAction *m_saveAsNodesAction;
+
     QAction *m_exitAction;
 
     QAction *m_shaderEditorAction;

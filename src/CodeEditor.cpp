@@ -21,6 +21,17 @@ CodeEditor::CodeEditor() : QPlainTextEdit()
     policy.setVerticalStretch(1);
     setSizePolicy(policy);
 
+    reset();
+
+    // Initialise line number area width and highlight first line
+    connect(this, &CodeEditor::blockCountChanged, this, &CodeEditor::updateLineNumberAreaWidth);
+    connect(this, &CodeEditor::updateRequest, this, &CodeEditor::updateLineNumberArea);
+
+    updateLineNumberAreaWidth();
+}
+
+void CodeEditor::reset()
+{
     // Default code when app launches
     const char code[] =
     "// Shader Inputs:\n"
@@ -38,12 +49,6 @@ CodeEditor::CodeEditor() : QPlainTextEdit()
     "}";
 
     setPlainText(code);
-
-    // Initialise line number area width and highlight first line
-    connect(this, &CodeEditor::blockCountChanged, this, &CodeEditor::updateLineNumberAreaWidth);
-    connect(this, &CodeEditor::updateRequest, this, &CodeEditor::updateLineNumberArea);
-
-    updateLineNumberAreaWidth();
 }
 
 int CodeEditor::lineNumberAreaWidth()

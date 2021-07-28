@@ -23,6 +23,12 @@ void NodeEditorContainer::createLayouts()
     setLayout(mainLayout);
 }
 
+void NodeEditorContainer::newFile()
+{
+  m_nodeEditorWidget->getNodeEditorScene()->clearScene();
+  m_nodeEditorWidget->setupNodeGraph();
+}
+
 void NodeEditorContainer::openFile()
 {
   m_nodeEditorWidget->getNodeEditorScene()->load();

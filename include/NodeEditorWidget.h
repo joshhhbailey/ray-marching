@@ -21,11 +21,11 @@ class NodeEditorWidget : public QGroupBox
 public:
     NodeEditorWidget(NGLScene *_scene);
     QtNodes::FlowScene* getNodeEditorScene() { return m_nodeEditorScene; }
+    void setupNodeGraph();
 
 private:
     void createWidgets();
     void createLayouts();
-    void setupNodeGraph();
 
     std::shared_ptr<DataModelRegistry> registerDataModels();
     void setStyle();

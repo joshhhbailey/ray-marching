@@ -19,6 +19,8 @@ public:
     QString getShaderCode() { return toPlainText(); }
     void setShaderCode(QString _code) { setPlainText(_code); }
 
+    void reset();
+
 public slots:
     void setFontSize(int _size);
 

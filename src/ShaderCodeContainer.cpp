@@ -25,6 +25,12 @@ void ShaderCodeContainer::createLayouts()
     setLayout(mainLayout);
 }
 
+void ShaderCodeContainer::newFile()
+{
+    m_shaderCodeWidget->getCodeEditor()->reset();
+    m_filename = QString();
+}
+
 void ShaderCodeContainer::openFile()
 {
     m_filename = QFileDialog::getOpenFileName(this, "Open File", "", tr("GLSL (*.glsl)"));
