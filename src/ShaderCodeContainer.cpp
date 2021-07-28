@@ -9,7 +9,6 @@
 ShaderCodeContainer::ShaderCodeContainer(NGLScene *_scene)
 {
     m_scene = _scene;
-
     createWidgets();
     createLayouts();
 }

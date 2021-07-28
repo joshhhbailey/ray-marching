@@ -7,8 +7,6 @@
 
 #include <memory>
 
-#include <QtWidgets/QPushButton>
-
 using QtNodes::NodeData;
 using QtNodes::NodeDataType;
 using QtNodes::NodeDataModel;
@@ -39,15 +37,7 @@ public:
   std::shared_ptr<NodeData> outData(PortIndex) override;
   QWidget* embeddedWidget() override;
 
-  QPushButton *m_compileButton;
-
-public slots:
-  void compileButtonClicked();
-
 private:
-  void createWidgets();
-  void createConnections();
-
   QJsonObject save() const override;
   void restore(QJsonObject const &_p) override;
 };

@@ -42,6 +42,7 @@ target_sources(${TargetName} PRIVATE
 	${PROJECT_SOURCE_DIR}/src/CodeEditor.cpp
 	${PROJECT_SOURCE_DIR}/src/SyntaxHighlighter.cpp
 	${PROJECT_SOURCE_DIR}/src/NodeEditorContainer.cpp
+	${PROJECT_SOURCE_DIR}/src/NodeEditorWidget.cpp
 	${PROJECT_SOURCE_DIR}/src/TestNode.cpp
 	${PROJECT_SOURCE_DIR}/src/SphereNode.cpp
 	${PROJECT_SOURCE_DIR}/src/RayMarchNode.cpp
@@ -56,6 +57,7 @@ target_sources(${TargetName} PRIVATE
 	${PROJECT_SOURCE_DIR}/include/CodeEditor.h
 	${PROJECT_SOURCE_DIR}/include/SyntaxHighlighter.h
 	${PROJECT_SOURCE_DIR}/include/NodeEditorContainer.h
+	${PROJECT_SOURCE_DIR}/include/NodeEditorWidget.h
 	${PROJECT_SOURCE_DIR}/include/TestNode.h
 	${PROJECT_SOURCE_DIR}/include/SphereNode.h
 	${PROJECT_SOURCE_DIR}/include/RayMarchNode.h

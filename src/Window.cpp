@@ -121,7 +121,7 @@ void Window::createWidgets()
     addDockWidget(Qt::RightDockWidgetArea, m_shaderEditorDock);
 
     // Create Node Editor Container dockable widget
-    m_nodeEditorContainer = new NodeEditorContainer();
+    m_nodeEditorContainer = new NodeEditorContainer(m_scene);
     m_nodeEditorDock = new QDockWidget(tr("Node Editor"), this);
     m_nodeEditorDock->setAllowedAreas(Qt::RightDockWidgetArea | Qt::LeftDockWidgetArea);
     m_nodeEditorDock->setWidget(m_nodeEditorContainer);

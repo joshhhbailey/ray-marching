@@ -1,12 +1,12 @@
 #pragma once
 
 #include "RayMarchNode.h"
-#include <iostream>
+
+#include "ShaderCodeWidget.h"
 
 RayMarchNode::RayMarchNode()
 {
-    createWidgets();
-    createConnections();
+
 }
 
 QString RayMarchNode::caption() const
@@ -17,21 +17,6 @@ QString RayMarchNode::caption() const
 QString RayMarchNode::name() const
 {
     return QString("Ray March");
-}
-
-void RayMarchNode::createWidgets()
-{
-    m_compileButton = new QPushButton("Compile");
-}
-
-void RayMarchNode::createConnections()
-{
-    connect(m_compileButton, SIGNAL(clicked()), this, SLOT(compileButtonClicked()));
-}
-
-void RayMarchNode::compileButtonClicked()
-{
-    std::cout << "node\n";
 }
 
 unsigned int RayMarchNode::nPorts(PortType _portType) const
@@ -77,7 +62,7 @@ void RayMarchNode::setInData(std::shared_ptr<NodeData>, int)
 
 QWidget* RayMarchNode::embeddedWidget()
 {
-    return m_compileButton;
+  return nullptr;
 }
 
 QJsonObject RayMarchNode::save() const
@@ -89,5 +74,5 @@ QJsonObject RayMarchNode::save() const
 
 void RayMarchNode::restore(QJsonObject const &_p)
 {
-  
+
 }
