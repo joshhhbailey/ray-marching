@@ -12,7 +12,6 @@ ShaderCodeWidget::ShaderCodeWidget(NGLScene *_scene)
     createWidgets();
     createLayouts();
     createConnections();
-
     startTimer(10);
 }
 
@@ -35,7 +34,7 @@ void ShaderCodeWidget::createWidgets()
     m_outputLabel = new QLabel();
     m_outputLabel->setText("[" + QTime::currentTime().toString() + "] Welcome to fragOut!");
 
-    m_compilationLabel = new QLabel();
+    m_timerLabel = new QLabel();
     
 }
 
@@ -48,7 +47,7 @@ void ShaderCodeWidget::createLayouts()
     mainLayout->addWidget(m_compileButton, 2, 0, 1, 1);
     mainLayout->addWidget(m_pauseButton, 2, 1, 1, 1);
     mainLayout->addWidget(m_outputLabel, 3, 0, 1, 2);
-    mainLayout->addWidget(m_compilationLabel, 4, 0, 1, 2);
+    mainLayout->addWidget(m_timerLabel, 4, 0, 1, 2);
     setLayout(mainLayout);
 }
 
@@ -66,7 +65,7 @@ void ShaderCodeWidget::compileButtonClicked()
     QString shaderCode = m_boilerPlateCode + m_codeEditor->getShaderCode();
     QString string = "] ";
 
-    if (m_scene->compileShaderCode(shaderCode))
+    if (m_scene->compileShaderCode(shaderCode, true))
     {
         string += "Shader compilation successful!";
         m_pausedTime = 0;
@@ -103,7 +102,7 @@ void ShaderCodeWidget::timerEvent(QTimerEvent *_event)
     if (!m_pauseTime)
     {
         QString compTime = QString::number(m_scene->getCompilationTime() + (m_pausedTime / 1000.0f));
-        m_compilationLabel->setText(compTime);
+        m_timerLabel->setText(compTime);
     }
 
     update();

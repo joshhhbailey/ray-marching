@@ -34,7 +34,7 @@ private:
     QPushButton *m_compileButton;
     QPushButton *m_pauseButton;
     QLabel *m_outputLabel;
-    QLabel *m_compilationLabel;
+    QLabel *m_timerLabel;
 
     bool m_pauseTime = false;
     qint64 m_pausedTime = 0;

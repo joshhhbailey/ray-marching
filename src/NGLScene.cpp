@@ -78,7 +78,7 @@ void NGLScene::resizeGL(int _w, int _h)
   m_win.m_winHeight = static_cast<int>(_h * devicePixelRatio());
 }
 
-bool NGLScene::compileShaderCode(QString _shaderCode)
+bool NGLScene::compileShaderCode(QString _shaderCode, bool _GLSL)
 {
   std::cout << "Compiling shader code...\n";
   //qDebug("%s", qUtf8Printable(_shaderCode));
@@ -131,10 +131,19 @@ bool NGLScene::compileShaderCode(QString _shaderCode)
     m_shaderErrorMessage = errorLog;
     return false;
   }
-  // Reset shader inputs
-  m_pausedTime = 0;
-  m_pauseTime = false;
-  m_compilationTime.start();
+  // Reset timer
+  if (_GLSL)
+  {
+    m_pausedTime = 0;
+    m_pauseTime = false;
+    m_compilationTime.start();
+  }
+  else
+  {
+    m_nodesPausedTime = 0;
+    m_nodesPauseTime = false;
+    m_nodesCompilationTime.start();
+  }
   resetUniforms();
   return true;
 }
@@ -165,6 +174,19 @@ void NGLScene::unpauseTime(qint64 _pausedTime)
   m_pauseTime = false;
   m_pausedTime = _pausedTime;
   m_compilationTime.restart();
+}
+
+qint64 NGLScene::pauseNodesTime()
+{
+  m_nodesPauseTime = true;
+  return m_nodesCompilationTime.elapsed();
+}
+
+void NGLScene::unpauseNodesTime(qint64 _pausedTime)
+{
+  m_nodesPauseTime = false;
+  m_nodesPausedTime = _pausedTime;
+  m_nodesCompilationTime.restart();
 }
 
 void NGLScene::keyPressEvent(QKeyEvent *_event)

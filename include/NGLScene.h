@@ -20,11 +20,16 @@ class NGLScene : public QOpenGLWidget
     void initializeGL() override;
     void paintGL() override;
     void resizeGL(int _w, int _h) override;
-    bool compileShaderCode(QString _shaderCode);
+    bool compileShaderCode(QString _shaderCode, bool _GLSL);
     std::vector<GLchar> getShaderErrorMessage() { return m_shaderErrorMessage; }
+
     float getCompilationTime() { return (m_compilationTime.elapsed() / 1000.0f); }
     qint64 pauseTime();
     void unpauseTime(qint64 _pausedTime);
+
+    float getNodesCompilationTime() { return (m_nodesCompilationTime.elapsed() / 1000.0f); }
+    qint64 pauseNodesTime();
+    void unpauseNodesTime(qint64 _pausedTime);
 
 private:
     void keyPressEvent(QKeyEvent *_event) override;
@@ -50,6 +55,10 @@ private:
     QElapsedTimer m_compilationTime;
     bool m_pauseTime = false;
     qint64 m_pausedTime = 0;
+
+    QElapsedTimer m_nodesCompilationTime;
+    bool m_nodesPauseTime = false;
+    qint64 m_nodesPausedTime = 0;
 };
 
 #endif

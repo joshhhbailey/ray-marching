@@ -61,6 +61,7 @@ target_sources(${TargetName} PRIVATE
 	${PROJECT_SOURCE_DIR}/include/TestNode.h
 	${PROJECT_SOURCE_DIR}/include/SphereNode.h
 	${PROJECT_SOURCE_DIR}/include/RayMarchNode.h
+	${PROJECT_SOURCE_DIR}/include/ShaderCodeData.h
 	#.glsl
 	${PROJECT_SOURCE_DIR}/shaders/DefaultFragment.glsl
 	${PROJECT_SOURCE_DIR}/shaders/DefaultVertex.glsl
