@@ -125,34 +125,43 @@ void NodeEditorWidget::compileButtonClicked()
 
 void NodeEditorWidget::pauseButtonClicked()
 {
-    if (!m_pauseTime)
+    if (!m_scene->getShaderEditor())
     {
-        m_pausedTime += m_scene->pauseNodesTime();
-        m_pauseTime = true;
-    }
-    else
-    {
-        m_scene->unpauseNodesTime(m_pausedTime);
-        m_pauseTime = false;
+        if (!m_pauseTime)
+        {
+            m_pausedTime += m_scene->pauseTime();
+            m_pauseTime = true;
+        }
+        else
+        {
+            m_scene->unpauseTime(m_pausedTime);
+            m_pauseTime = false;
+        }
     }
 }
 
 void NodeEditorWidget::timerEvent(QTimerEvent *_event)
 {
     // Update compilation timer
-    if (!m_pauseTime)
+    if (!m_scene->getShaderEditor())
     {
-        QString compTime;
-        if (m_firstCompile)
+        if (!m_pauseTime)
         {
-            compTime = QString::number(m_scene->getNodesCompilationTime() + (m_pausedTime / 1000.0f));
+            QString compTime;
+            if (m_firstCompile)
+            {
+                compTime = QString::number(m_scene->getCompilationTime() + (m_pausedTime / 1000.0f));
+            }
+            else
+            {
+                compTime = "0.000";
+            }
+            m_timerLabel->setText(compTime);
         }
-        else
-        {
-            compTime = "0.000";
-        }
-        m_timerLabel->setText(compTime);
     }
-
+    else
+    {
+        m_timerLabel->setText("0.000");
+    }
     update();
 }

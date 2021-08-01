@@ -126,7 +126,7 @@ bool NGLScene::compileShaderCode(QString _shaderCode, bool _shaderEditor)
   {
     // Shader compilation failed
     std::cout << "Fragment shader failed compilation!\n";
-    
+
     GLint maxLength = 0;
     glGetShaderiv(id, GL_INFO_LOG_LENGTH, &maxLength);
     std::vector<GLchar> errorLog(maxLength);
@@ -135,32 +135,28 @@ bool NGLScene::compileShaderCode(QString _shaderCode, bool _shaderEditor)
     return false;
   }
   // Reset timer
+  m_pausedTime = 0;
+  m_pauseTime = false;
+  m_compilationTime.start();
+
   if (_shaderEditor)
   {
-    m_pausedTime = 0;
-    m_pauseTime = false;
-    m_compilationTime.start();
+    m_shaderEditor = true;
   }
   else
   {
-    m_nodesPausedTime = 0;
-    m_nodesPauseTime = false;
-    m_nodesCompilationTime.start();
+    m_shaderEditor = false;
   }
+  
   resetUniforms();
   return true;
 }
 
 void NGLScene::updateUniforms()
 {
-  if (!m_pauseTime && m_nodesPauseTime)
+  if (!m_pauseTime)
   {
     ngl::ShaderLib::setUniform("iTime", float((m_compilationTime.elapsed() + m_pausedTime) / 1000.0f));
-    ngl::ShaderLib::setUniform("iMouse", ngl::Vec2(m_win.m_mouseXPos, m_win.m_mouseYPos));
-  }
-  if (!m_nodesPauseTime && m_pauseTime)
-  {
-    ngl::ShaderLib::setUniform("iTime", float((m_nodesCompilationTime.elapsed() + m_nodesPausedTime) / 1000.0f));
     ngl::ShaderLib::setUniform("iMouse", ngl::Vec2(m_win.m_mouseXPos, m_win.m_mouseYPos));
   }
 }
@@ -182,19 +178,6 @@ void NGLScene::unpauseTime(qint64 _pausedTime)
   m_pauseTime = false;
   m_pausedTime = _pausedTime;
   m_compilationTime.restart();
-}
-
-qint64 NGLScene::pauseNodesTime()
-{
-  m_nodesPauseTime = true;
-  return m_nodesCompilationTime.elapsed();
-}
-
-void NGLScene::unpauseNodesTime(qint64 _pausedTime)
-{
-  m_nodesPauseTime = false;
-  m_nodesPausedTime = _pausedTime;
-  m_nodesCompilationTime.restart();
 }
 
 void NGLScene::keyPressEvent(QKeyEvent *_event)

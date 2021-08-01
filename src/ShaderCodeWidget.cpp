@@ -83,26 +83,35 @@ void ShaderCodeWidget::compileButtonClicked()
 
 void ShaderCodeWidget::pauseButtonClicked()
 {
-    if (!m_pauseTime)
+    if (m_scene->getShaderEditor())
     {
-        m_pausedTime += m_scene->pauseTime();
-        m_pauseTime = true;
-    }
-    else
-    {
-        m_scene->unpauseTime(m_pausedTime);
-        m_pauseTime = false;
+        if (!m_pauseTime)
+        {
+            m_pausedTime += m_scene->pauseTime();
+            m_pauseTime = true;
+        }
+        else
+        {
+            m_scene->unpauseTime(m_pausedTime);
+            m_pauseTime = false;
+        }
     }
 }
 
 void ShaderCodeWidget::timerEvent(QTimerEvent *_event)
 {
     // Update compilation timer
-    if (!m_pauseTime)
+    if (m_scene->getShaderEditor())
     {
-        QString compTime = QString::number(m_scene->getCompilationTime() + (m_pausedTime / 1000.0f));
-        m_timerLabel->setText(compTime);
+        if (!m_pauseTime)
+        {
+            QString compTime = QString::number(m_scene->getCompilationTime() + (m_pausedTime / 1000.0f));
+            m_timerLabel->setText(compTime);
+        }
     }
-
+    else
+    {
+        m_timerLabel->setText("0.000");
+    }
     update();
 }
