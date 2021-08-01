@@ -14,8 +14,6 @@ class ShaderCodeWidget : public QGroupBox
 public:
     ShaderCodeWidget(NGLScene *_scene);
     CodeEditor* getCodeEditor() { return m_codeEditor; }
-    
-    QString getBoilerPlateCode() { return m_boilerPlateCode; }
 
 public slots:
     void compileButtonClicked();
@@ -40,14 +38,4 @@ private:
     qint64 m_pausedTime = 0;
 
     NGLScene *m_scene;
-
-    QString m_boilerPlateCode =
-    "#version 410 core"
-    "\n"
-    "layout (location = 0) out vec4 fragColour;\n"
-    "\n"
-    "in vec2 iUV;\n"
-    "uniform float iTime;\n"
-    "uniform vec2 iMouse;\n"
-    "\n";
 };

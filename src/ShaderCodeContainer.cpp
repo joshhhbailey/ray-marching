@@ -57,7 +57,7 @@ void ShaderCodeContainer::saveFile()
     }
     else
     {
-        QString shaderCode = /*m_shaderCodeWidget->getBoilerPlateCode() + */m_shaderCodeWidget->getCodeEditor()->getShaderCode();
+        QString shaderCode = /*m_scene->getBoilerPlateCode() + */m_shaderCodeWidget->getCodeEditor()->getShaderCode();
         QFile file(m_filename);
         if (file.open(QIODevice::WriteOnly | QIODevice::Text))
         {

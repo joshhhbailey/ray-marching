@@ -95,16 +95,32 @@ void NodeEditorWidget::compileButtonClicked()
         std::cout << nodes[i] << std::endl;
     }
 
-    std::cout << "Got nodes...\n";
+    QUuid id = nodes[0]->id();
+    qDebug() << id;
+    std::shared_ptr<ShaderCodeData> test = std::dynamic_pointer_cast<ShaderCodeData>(nodes[1]->nodeDataModel()->outData(0));
+    
+    qDebug() << nodes[1]->nodeDataModel()->name();
+    qDebug() << test->getVariableName();
+    std::cout << test->getShaderCode().toStdString() << std::endl;
 
-    /*const std::unordered_map<QUuid, std::unique_ptr<Node> > &mapNodes = m_nodeEditorScene->nodes();
-    for (auto &x : mapNodes)
+    QString string = "] ";
+
+    if (m_scene->compileShaderCode(test->getShaderCode(), false))
     {
-        qDebug() << x.first;
+        m_firstCompile = true;
+        string += "Shader compilation successful!";
+        m_pausedTime = 0;
+        m_pauseTime = false;
     }
-
-    std::cout << "Got nodes map...\n";*/
-
+    else
+    {
+        std::vector<GLchar> error = m_scene->getShaderErrorMessage();
+        for (int i = 0; i < error.size(); ++i)
+        {
+            string += error[i];
+        }
+    }
+    m_outputLabel->setText("[" + QTime::currentTime().toString() + string);
 }
 
 void NodeEditorWidget::pauseButtonClicked()

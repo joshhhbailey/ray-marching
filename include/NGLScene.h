@@ -20,8 +20,9 @@ class NGLScene : public QOpenGLWidget
     void initializeGL() override;
     void paintGL() override;
     void resizeGL(int _w, int _h) override;
-    bool compileShaderCode(QString _shaderCode, bool _GLSL);
+    bool compileShaderCode(QString _shaderCode, bool _shaderEditor);
     std::vector<GLchar> getShaderErrorMessage() { return m_shaderErrorMessage; }
+    QString getBoilerPlateCode() { return m_boilerPlateCode; }
 
     float getCompilationTime() { return (m_compilationTime.elapsed() / 1000.0f); }
     qint64 pauseTime();
@@ -50,6 +51,15 @@ private:
     std::string m_nextFragment = "Fragment_B";
 
     std::vector<GLchar> m_shaderErrorMessage;
+    QString m_boilerPlateCode =
+      "#version 410 core"
+      "\n"
+      "layout (location = 0) out vec4 fragColour;\n"
+      "\n"
+      "in vec2 iUV;\n"
+      "uniform float iTime;\n"
+      "uniform vec2 iMouse;\n"
+      "\n";
 
     // Compilation timer
     QElapsedTimer m_compilationTime;
@@ -57,7 +67,7 @@ private:
     qint64 m_pausedTime = 0;
 
     QElapsedTimer m_nodesCompilationTime;
-    bool m_nodesPauseTime = false;
+    bool m_nodesPauseTime = true;
     qint64 m_nodesPausedTime = 0;
 };
 

@@ -62,10 +62,9 @@ void ShaderCodeWidget::compileButtonClicked()
 {
     std::cout << "Retrieving shader code...\n";
 
-    QString shaderCode = m_boilerPlateCode + m_codeEditor->getShaderCode();
     QString string = "] ";
 
-    if (m_scene->compileShaderCode(shaderCode, true))
+    if (m_scene->compileShaderCode(m_codeEditor->getShaderCode(), true))
     {
         string += "Shader compilation successful!";
         m_pausedTime = 0;

@@ -51,13 +51,13 @@ NodeDataType RayMarchNode::dataType(PortType _portType, PortIndex _portIndex) co
 
 std::shared_ptr<NodeData> RayMarchNode::outData(PortIndex)
 {
-  std::shared_ptr<NodeData> ptr;
-  return ptr;
+  return m_rayMarchData;
 }
 
 
 void RayMarchNode::setInData(std::shared_ptr<NodeData> _data, PortIndex _portIndex)
 {
+  m_rayMarchData = std::dynamic_pointer_cast<ShaderCodeData>(_data);
   auto receivedNode = std::dynamic_pointer_cast<ShaderCodeData>(_data);
 
   if (receivedNode)
@@ -75,6 +75,11 @@ void RayMarchNode::setInData(std::shared_ptr<NodeData> _data, PortIndex _portInd
     m_variableName = receivedNode->getVariableName();
     m_functionCode = receivedNode->getFunctionCode();
     codeSetup();
+
+    ///////
+    m_rayMarchData->setShaderCode(m_evaluatedCode);
+    m_rayMarchData->setVariableName(m_variableName);
+    m_rayMarchData->setFunctionCode(m_functionCode);
   }
 }
 

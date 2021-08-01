@@ -4,6 +4,7 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QLabel>
 
+#include <nodes/Node>
 #include <nodes/NodeData>
 #include <nodes/FlowScene>
 #include <nodes/FlowView>

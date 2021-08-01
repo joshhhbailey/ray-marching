@@ -69,7 +69,6 @@ void NGLScene::paintGL()
   ngl::ShaderLib::use(m_currentShader);
   updateUniforms();
   m_screenQuad->draw(m_currentShader);
-  //std::cout << (m_compilationTime.elapsed() / 1000.0f) << std::endl;
 }
 
 void NGLScene::resizeGL(int _w, int _h)
@@ -78,10 +77,14 @@ void NGLScene::resizeGL(int _w, int _h)
   m_win.m_winHeight = static_cast<int>(_h * devicePixelRatio());
 }
 
-bool NGLScene::compileShaderCode(QString _shaderCode, bool _GLSL)
+bool NGLScene::compileShaderCode(QString _shaderCode, bool _shaderEditor)
 {
   std::cout << "Compiling shader code...\n";
-  //qDebug("%s", qUtf8Printable(_shaderCode));
+
+  // Append boiler plate code
+  _shaderCode = m_boilerPlateCode + _shaderCode;
+
+  std::cout << _shaderCode.toStdString() << std::endl;
   
   // Load shader code from text edit field into unused shader
   ngl::ShaderLib::loadShaderSourceFromString(m_nextFragment, _shaderCode.toStdString());
@@ -123,7 +126,7 @@ bool NGLScene::compileShaderCode(QString _shaderCode, bool _GLSL)
   {
     // Shader compilation failed
     std::cout << "Fragment shader failed compilation!\n";
-
+    
     GLint maxLength = 0;
     glGetShaderiv(id, GL_INFO_LOG_LENGTH, &maxLength);
     std::vector<GLchar> errorLog(maxLength);
@@ -132,7 +135,7 @@ bool NGLScene::compileShaderCode(QString _shaderCode, bool _GLSL)
     return false;
   }
   // Reset timer
-  if (_GLSL)
+  if (_shaderEditor)
   {
     m_pausedTime = 0;
     m_pauseTime = false;
@@ -150,9 +153,14 @@ bool NGLScene::compileShaderCode(QString _shaderCode, bool _GLSL)
 
 void NGLScene::updateUniforms()
 {
-  if (!m_pauseTime)
+  if (!m_pauseTime && m_nodesPauseTime)
   {
     ngl::ShaderLib::setUniform("iTime", float((m_compilationTime.elapsed() + m_pausedTime) / 1000.0f));
+    ngl::ShaderLib::setUniform("iMouse", ngl::Vec2(m_win.m_mouseXPos, m_win.m_mouseYPos));
+  }
+  if (!m_nodesPauseTime && m_pauseTime)
+  {
+    ngl::ShaderLib::setUniform("iTime", float((m_nodesCompilationTime.elapsed() + m_nodesPausedTime) / 1000.0f));
     ngl::ShaderLib::setUniform("iMouse", ngl::Vec2(m_win.m_mouseXPos, m_win.m_mouseYPos));
   }
 }
