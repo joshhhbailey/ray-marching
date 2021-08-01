@@ -89,36 +89,60 @@ void NodeEditorWidget::compileButtonClicked()
 {
     std::cout << "Retrieving shader code...\n";
 
+    // Get all nodes from node graph
     std::vector<Node*> nodes = m_nodeEditorScene->allNodes();
+
+    std::shared_ptr<ShaderCodeData> rmNodeData;
+    NodeValidationState rmState;
+    int rmNodes = 0;
+
+    // Find RayMarch node
     for (int i = 0; i < nodes.size(); ++i)
     {
-        std::cout << nodes[i] << std::endl;
+        if (nodes[i]->nodeDataModel()->name() == "Ray March")
+        {
+            rmNodeData = std::dynamic_pointer_cast<ShaderCodeData>(nodes[i]->nodeDataModel()->outData(0));
+            rmState = nodes[i]->nodeDataModel()->validationState();
+            rmNodes++;
+        }
     }
 
-    QUuid id = nodes[0]->id();
-    qDebug() << id;
-    std::shared_ptr<ShaderCodeData> test = std::dynamic_pointer_cast<ShaderCodeData>(nodes[1]->nodeDataModel()->outData(0));
-    
-    qDebug() << nodes[1]->nodeDataModel()->name();
-    qDebug() << test->getVariableName();
-    std::cout << test->getShaderCode().toStdString() << std::endl;
-
     QString string = "] ";
-
-    if (m_scene->compileShaderCode(test->getShaderCode(), false))
+    if (rmNodeData != nullptr)
     {
-        m_firstCompile = true;
-        string += "Shader compilation successful!";
-        m_pausedTime = 0;
-        m_pauseTime = false;
+        if (rmNodes > 1)
+        {
+            string += "Only ONE Ray March node is allowed!";
+        }
+        else
+        {
+            if (rmState == NodeValidationState::Valid)
+            {
+                if (m_scene->compileShaderCode(rmNodeData->getShaderCode(), false))
+                {
+                    m_firstCompile = true;
+                    string += "Shader compilation successful!";
+                    m_pausedTime = 0;
+                    m_pauseTime = false;
+                }
+                else
+                {
+                    std::vector<GLchar> error = m_scene->getShaderErrorMessage();
+                    for (int i = 0; i < error.size(); ++i)
+                    {
+                        string += error[i];
+                    }
+                }
+            }
+            else
+            {
+                string += "Ray March node is missing inputs!";
+            }
+        }
     }
     else
     {
-        std::vector<GLchar> error = m_scene->getShaderErrorMessage();
-        for (int i = 0; i < error.size(); ++i)
-        {
-            string += error[i];
-        }
+        string += "Could not find Ray March node!";
     }
     m_outputLabel->setText("[" + QTime::currentTime().toString() + string);
 }

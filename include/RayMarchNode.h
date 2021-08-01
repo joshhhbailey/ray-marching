@@ -13,6 +13,8 @@ using QtNodes::NodeDataType;
 using QtNodes::NodeDataModel;
 using QtNodes::PortType;
 using QtNodes::PortIndex;
+using QtNodes::NodeValidationState;
+using QtNodes::Connection;
 
 class RayMarchNode : public NodeDataModel
 {
@@ -28,12 +30,19 @@ public:
   void setInData(std::shared_ptr<NodeData> _data, PortIndex _portIndex) override;
   std::shared_ptr<NodeData> outData(PortIndex) override;
   QWidget* embeddedWidget() override;
+  NodeValidationState validationState() const override;
+  QString validationMessage() const override;
+  void inputConnectionDeleted(Connection const&) override;
 
 private:
   QJsonObject save() const override;
   void restore(QJsonObject const &_p) override;
 
   void codeSetup();
+
+  // Validation
+  NodeValidationState m_modelValidationState = NodeValidationState::Error;
+  QString m_modelValidationError = QStringLiteral("Missing inputs!");
 
   std::shared_ptr<ShaderCodeData> m_rayMarchData;
   QString m_shaderCode;

@@ -18,6 +18,7 @@ using QtNodes::FlowScene;
 using QtNodes::FlowView;
 using QtNodes::ConnectionStyle;
 using QtNodes::Node;
+using QtNodes::NodeValidationState;
 
 class NodeEditorWidget : public QGroupBox
 {

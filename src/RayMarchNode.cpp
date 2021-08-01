@@ -57,35 +57,53 @@ std::shared_ptr<NodeData> RayMarchNode::outData(PortIndex)
 
 void RayMarchNode::setInData(std::shared_ptr<NodeData> _data, PortIndex _portIndex)
 {
-  m_rayMarchData = std::dynamic_pointer_cast<ShaderCodeData>(_data);
   auto receivedNode = std::dynamic_pointer_cast<ShaderCodeData>(_data);
 
   if (receivedNode)
   {
     std::cout << "Data received\n";
+    if (_portIndex == 0)
+    {
+      m_shaderCode = receivedNode->getShaderCode();
+      m_variableName = receivedNode->getVariableName();
+      m_functionCode = receivedNode->getFunctionCode();
+      codeSetup();
+
+      m_rayMarchData->setShaderCode(m_evaluatedCode);
+
+      m_modelValidationState = NodeValidationState::Valid;
+    }
   }
   else
   {
     std::cout << "Data NOT received\n";
-  }
-
-  if (_portIndex == 0)
-  {
-    m_shaderCode = receivedNode->getShaderCode();
-    m_variableName = receivedNode->getVariableName();
-    m_functionCode = receivedNode->getFunctionCode();
-    codeSetup();
-
-    ///////
-    m_rayMarchData->setShaderCode(m_evaluatedCode);
-    m_rayMarchData->setVariableName(m_variableName);
-    m_rayMarchData->setFunctionCode(m_functionCode);
   }
 }
 
 QWidget* RayMarchNode::embeddedWidget()
 {
   return nullptr;
+}
+
+NodeValidationState RayMarchNode::validationState() const
+{
+  return m_modelValidationState;
+}
+
+QString RayMarchNode::validationMessage() const
+{
+  return m_modelValidationError;
+}
+
+void RayMarchNode::inputConnectionDeleted(Connection const&)
+{
+  // Reset node
+  m_modelValidationState = NodeValidationState::Error;
+  m_rayMarchData = std::make_shared<ShaderCodeData>();
+  m_shaderCode = QString();
+  m_variableName = QString();
+  m_functionCode = QString();
+  m_evaluatedCode = QString();
 }
 
 QJsonObject RayMarchNode::save() const
@@ -205,6 +223,4 @@ void RayMarchNode::codeSetup()
     "\n"
     "   fragColour = vec4(colour, 1.0);\n"
     "}\n";
-
-    std::cout << m_evaluatedCode.toStdString() << std::endl;
 }
