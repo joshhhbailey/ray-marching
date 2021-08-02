@@ -38,9 +38,13 @@ public:
   ngl::Vec3 getPosition() { return m_position; }
   void setPosition(ngl::Vec3 _position) { m_position = _position; }
 
+  double getRadius() { return m_radius; }
+  void setRadius(double _radius) { m_radius = _radius; }
+
 private:
   QString m_shaderCode;
   QString m_variableName;
   QString m_functionCode;
   ngl::Vec3 m_position;
+  double m_radius;
 };
