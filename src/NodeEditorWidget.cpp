@@ -7,9 +7,6 @@
 #include <QTime>
 
 #include <iostream>
-#include <QDebug>
-
-#include <QtCore/QUuid>
 
 NodeEditorWidget::NodeEditorWidget(NGLScene *_scene)
 {

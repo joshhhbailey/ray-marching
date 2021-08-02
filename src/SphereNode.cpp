@@ -1,8 +1,9 @@
-#pragma once
-
 #include "SphereNode.h"
 
 #include <QtCore/QJsonValue>
+#include <ngl/Vec3.h>
+
+#include <iostream>
 
 SphereNode::SphereNode()
 {
@@ -15,9 +16,19 @@ SphereNode::SphereNode()
 
     QString variableName = "sphere";
 
-    QString functionCode = "  float " + variableName + " = sdSphere(_p, vec3(0, 1, 6), 1.0);\n";
+    QString functionCode = "  float " + variableName + " = sdSphere(_p, vec3(0, 0, 0), 1.0);\n";
 
     m_sphereData = std::make_shared<ShaderCodeData>(shaderCode, variableName, functionCode);
+    m_sphereWidget = new SphereNodeWidget();
+
+    createConnections();
+}
+
+void SphereNode::createConnections()
+{
+  connect(m_sphereWidget->getPositionWidget()->m_xField, SIGNAL(valueChanged(double)), this, SLOT(updatePosition()));
+  connect(m_sphereWidget->getPositionWidget()->m_yField, SIGNAL(valueChanged(double)), this, SLOT(updatePosition()));
+  connect(m_sphereWidget->getPositionWidget()->m_zField, SIGNAL(valueChanged(double)), this, SLOT(updatePosition()));
 }
 
 QString SphereNode::caption() const
@@ -66,7 +77,7 @@ std::shared_ptr<NodeData> SphereNode::outData(PortIndex)
 
 QWidget* SphereNode::embeddedWidget()
 {
-    return nullptr;
+    return m_sphereWidget;
 }
 
 QJsonObject SphereNode::save() const
@@ -78,6 +89,9 @@ QJsonObject SphereNode::save() const
     modelJson["shaderCode"] = m_sphereData->getShaderCode();
     modelJson["variableName"] = m_sphereData->getVariableName();
     modelJson["functionCode"] = m_sphereData->getFunctionCode();
+    modelJson["xPos"] = m_sphereData->getPosition().m_x;
+    modelJson["yPos"] = m_sphereData->getPosition().m_y;
+    modelJson["zPos"] = m_sphereData->getPosition().m_z;
   }
 
   return modelJson;
@@ -88,6 +102,9 @@ void SphereNode::restore(QJsonObject const &_p)
   QJsonValue sc = _p["shaderCode"];
   QJsonValue vn = _p["variableName"];
   QJsonValue fc = _p["functionCode"];
+  QJsonValue xp = _p["xPos"];
+  QJsonValue yp = _p["yPos"];
+  QJsonValue zp = _p["zPos"];
 
   m_sphereData = std::make_shared<ShaderCodeData>();
 
@@ -108,4 +125,33 @@ void SphereNode::restore(QJsonObject const &_p)
     QString functionCode = fc.toString();
     m_sphereData->setFunctionCode(functionCode);
   }
+
+  if (!xp.isUndefined() && !yp.isUndefined() && !zp.isUndefined())
+  {
+    ngl::Vec3 position = ngl::Vec3(xp.toDouble(), yp.toDouble(), zp.toDouble());
+    m_sphereData->setPosition(position);
+    m_sphereWidget->getPositionWidget()->setVec3(position);
+  }
+}
+
+void SphereNode::updatePosition()
+{
+  // Set new position
+  m_sphereData->setPosition(m_sphereWidget->getPositionWidget()->getVec3());
+
+  // Setup variables
+  ngl::Vec3 position = m_sphereData->getPosition();
+  int x = position.m_x;
+  int y = position.m_y;
+  int z = position.m_z;
+
+  // Convert to string
+  QString str = QString::number(x) + ", " + QString::number(y) + ", " + QString::number(z);
+
+  // Update function code
+  QString functionCode = "  float sphere = sdSphere(_p, vec3(" + str + "), 1.0);\n";
+  m_sphereData->setFunctionCode(functionCode);
+
+  // Tell connected node to update received data
+  Q_EMIT dataUpdated(0);
 }

@@ -110,12 +110,25 @@ QJsonObject RayMarchNode::save() const
 {
   QJsonObject modelJson = NodeDataModel::save();
 
+  if (m_rayMarchData)
+  {
+    modelJson["shaderCode"] = m_rayMarchData->getShaderCode();
+  }
+
   return modelJson;
 }
 
 void RayMarchNode::restore(QJsonObject const &_p)
 {
+  QJsonValue sc = _p["shaderCode"];
 
+  m_rayMarchData = std::make_shared<ShaderCodeData>();
+
+  if (!sc.isUndefined())
+  {
+    QString shaderCode = sc.toString();
+    m_rayMarchData->setShaderCode(shaderCode);
+  }
 }
 
 void RayMarchNode::codeSetup()
