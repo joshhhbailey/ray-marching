@@ -35,5 +35,5 @@ public:
   SphereNodeWidget *m_sphereWidget;
 
 public slots:
-  void updateSphere();
+  void updateNode();
 };

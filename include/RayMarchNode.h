@@ -4,9 +4,8 @@
 
 #include <nodes/NodeDataModel>
 
-#include <memory>
-
 #include "ShaderCodeData.h"
+#include "RayMarchNodeWidget.h"
 
 using QtNodes::NodeData;
 using QtNodes::NodeDataType;
@@ -23,6 +22,7 @@ class RayMarchNode : public NodeDataModel
 public:
   RayMarchNode();
   virtual ~RayMarchNode() {}
+  void createConnections();
   QString caption() const override;
   QString name() const override;
   unsigned int nPorts(PortType _portType) const override;
@@ -30,23 +30,30 @@ public:
   void setInData(std::shared_ptr<NodeData> _data, PortIndex _portIndex) override;
   std::shared_ptr<NodeData> outData(PortIndex) override;
   QWidget* embeddedWidget() override;
+  QJsonObject save() const override;
+  void restore(QJsonObject const &_p) override;
   NodeValidationState validationState() const override;
   QString validationMessage() const override;
   void inputConnectionDeleted(Connection const&) override;
 
-private:
-  QJsonObject save() const override;
-  void restore(QJsonObject const &_p) override;
+public slots:
+  void updateNode();
 
-  void codeSetup();
+private:
+  void updateCode();
 
   // Validation
   NodeValidationState m_modelValidationState = NodeValidationState::Error;
   QString m_modelValidationError = QStringLiteral("Missing inputs!");
 
   std::shared_ptr<ShaderCodeData> m_rayMarchData;
+  RayMarchNodeWidget *m_rayMarchWidget;
+
   QString m_shaderCode;
   QString m_variableName;
   QString m_functionCode;
   QString m_evaluatedCode;
+
+  QString m_rayOrigin;
+  QString m_lightPosition;
 };

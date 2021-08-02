@@ -6,7 +6,6 @@
 
 SphereNodeWidget::SphereNodeWidget()
 {
-    setTitle("Properties:");
     createWidgets();
     createLayouts();
 }

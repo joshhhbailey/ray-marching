@@ -1,6 +1,5 @@
 #include "SphereNode.h"
 
-#include <QtCore/QJsonValue>
 #include <ngl/Vec3.h>
 
 #include <iostream>
@@ -26,10 +25,10 @@ SphereNode::SphereNode()
 
 void SphereNode::createConnections()
 {
-  connect(m_sphereWidget->getPositionWidget()->m_xField, SIGNAL(valueChanged(double)), this, SLOT(updateSphere()));
-  connect(m_sphereWidget->getPositionWidget()->m_yField, SIGNAL(valueChanged(double)), this, SLOT(updateSphere()));
-  connect(m_sphereWidget->getPositionWidget()->m_zField, SIGNAL(valueChanged(double)), this, SLOT(updateSphere()));
-  connect(m_sphereWidget->getRadiusWidget(), SIGNAL(valueChanged(double)), this, SLOT(updateSphere()));
+  connect(m_sphereWidget->getPositionWidget()->m_xField, SIGNAL(valueChanged(double)), this, SLOT(updateNode()));
+  connect(m_sphereWidget->getPositionWidget()->m_yField, SIGNAL(valueChanged(double)), this, SLOT(updateNode()));
+  connect(m_sphereWidget->getPositionWidget()->m_zField, SIGNAL(valueChanged(double)), this, SLOT(updateNode()));
+  connect(m_sphereWidget->getRadiusWidget(), SIGNAL(valueChanged(double)), this, SLOT(updateNode()));
 }
 
 QString SphereNode::caption() const
@@ -90,10 +89,10 @@ QJsonObject SphereNode::save() const
     modelJson["shaderCode"] = m_sphereData->getShaderCode();
     modelJson["variableName"] = m_sphereData->getVariableName();
     modelJson["functionCode"] = m_sphereData->getFunctionCode();
-    modelJson["xPos"] = m_sphereData->getPosition().m_x;
-    modelJson["yPos"] = m_sphereData->getPosition().m_y;
-    modelJson["zPos"] = m_sphereData->getPosition().m_z;
-    modelJson["radius"] = m_sphereData->getRadius();
+    modelJson["xPos"] = m_sphereWidget->getPositionWidget()->getVec3().m_x;
+    modelJson["yPos"] = m_sphereWidget->getPositionWidget()->getVec3().m_y;
+    modelJson["zPos"] = m_sphereWidget->getPositionWidget()->getVec3().m_z;
+    modelJson["radius"] = m_sphereWidget->getRadiusWidget()->value();
   }
 
   return modelJson;
@@ -132,34 +131,26 @@ void SphereNode::restore(QJsonObject const &_p)
   if (!xp.isUndefined() && !yp.isUndefined() && !zp.isUndefined())
   {
     ngl::Vec3 position = ngl::Vec3(xp.toDouble(), yp.toDouble(), zp.toDouble());
-    m_sphereData->setPosition(position);
     m_sphereWidget->getPositionWidget()->setVec3(position);
   }
 
   if (!r.isUndefined())
   {
-    m_sphereData->setRadius(r.toDouble());
     m_sphereWidget->getRadiusWidget()->setValue(r.toDouble());
   }
 }
 
-void SphereNode::updateSphere()
+void SphereNode::updateNode()
 {
-  // Set new position
-  m_sphereData->setPosition(m_sphereWidget->getPositionWidget()->getVec3());
-
-  // Set new radius
-  m_sphereData->setRadius(m_sphereWidget->getRadiusWidget()->value());
-
   // Setup variables
-  ngl::Vec3 pos = m_sphereData->getPosition();
+  ngl::Vec3 pos = m_sphereWidget->getPositionWidget()->getVec3();
   int x = pos.m_x;
   int y = pos.m_y;
   int z = pos.m_z;
 
   // Convert to string
   QString position = QString::number(x) + ", " + QString::number(y) + ", " + QString::number(z);
-  QString radius = QString::number(m_sphereData->getRadius());
+  QString radius = QString::number(m_sphereWidget->getRadiusWidget()->value());
 
   // Update function code
   QString functionCode = "  float sphere = sdSphere(_p, vec3(" + position + "), " + radius + ");\n";

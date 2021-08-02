@@ -48,6 +48,7 @@ target_sources(${TargetName} PRIVATE
 	${PROJECT_SOURCE_DIR}/src/RayMarchNode.cpp
 	${PROJECT_SOURCE_DIR}/src/Vec3Widget.cpp
 	${PROJECT_SOURCE_DIR}/src/SphereNodeWidget.cpp
+	${PROJECT_SOURCE_DIR}/src/RayMarchNodeWidget.cpp
 	# .h
 	${PROJECT_SOURCE_DIR}/include/NGLScene.h
 	${PROJECT_SOURCE_DIR}/include/ScreenQuad.h
@@ -66,6 +67,7 @@ target_sources(${TargetName} PRIVATE
 	${PROJECT_SOURCE_DIR}/include/ShaderCodeData.h
 	${PROJECT_SOURCE_DIR}/include/Vec3Widget.h
 	${PROJECT_SOURCE_DIR}/include/SphereNodeWidget.h
+	${PROJECT_SOURCE_DIR}/include/RayMarchNodeWidget.h
 	#.glsl
 	${PROJECT_SOURCE_DIR}/shaders/DefaultFragment.glsl
 	${PROJECT_SOURCE_DIR}/shaders/DefaultVertex.glsl
