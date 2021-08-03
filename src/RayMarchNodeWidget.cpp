@@ -18,6 +18,7 @@ void RayMarchNodeWidget::createWidgets()
     m_lightLabel = new QLabel();
     m_lightLabel->setText("Light");
     m_lightPositionWidget = new Vec3Widget("Position:", ngl::Vec3(0.0, 0.0, 0.0));
+    m_inspectCodeButton = new QPushButton("Inspect Code");
 }
 
 void RayMarchNodeWidget::createLayouts()
@@ -27,5 +28,6 @@ void RayMarchNodeWidget::createLayouts()
     mainLayout->addRow(m_rayOriginWidget);
     mainLayout->addRow(m_lightLabel);
     mainLayout->addRow(m_lightPositionWidget);
+    mainLayout->addRow(m_inspectCodeButton);
     setLayout(mainLayout);
 }

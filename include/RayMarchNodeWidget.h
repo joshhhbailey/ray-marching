@@ -2,7 +2,8 @@
 
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QDoubleSpinBox>
-#include <QLabel>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QPushButton>
 
 #include "Vec3Widget.h"
 
@@ -13,6 +14,7 @@ public:
     RayMarchNodeWidget();
     Vec3Widget* getRayOriginWidget() { return m_rayOriginWidget; }
     Vec3Widget* getLightPositionWidget() { return m_lightPositionWidget; }
+    QPushButton* getInspectCodeButton() { return m_inspectCodeButton; }
 
 private:
     void createWidgets();
@@ -22,4 +24,5 @@ private:
     Vec3Widget *m_rayOriginWidget;
     QLabel *m_lightLabel;
     Vec3Widget *m_lightPositionWidget;
+    QPushButton *m_inspectCodeButton;
 };

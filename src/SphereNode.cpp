@@ -19,6 +19,11 @@ SphereNode::SphereNode()
 
     m_sphereData = std::make_shared<ShaderCodeData>(shaderCode, variableName, functionCode);
     m_sphereWidget = new SphereNodeWidget();
+    m_codeEditor = new CodeEditor();
+    m_codeEditor->setPlainText(shaderCode);
+    m_codeEditor->setReadOnly(true);
+    m_codeEditor->hide();
+    m_syntaxHighlighter = new SyntaxHighlighter(m_codeEditor->document());
 
     createConnections();
 }
@@ -29,6 +34,7 @@ void SphereNode::createConnections()
   connect(m_sphereWidget->getPositionWidget()->m_yField, SIGNAL(valueChanged(double)), this, SLOT(updateNode()));
   connect(m_sphereWidget->getPositionWidget()->m_zField, SIGNAL(valueChanged(double)), this, SLOT(updateNode()));
   connect(m_sphereWidget->getRadiusWidget(), SIGNAL(valueChanged(double)), this, SLOT(updateNode()));
+  connect(m_sphereWidget->getInspectCodeButton(), SIGNAL(clicked()), this, SLOT(inspectCodeButtonClicked()));
 }
 
 QString SphereNode::caption() const
@@ -158,4 +164,10 @@ void SphereNode::updateNode()
 
   // Tell connected node to update received data
   Q_EMIT dataUpdated(0);
+}
+
+void SphereNode::inspectCodeButtonClicked()
+{
+  m_codeEditor->show();
+  m_codeEditor->raise();
 }

@@ -1,5 +1,3 @@
-#pragma once
-
 #include "RayMarchNode.h"
 
 #include <ngl/Vec3.h>
@@ -10,9 +8,18 @@ RayMarchNode::RayMarchNode()
 {
     m_rayMarchData = std::make_shared<ShaderCodeData>();
     m_rayMarchWidget = new RayMarchNodeWidget();
+    m_codeEditor = new CodeEditor();
+    m_codeEditor->setReadOnly(true);
+    m_codeEditor->hide();
+    m_syntaxHighlighter = new SyntaxHighlighter(m_codeEditor->document());
 
+    m_shaderCode = "*Missing code!*\n";
+    m_functionCode = "   *Missing code!*";
+    m_variableName = "*Missing code!*";
     m_rayOrigin = "0, 0, 0";
     m_lightPosition = "0, 0, 0";
+
+    updateCode();
 
     createConnections();
 }
@@ -25,6 +32,7 @@ void RayMarchNode::createConnections()
   connect(m_rayMarchWidget->getLightPositionWidget()->m_xField, SIGNAL(valueChanged(double)), this, SLOT(updateNode()));
   connect(m_rayMarchWidget->getLightPositionWidget()->m_yField, SIGNAL(valueChanged(double)), this, SLOT(updateNode()));
   connect(m_rayMarchWidget->getLightPositionWidget()->m_zField, SIGNAL(valueChanged(double)), this, SLOT(updateNode()));
+  connect(m_rayMarchWidget->getInspectCodeButton(), SIGNAL(clicked()), this, SLOT(inspectCodeButtonClicked()));
 }
 
 QString RayMarchNode::caption() const
@@ -115,6 +123,10 @@ void RayMarchNode::inputConnectionDeleted(Connection const&)
   m_variableName = QString();
   m_functionCode = QString();
   m_evaluatedCode = QString();
+  m_shaderCode = "*Missing code!*\n";
+  m_functionCode = "   *Missing code!*";
+  m_variableName = "*Missing code!*";
+  updateCode();
 }
 
 QJsonObject RayMarchNode::save() const
@@ -272,6 +284,7 @@ void RayMarchNode::updateCode()
     "}\n";
 
     m_rayMarchData->setShaderCode(m_evaluatedCode);
+    m_codeEditor->setPlainText(m_evaluatedCode);
 }
 
 void RayMarchNode::updateNode()
@@ -296,4 +309,10 @@ void RayMarchNode::updateNode()
   m_lightPosition = lightPosition;
 
   updateCode();
+}
+
+void RayMarchNode::inspectCodeButtonClicked()
+{
+  m_codeEditor->show();
+  m_codeEditor->raise();
 }

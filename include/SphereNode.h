@@ -6,6 +6,8 @@
 
 #include "ShaderCodeData.h"
 #include "SphereNodeWidget.h"
+#include "CodeEditor.h"
+#include "SyntaxHighlighter.h"
 
 using QtNodes::NodeData;
 using QtNodes::NodeDataType;
@@ -30,10 +32,15 @@ public:
   QWidget* embeddedWidget() override;
   QJsonObject save() const override;
   void restore(QJsonObject const &_p) override;
-  
-  std::shared_ptr<ShaderCodeData> m_sphereData;
-  SphereNodeWidget *m_sphereWidget;
 
 public slots:
   void updateNode();
+  void inspectCodeButtonClicked();
+
+private:
+  std::shared_ptr<ShaderCodeData> m_sphereData;
+  SphereNodeWidget *m_sphereWidget;
+
+  CodeEditor *m_codeEditor;
+  SyntaxHighlighter *m_syntaxHighlighter;
 };

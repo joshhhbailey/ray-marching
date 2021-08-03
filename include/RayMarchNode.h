@@ -6,6 +6,8 @@
 
 #include "ShaderCodeData.h"
 #include "RayMarchNodeWidget.h"
+#include "CodeEditor.h"
+#include "SyntaxHighlighter.h"
 
 using QtNodes::NodeData;
 using QtNodes::NodeDataType;
@@ -38,8 +40,10 @@ public:
 
 public slots:
   void updateNode();
+  void inspectCodeButtonClicked();
 
 private:
+  void resetVariables();
   void updateCode();
 
   // Validation
@@ -48,6 +52,9 @@ private:
 
   std::shared_ptr<ShaderCodeData> m_rayMarchData;
   RayMarchNodeWidget *m_rayMarchWidget;
+
+  CodeEditor *m_codeEditor;
+  SyntaxHighlighter *m_syntaxHighlighter;
 
   QString m_shaderCode;
   QString m_variableName;
