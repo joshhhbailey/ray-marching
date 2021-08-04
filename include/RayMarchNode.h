@@ -43,7 +43,6 @@ public slots:
   void inspectCodeButtonClicked();
 
 private:
-  void resetVariables();
   void updateCode();
 
   // Validation

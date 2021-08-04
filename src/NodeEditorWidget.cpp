@@ -1,7 +1,9 @@
 #include "NodeEditorWidget.h"
-#include "TestNode.h"
+
 #include "SphereNode.h"
+#include "PlaneNode.h"
 #include "RayMarchNode.h"
+#include "UnionNode.h"
 
 #include <QtWidgets/QFormLayout>
 #include <QTime>
@@ -59,13 +61,12 @@ std::shared_ptr<DataModelRegistry> NodeEditorWidget::registerDataModels()
 {
     std::shared_ptr<DataModelRegistry> dataModels = std::make_shared<DataModelRegistry>();
     
-    dataModels->registerModel<TestNode>("Tests");
     dataModels->registerModel<SphereNode>("SDFs");
+    dataModels->registerModel<PlaneNode>("SDFs");
     dataModels->registerModel<RayMarchNode>("RayMarching");
-
-    /*dataModels->registerModel<Union>("Boolean Operators");
-    dataModels->registerModel<Intersection>("Boolean Operators");
-    dataModels->registerModel<Difference>("Boolean Operators");*/
+    dataModels->registerModel<UnionNode>("Boolean Operators");
+    /*dataModels->registerModel<IntersectionNode>("Boolean Operators");
+    dataModels->registerModel<DifferenceNode>("Boolean Operators");*/
 
   return dataModels;
 }

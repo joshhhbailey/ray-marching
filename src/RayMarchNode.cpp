@@ -14,7 +14,7 @@ RayMarchNode::RayMarchNode()
     m_syntaxHighlighter = new SyntaxHighlighter(m_codeEditor->document());
 
     m_shaderCode = "*Missing code!*\n";
-    m_functionCode = "   *Missing code!*";
+    m_functionCode = "*Missing code!*";
     m_variableName = "*Missing code!*";
     m_rayOrigin = "0, 0, 0";
     m_lightPosition = "0, 0, 0";
@@ -124,7 +124,7 @@ void RayMarchNode::inputConnectionDeleted(Connection const&)
   m_functionCode = QString();
   m_evaluatedCode = QString();
   m_shaderCode = "*Missing code!*\n";
-  m_functionCode = "   *Missing code!*";
+  m_functionCode = "*Missing code!*";
   m_variableName = "*Missing code!*";
   updateCode();
 }
@@ -173,7 +173,7 @@ void RayMarchNode::restore(QJsonObject const &_p)
   if (!lightxp.isUndefined() && !lightyp.isUndefined() && !lightzp.isUndefined())
   {
     ngl::Vec3 lightPosition = ngl::Vec3(lightxp.toDouble(), lightyp.toDouble(), lightzp.toDouble());
-    m_rayMarchWidget->getRayOriginWidget()->setVec3(lightPosition);
+    m_rayMarchWidget->getLightPositionWidget()->setVec3(lightPosition);
   }
 }
 
@@ -184,16 +184,20 @@ void RayMarchNode::updateCode()
     "#define MAX_DISTANCE 100.0\n"
     "#define SURFACE_DISTANCE 0.01\n"
     "\n"
-    + m_shaderCode +
+    + m_functionCode +
     "\n"
     "float GetDistance(vec3 _p)\n"
     "{\n"
-    + m_functionCode +
+    "float distance = 1000;\n"
+    + m_shaderCode +
     "\n"
     "   // Return distance of closest scene object\n"
-    "   //float closestDistance = min(sphere, plane);\n"
+    "  if (distance == 1000)\n"
+    "  {\n"
+	  "    return " + m_variableName + ";\n"
+    "  }"
     "\n"
-    "   return " + m_variableName + ";\n"
+    "   return distance;\n"
     "}\n"
     "\n"
     "float RayMarch(vec3 _rayOrigin, vec3 _rayDirection)\n"

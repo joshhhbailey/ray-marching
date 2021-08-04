@@ -37,37 +37,54 @@ target_sources(${TargetName} PRIVATE
 	${PROJECT_SOURCE_DIR}/src/NGLScene.cpp
 	${PROJECT_SOURCE_DIR}/src/ScreenQuad.cpp
 	${PROJECT_SOURCE_DIR}/src/Window.cpp
+
 	${PROJECT_SOURCE_DIR}/src/ShaderCodeContainer.cpp
 	${PROJECT_SOURCE_DIR}/src/ShaderCodeWidget.cpp
 	${PROJECT_SOURCE_DIR}/src/CodeEditor.cpp
 	${PROJECT_SOURCE_DIR}/src/SyntaxHighlighter.cpp
+
 	${PROJECT_SOURCE_DIR}/src/NodeEditorContainer.cpp
 	${PROJECT_SOURCE_DIR}/src/NodeEditorWidget.cpp
-	${PROJECT_SOURCE_DIR}/src/TestNode.cpp
+
 	${PROJECT_SOURCE_DIR}/src/SphereNode.cpp
 	${PROJECT_SOURCE_DIR}/src/RayMarchNode.cpp
-	${PROJECT_SOURCE_DIR}/src/Vec3Widget.cpp
+	${PROJECT_SOURCE_DIR}/src/PlaneNode.cpp
+	${PROJECT_SOURCE_DIR}/src/UnionNode.cpp
+	
 	${PROJECT_SOURCE_DIR}/src/SphereNodeWidget.cpp
 	${PROJECT_SOURCE_DIR}/src/RayMarchNodeWidget.cpp
+	${PROJECT_SOURCE_DIR}/src/PlaneNodeWidget.cpp
+	${PROJECT_SOURCE_DIR}/src/UnionNodeWidget.cpp
+
+	${PROJECT_SOURCE_DIR}/src/Vec3Widget.cpp
+
 	# .h
+	${PROJECT_SOURCE_DIR}/include/WindowParams.h
 	${PROJECT_SOURCE_DIR}/include/NGLScene.h
 	${PROJECT_SOURCE_DIR}/include/ScreenQuad.h
 	${PROJECT_SOURCE_DIR}/include/Window.h
-	${PROJECT_SOURCE_DIR}/include/WindowParams.h
-	${PROJECT_SOURCE_DIR}/include/Window.h
+
 	${PROJECT_SOURCE_DIR}/include/ShaderCodeContainer.h
 	${PROJECT_SOURCE_DIR}/include/ShaderCodeWidget.h
 	${PROJECT_SOURCE_DIR}/include/CodeEditor.h
 	${PROJECT_SOURCE_DIR}/include/SyntaxHighlighter.h
+
 	${PROJECT_SOURCE_DIR}/include/NodeEditorContainer.h
 	${PROJECT_SOURCE_DIR}/include/NodeEditorWidget.h
-	${PROJECT_SOURCE_DIR}/include/TestNode.h
+
 	${PROJECT_SOURCE_DIR}/include/SphereNode.h
 	${PROJECT_SOURCE_DIR}/include/RayMarchNode.h
-	${PROJECT_SOURCE_DIR}/include/ShaderCodeData.h
-	${PROJECT_SOURCE_DIR}/include/Vec3Widget.h
+	${PROJECT_SOURCE_DIR}/include/PlaneNode.h
+	${PROJECT_SOURCE_DIR}/include/UnionNode.h
+
 	${PROJECT_SOURCE_DIR}/include/SphereNodeWidget.h
 	${PROJECT_SOURCE_DIR}/include/RayMarchNodeWidget.h
+	${PROJECT_SOURCE_DIR}/include/PlaneNodeWidget.h
+	${PROJECT_SOURCE_DIR}/include/UnionNodeWidget.h
+
+	${PROJECT_SOURCE_DIR}/include/ShaderCodeData.h
+	${PROJECT_SOURCE_DIR}/include/Vec3Widget.h
+
 	#.glsl
 	${PROJECT_SOURCE_DIR}/shaders/DefaultFragment.glsl
 	${PROJECT_SOURCE_DIR}/shaders/DefaultVertex.glsl

@@ -6,7 +6,7 @@
 
 SphereNode::SphereNode()
 {
-    QString shaderCode =
+    QString functionCode =
     "float sdSphere(vec3 _p, vec3 _pos, float _r)\n"
     "{\n"
     "   vec4 sphere = vec4(_pos, _r);\n"
@@ -15,7 +15,7 @@ SphereNode::SphereNode()
 
     QString variableName = "sphere";
 
-    QString functionCode = "  float " + variableName + " = sdSphere(_p, vec3(0, 0, 0), 1.0);\n";
+    QString shaderCode = "float " + variableName + " = sdSphere(_p, vec3(0, 0, 0), 1.0);\n";
 
     m_sphereData = std::make_shared<ShaderCodeData>(shaderCode, variableName, functionCode);
     m_sphereWidget = new SphereNodeWidget();
@@ -158,9 +158,9 @@ void SphereNode::updateNode()
   QString position = QString::number(x) + ", " + QString::number(y) + ", " + QString::number(z);
   QString radius = QString::number(m_sphereWidget->getRadiusWidget()->value());
 
-  // Update function code
-  QString functionCode = "  float sphere = sdSphere(_p, vec3(" + position + "), " + radius + ");\n";
-  m_sphereData->setFunctionCode(functionCode);
+  // Update node data
+  QString shaderCode = "float sphere = sdSphere(_p, vec3(" + position + "), " + radius + ");\n";
+  m_sphereData->setShaderCode(shaderCode);
 
   // Tell connected node to update received data
   Q_EMIT dataUpdated(0);

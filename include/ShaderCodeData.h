@@ -35,8 +35,18 @@ public:
   QString getFunctionCode() const { return m_functionCode; }
   void setFunctionCode(QString const _functionCode) { m_functionCode = _functionCode; }
 
+  QString getShapeA() const { return m_shapeA; }
+  void setShapeA(QString const _shapeA) { m_shapeA = _shapeA; }
+
+  QString getShapeB() const { return m_shapeB; }
+  void setShapeB(QString const _shapeB) { m_shapeB = _shapeB; }
+
 private:
   QString m_shaderCode;
   QString m_variableName;
   QString m_functionCode;
+
+  // Boolean Operators
+  QString m_shapeA;
+  QString m_shapeB;
 };

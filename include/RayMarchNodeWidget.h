@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QtWidgets/QGroupBox>
+#include <QtWidgets/QSpinBox>
 #include <QtWidgets/QDoubleSpinBox>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
@@ -12,6 +13,7 @@ class RayMarchNodeWidget : public QGroupBox
     Q_OBJECT
 public:
     RayMarchNodeWidget();
+
     Vec3Widget* getRayOriginWidget() { return m_rayOriginWidget; }
     Vec3Widget* getLightPositionWidget() { return m_lightPositionWidget; }
     QPushButton* getInspectCodeButton() { return m_inspectCodeButton; }

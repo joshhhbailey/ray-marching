@@ -63,7 +63,7 @@ void Window::createActions()
     
     // Other
     m_exitAction = new QAction("Exit");
-    m_shaderEditorAction = new QAction("Shader Editor");
+    m_shaderEditorAction = new QAction("Code Editor");
     m_nodeEditorAction = new QAction("Node Editor");
     m_aboutAction = new QAction("About");
 }
@@ -123,7 +123,7 @@ void Window::createWidgets()
 
     // Create Shader Code Container dockable widget
     m_shaderCodeContainer = new ShaderCodeContainer(m_scene);
-    m_shaderEditorDock = new QDockWidget(tr("Shader Editor"), this);
+    m_shaderEditorDock = new QDockWidget(tr("Code Editor"), this);
     m_shaderEditorDock->setAllowedAreas(Qt::RightDockWidgetArea | Qt::LeftDockWidgetArea);
     m_shaderEditorDock->setWidget(m_shaderCodeContainer);
     addDockWidget(Qt::RightDockWidgetArea, m_shaderEditorDock);
