@@ -18,6 +18,7 @@ NodeEditorWidget::NodeEditorWidget(NGLScene *_scene)
     createLayouts();
     createConnections();
     setupNodeGraph();
+    loadFunctions();
     startTimer(10);
 }
 
@@ -57,6 +58,25 @@ void NodeEditorWidget::setupNodeGraph()
     m_nodeEditorScene->createNode(std::make_unique<RayMarchNode>());
 }
 
+void NodeEditorWidget::loadFunctions()
+{
+    m_functions.insert("Sphere", "float sdSphere(vec3 _p, vec3 _pos, float _r)\n"
+                                 "{\n"
+                                 "   vec4 sphere = vec4(_pos, _r);\n"
+                                 "   return length(_p - sphere.xyz) - sphere.w;\n"
+                                 "}\n\n");
+
+    m_functions.insert("Infinite Plane", "float sdPlane(vec3 _p, float _y)\n"
+                                         "{\n"
+                                         "   return _p.y - _y;\n"
+                                         "}\n\n");
+
+    m_functions.insert("Union", "float sdUnion(float _a, float _b)\n"
+                                "{\n"
+                                "   return min(_a, _b);\n"
+                                "}\n\n");
+}
+
 std::shared_ptr<DataModelRegistry> NodeEditorWidget::registerDataModels()
 {
     std::shared_ptr<DataModelRegistry> dataModels = std::make_shared<DataModelRegistry>();
@@ -94,14 +114,25 @@ void NodeEditorWidget::compileButtonClicked()
     NodeValidationState rmState;
     int rmNodes = 0;
 
-    // Find RayMarch node
+    // Functions
+    QMap<QString, QString> functionsCopy = m_functions;
+    QString functions;
+
+ 
     for (int i = 0; i < nodes.size(); ++i)
     {
+        // Find RayMarch node
         if (nodes[i]->nodeDataModel()->name() == "Ray March")
         {
             rmNodeData = std::dynamic_pointer_cast<ShaderCodeData>(nodes[i]->nodeDataModel()->outData(0));
             rmState = nodes[i]->nodeDataModel()->validationState();
             rmNodes++;
+        }
+        // Copy over required function code
+        if (functionsCopy.contains(nodes[i]->nodeDataModel()->name()))
+        {
+            functions += functionsCopy.value(nodes[i]->nodeDataModel()->name());
+            functionsCopy.remove(nodes[i]->nodeDataModel()->name());
         }
     }
 
@@ -116,7 +147,7 @@ void NodeEditorWidget::compileButtonClicked()
         {
             if (rmState == NodeValidationState::Valid)
             {
-                if (m_scene->compileShaderCode(rmNodeData->getShaderCode(), false))
+                if (m_scene->compileShaderCode(functions + rmNodeData->getShaderCode(), false))
                 {
                     m_firstCompile = true;
                     string += "Shader compilation successful!";

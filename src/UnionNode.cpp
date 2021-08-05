@@ -7,7 +7,8 @@
 UnionNode::UnionNode()
 {
     m_unionData = std::make_shared<ShaderCodeData>();
-    
+    m_unionData->setBooleanOp(true);
+    m_unionData->setIteration(0);
     m_unionWidget = new UnionNodeWidget;
     m_codeEditor = new CodeEditor();
     updateCode();
@@ -109,26 +110,52 @@ void UnionNode::setInData(std::shared_ptr<NodeData> _data, PortIndex _portIndex)
     // Data received
     if (_portIndex == 0)
     {
-        auto receivedNodeA = std::dynamic_pointer_cast<ShaderCodeData>(_data);
-        if (receivedNodeA)
+        m_receivedNodeA = std::dynamic_pointer_cast<ShaderCodeData>(_data);
+        if (m_receivedNodeA)
         {
-            m_shapeA = receivedNodeA->getVariableName();
-            m_shapeAFunctionCode = receivedNodeA->getFunctionCode();
-            m_shapeAShaderCode = receivedNodeA->getShaderCode();
+            // Input: Boolean Operator
+            if (m_receivedNodeA->getBooleanOp())
+            {
+                m_shapeA = "distance";
+                m_unionData->setIteration(m_receivedNodeA->getIteration());
+            }
+            // Input: SDF
+            else
+            {
+                m_shapeA = m_receivedNodeA->getVariableName() + QString::number(m_unionData->getIteration());
+                m_unionData->addIteration();
+            }
+            m_shapeAShaderCode = m_receivedNodeA->getShaderCode();
+            m_shapeAfunctionCall = m_receivedNodeA->getFunctionCall();
         }
     }
 
     if (_portIndex == 1)
     {
-        auto receivedNodeB = std::dynamic_pointer_cast<ShaderCodeData>(_data);
-        if (receivedNodeB)
+        m_receivedNodeB = std::dynamic_pointer_cast<ShaderCodeData>(_data);
+        if (m_receivedNodeB)
         {
-            m_shapeB = receivedNodeB->getVariableName();
-            m_shapeBFunctionCode = receivedNodeB->getFunctionCode();
-            m_shapeBShaderCode = receivedNodeB->getShaderCode();
+            // Input: Boolean Operator
+            if (m_receivedNodeB->getBooleanOp())
+            {
+                m_shapeB = "distance";
+                m_unionData->setIteration(m_receivedNodeB->getIteration());
+            }
+            // Input: SDF
+            else
+            {
+                m_shapeB = m_receivedNodeB->getVariableName() + QString::number(m_unionData->getIteration());
+                m_unionData->addIteration();
+            }
+            m_shapeBShaderCode = m_receivedNodeB->getShaderCode();
+            m_shapeBfunctionCall = m_receivedNodeB->getFunctionCall();
         }
     }
-    updateCode();
+    if (m_receivedNodeA && m_receivedNodeB)
+    {
+      updateCode();
+      m_modelValidationState = NodeValidationState::Valid;
+    }
 }
 
 QWidget* UnionNode::embeddedWidget()
@@ -136,21 +163,32 @@ QWidget* UnionNode::embeddedWidget()
     return m_unionWidget;
 }
 
+NodeValidationState UnionNode::validationState() const
+{
+  return m_modelValidationState;
+}
+
+QString UnionNode::validationMessage() const
+{
+  return m_modelValidationError;
+}
+
 void UnionNode::inputConnectionDeleted(Connection const&_connection)
 {
   if (_connection.getPortIndex(PortType::In) == 0)
   {
-      m_shapeA = "*Missing code!*";
-      m_shapeAFunctionCode = "*Missing code!*";
-      m_shapeAShaderCode = "*Missing code!*\n";
+      m_shapeA = "/*Missing code!*/";
+      m_shapeAShaderCode = "/*Missing code!*/\n";
+      m_receivedNodeA = nullptr;
   }
   if (_connection.getPortIndex(PortType::In) == 1)
   {
-      m_shapeB = "*Missing code!*";
-      m_shapeBFunctionCode = "*Missing code!*";
-      m_shapeBShaderCode = "*Missing code!*\n";
+      m_shapeB = "/*Missing code!*/";
+      m_shapeBShaderCode = "/*Missing code!*/\n";
+      m_receivedNodeB = nullptr;
   }
   updateCode();
+  m_modelValidationState = NodeValidationState::Error;
 }
 
 QJsonObject UnionNode::save() const
@@ -160,13 +198,10 @@ QJsonObject UnionNode::save() const
   if (m_unionData)
   {
     modelJson["shaderCode"] = m_shaderCode;
-    modelJson["functionCode"] = m_functionCode;
     modelJson["variableName"] = m_unionData->getVariableName();
     modelJson["shapeA"] = m_shapeA;
-    modelJson["shapeAFunctionCode"] = m_shapeAFunctionCode;
     modelJson["shapeAShaderCode"] = m_shapeAShaderCode;
     modelJson["shapeB"] = m_shapeB;
-    modelJson["shapeBFunctionCode"] = m_shapeBFunctionCode;
     modelJson["shapeBShaderCode"] = m_shapeBShaderCode;
   }
 
@@ -176,13 +211,10 @@ QJsonObject UnionNode::save() const
 void UnionNode::restore(QJsonObject const &_p)
 {
   QJsonValue sc = _p["shaderCode"];
-  QJsonValue fc = _p["functionCode"];
   QJsonValue vn = _p["variableName"];
   QJsonValue sa = _p["shapeA"];
-  QJsonValue safc = _p["shapeAFunctionCode"];
   QJsonValue sasc = _p["shapeAShaderCode"];
   QJsonValue sb = _p["shapeB"];
-  QJsonValue sbfc = _p["shapeBFunctionCode"];
   QJsonValue sbsc = _p["shapeBShaderCode"];
 
   m_unionData = std::make_shared<ShaderCodeData>();
@@ -191,12 +223,6 @@ void UnionNode::restore(QJsonObject const &_p)
   {
     QString shaderCode = sc.toString();
     m_unionData->setShaderCode(shaderCode);
-  }
-
-  if (!fc.isUndefined())
-  {
-    QString functionCode = fc.toString();
-    m_unionData->setFunctionCode(functionCode);
   }
 
   if (!vn.isUndefined())
@@ -211,12 +237,6 @@ void UnionNode::restore(QJsonObject const &_p)
     m_unionData->setShapeA(shapeA);
   }
 
-  if (!safc.isUndefined())
-  {
-    QString shapeAFunctionCode = safc.toString();
-    m_shapeAFunctionCode = shapeAFunctionCode;
-  }
-
   if (!sasc.isUndefined())
   {
     QString shapeAShaderCode = sasc.toString();
@@ -227,12 +247,6 @@ void UnionNode::restore(QJsonObject const &_p)
   {
     QString shapeB = sb.toString();
     m_unionData->setShapeB(shapeB);
-  }
-
-  if (!sbfc.isUndefined())
-  {
-    QString shapeBFunctionCode = sbfc.toString();
-    m_shapeBFunctionCode = shapeBFunctionCode;
   }
 
   if (!sbsc.isUndefined())
@@ -246,18 +260,31 @@ void UnionNode::updateCode()
 {
     // Setup variables
     m_shaderCode =
-    m_shapeAShaderCode +
-    m_shapeBShaderCode +
-    "distance = min(" + m_shapeA + ", " + m_shapeB + ");\n";
+    "float " + m_shapeA + m_shapeAfunctionCall +
+    "float " + m_shapeB + m_shapeBfunctionCall +
+    "distance = sdUnion(" + m_shapeA + ", " + m_shapeB + ");\n";
 
-    m_functionCode = m_shapeAFunctionCode + m_shapeBFunctionCode;
+    if (m_receivedNodeA && m_receivedNodeA->getBooleanOp())
+    {
+      m_shaderCode =
+      m_shapeAShaderCode +
+      "float " + m_shapeB + m_shapeBfunctionCall +
+      "distance = sdUnion(" + m_shapeA + ", " + m_shapeB + ");\n";
+    }
+
+    if (m_receivedNodeB && m_receivedNodeB->getBooleanOp())
+    {
+      m_shaderCode =
+      m_shapeBShaderCode +
+      "float " + m_shapeA + m_shapeAfunctionCall +
+      "distance = sdUnion(" + m_shapeA + ", " + m_shapeB + ");\n";
+    }
 
     // Update node data
     m_unionData->setVariableName("0");
     m_unionData->setShapeA(m_shapeA);
     m_unionData->setShapeB(m_shapeB);
     m_unionData->setShaderCode(m_shaderCode);
-    m_unionData->setFunctionCode(m_functionCode);
     m_codeEditor->setPlainText(m_shaderCode);
 
     // Tell connected node to update received data

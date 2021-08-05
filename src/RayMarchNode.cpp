@@ -13,9 +13,8 @@ RayMarchNode::RayMarchNode()
     m_codeEditor->hide();
     m_syntaxHighlighter = new SyntaxHighlighter(m_codeEditor->document());
 
-    m_shaderCode = "*Missing code!*\n";
-    m_functionCode = "*Missing code!*";
-    m_variableName = "*Missing code!*";
+    m_shaderCode = "/*Missing code!*/\n";
+    m_variableName = "/*Missing code!*/";
     m_rayOrigin = "0, 0, 0";
     m_lightPosition = "0, 0, 0";
 
@@ -110,7 +109,7 @@ std::shared_ptr<NodeData> RayMarchNode::outData(PortIndex)
 
 void RayMarchNode::setInData(std::shared_ptr<NodeData> _data, PortIndex _portIndex)
 {
-  auto receivedNode = std::dynamic_pointer_cast<ShaderCodeData>(_data);
+  std::shared_ptr<ShaderCodeData> receivedNode = std::dynamic_pointer_cast<ShaderCodeData>(_data);
 
   if (receivedNode)
   {
@@ -119,7 +118,6 @@ void RayMarchNode::setInData(std::shared_ptr<NodeData> _data, PortIndex _portInd
     {
       m_shaderCode = receivedNode->getShaderCode();
       m_variableName = receivedNode->getVariableName();
-      m_functionCode = receivedNode->getFunctionCode();
       updateCode();
 
       m_modelValidationState = NodeValidationState::Valid;
@@ -149,11 +147,9 @@ void RayMarchNode::inputConnectionDeleted(Connection const&)
   m_rayMarchData = std::make_shared<ShaderCodeData>();
   m_shaderCode = QString();
   m_variableName = QString();
-  m_functionCode = QString();
   m_evaluatedCode = QString();
-  m_shaderCode = "*Missing code!*\n";
-  m_functionCode = "*Missing code!*";
-  m_variableName = "*Missing code!*";
+  m_shaderCode = "/*Missing code!*/\n";
+  m_variableName = "/*Missing code!*/";
   updateCode();
 }
 
@@ -211,8 +207,6 @@ void RayMarchNode::updateCode()
     "#define MAX_STEPS 100\n"
     "#define MAX_DISTANCE 100.0\n"
     "#define SURFACE_DISTANCE 0.01\n"
-    "\n"
-    + m_functionCode +
     "\n"
     "float GetDistance(vec3 _p)\n"
     "{\n"

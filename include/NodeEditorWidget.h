@@ -3,6 +3,7 @@
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QLabel>
+#include <QMap>
 
 #include <nodes/Node>
 #include <nodes/NodeData>
@@ -37,6 +38,7 @@ private:
     void createLayouts();
     void createConnections();
     void timerEvent(QTimerEvent *_event);
+    void loadFunctions();
 
     std::shared_ptr<DataModelRegistry> registerDataModels();
     void setStyle();
@@ -54,4 +56,6 @@ private:
     bool m_firstCompile = false;
 
     NGLScene *m_scene;
+
+    QMap<QString, QString> m_functions;
 };

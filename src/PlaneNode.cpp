@@ -6,17 +6,13 @@
 
 PlaneNode::PlaneNode()
 {
-    QString functionCode =
-    "float sdPlane(vec3 _p, float _y)\n"
-    "{\n"
-    "   return _p.y - _y;\n"
-    "}\n";
+    m_variableName = "plane";
+    QString shaderCode = "float " + m_variableName + " = sdPlane(_p, 0);\n";
+    QString functionCall = " = sdPlane(_p, 0);\n";
 
-    QString variableName = "plane";
+    m_planeData = std::make_shared<ShaderCodeData>(shaderCode, m_variableName);
+    m_planeData->setFunctionCall(functionCall);
 
-    QString shaderCode = "float " + variableName + " = sdPlane(_p, 0);\n";
-
-    m_planeData = std::make_shared<ShaderCodeData>(shaderCode, variableName, functionCode);
     m_planeWidget = new PlaneNodeWidget();
     m_codeEditor = new CodeEditor();
     m_codeEditor->setPlainText(shaderCode);
@@ -90,7 +86,6 @@ QJsonObject PlaneNode::save() const
   {
     modelJson["shaderCode"] = m_planeData->getShaderCode();
     modelJson["variableName"] = m_planeData->getVariableName();
-    modelJson["functionCode"] = m_planeData->getFunctionCode();
     modelJson["yPos"] = m_planeWidget->getYPosWidget()->value();
   }
 
@@ -101,7 +96,6 @@ void PlaneNode::restore(QJsonObject const &_p)
 {
   QJsonValue sc = _p["shaderCode"];
   QJsonValue vn = _p["variableName"];
-  QJsonValue fc = _p["functionCode"];
   QJsonValue yp = _p["yPos"];
 
   m_planeData = std::make_shared<ShaderCodeData>();
@@ -116,12 +110,6 @@ void PlaneNode::restore(QJsonObject const &_p)
   {
     QString variableName = vn.toString();
     m_planeData->setVariableName(variableName);
-  }
-
-  if (!fc.isUndefined())
-  {
-    QString functionCode = fc.toString();
-    m_planeData->setFunctionCode(functionCode);
   }
 
   if (!yp.isUndefined())
@@ -140,8 +128,11 @@ void PlaneNode::updateNode()
   QString position = QString::number(yPos);
 
   // Update function code
-  QString shaderCode = "float plane = sdPlane(_p, " + position + ");\n";
+  QString shaderCode = "float " + m_variableName + " = sdPlane(_p, " + position + ");\n";
   m_planeData->setShaderCode(shaderCode);
+
+  QString functionCall = " = sdPlane(_p, " + position + ");\n";
+  m_planeData->setFunctionCall(functionCall);
 
   // Tell connected node to update received data
   Q_EMIT dataUpdated(0);

@@ -41,6 +41,8 @@ private:
   std::shared_ptr<ShaderCodeData> m_sphereData;
   SphereNodeWidget *m_sphereWidget;
 
+  QString m_variableName;
+
   CodeEditor *m_codeEditor;
   SyntaxHighlighter *m_syntaxHighlighter;
 };

@@ -6,18 +6,13 @@
 
 SphereNode::SphereNode()
 {
-    QString functionCode =
-    "float sdSphere(vec3 _p, vec3 _pos, float _r)\n"
-    "{\n"
-    "   vec4 sphere = vec4(_pos, _r);\n"
-    "   return length(_p - sphere.xyz) - sphere.w;\n"
-    "}\n";
+    m_variableName = "sphere";
+    QString shaderCode = "float " + m_variableName + " = sdSphere(_p, vec3(0, 0, 0), 1.0);\n";
+    QString functionCall = " = sdSphere(_p, vec3(0, 0, 0), 1.0);\n";
 
-    QString variableName = "sphere";
+    m_sphereData = std::make_shared<ShaderCodeData>(shaderCode, m_variableName);
+    m_sphereData->setFunctionCall(functionCall);
 
-    QString shaderCode = "float " + variableName + " = sdSphere(_p, vec3(0, 0, 0), 1.0);\n";
-
-    m_sphereData = std::make_shared<ShaderCodeData>(shaderCode, variableName, functionCode);
     m_sphereWidget = new SphereNodeWidget();
     m_codeEditor = new CodeEditor();
     m_codeEditor->setPlainText(shaderCode);
@@ -94,7 +89,6 @@ QJsonObject SphereNode::save() const
   {
     modelJson["shaderCode"] = m_sphereData->getShaderCode();
     modelJson["variableName"] = m_sphereData->getVariableName();
-    modelJson["functionCode"] = m_sphereData->getFunctionCode();
     modelJson["xPos"] = m_sphereWidget->getPositionWidget()->getVec3().m_x;
     modelJson["yPos"] = m_sphereWidget->getPositionWidget()->getVec3().m_y;
     modelJson["zPos"] = m_sphereWidget->getPositionWidget()->getVec3().m_z;
@@ -108,7 +102,6 @@ void SphereNode::restore(QJsonObject const &_p)
 {
   QJsonValue sc = _p["shaderCode"];
   QJsonValue vn = _p["variableName"];
-  QJsonValue fc = _p["functionCode"];
   QJsonValue xp = _p["xPos"];
   QJsonValue yp = _p["yPos"];
   QJsonValue zp = _p["zPos"];
@@ -126,12 +119,6 @@ void SphereNode::restore(QJsonObject const &_p)
   {
     QString variableName = vn.toString();
     m_sphereData->setVariableName(variableName);
-  }
-
-  if (!fc.isUndefined())
-  {
-    QString functionCode = fc.toString();
-    m_sphereData->setFunctionCode(functionCode);
   }
 
   if (!xp.isUndefined() && !yp.isUndefined() && !zp.isUndefined())
@@ -159,8 +146,11 @@ void SphereNode::updateNode()
   QString radius = QString::number(m_sphereWidget->getRadiusWidget()->value());
 
   // Update node data
-  QString shaderCode = "float sphere = sdSphere(_p, vec3(" + position + "), " + radius + ");\n";
+  QString shaderCode = "float " + m_variableName + " = sdSphere(_p, vec3(" + position + "), " + radius + ");\n";
   m_sphereData->setShaderCode(shaderCode);
+
+  QString functionCall = " = sdSphere(_p, vec3(" + position + "), " + radius + ");\n";
+  m_sphereData->setFunctionCall(functionCall);
 
   // Tell connected node to update received data
   Q_EMIT dataUpdated(0);

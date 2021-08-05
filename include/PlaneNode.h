@@ -41,6 +41,8 @@ private:
   std::shared_ptr<ShaderCodeData> m_planeData;
   PlaneNodeWidget *m_planeWidget;
 
+  QString m_variableName;
+
   CodeEditor *m_codeEditor;
   SyntaxHighlighter *m_syntaxHighlighter;
 };

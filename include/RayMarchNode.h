@@ -59,7 +59,6 @@ private:
 
   QString m_shaderCode;
   QString m_variableName;
-  QString m_functionCode;
   QString m_evaluatedCode;
 
   QString m_rayOrigin;
