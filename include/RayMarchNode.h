@@ -28,6 +28,8 @@ public:
   QString caption() const override;
   QString name() const override;
   unsigned int nPorts(PortType _portType) const override;
+  bool portCaptionVisible(PortType _portType, PortIndex _portIndex) const override;
+  QString portCaption(PortType _portType, PortIndex _portIndex) const override;
   NodeDataType dataType(PortType _portType, PortIndex _portIndex) const override;
   void setInData(std::shared_ptr<NodeData> _data, PortIndex _portIndex) override;
   std::shared_ptr<NodeData> outData(PortIndex) override;

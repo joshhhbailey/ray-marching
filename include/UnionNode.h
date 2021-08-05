@@ -28,10 +28,12 @@ public:
   void createConnections();
   QString caption() const override;
   QString name() const override;
-  unsigned int nPorts(PortType portType) const override;
-  NodeDataType dataType(PortType portType, PortIndex portIndex) const override;
+  unsigned int nPorts(PortType _portType) const override;
+  bool portCaptionVisible(PortType _portType, PortIndex _portIndex) const override;
+  QString portCaption(PortType _portType, PortIndex _portIndex) const override;
+  NodeDataType dataType(PortType _portType, PortIndex _portIndex) const override;
   void setInData(std::shared_ptr<NodeData>, int) override;
-  std::shared_ptr<NodeData> outData(PortIndex port) override;
+  std::shared_ptr<NodeData> outData(PortIndex _port) override;
   QWidget* embeddedWidget() override;
   QJsonObject save() const override;
   void restore(QJsonObject const &_p) override;
@@ -53,8 +55,8 @@ private:
   QString m_shaderCode;
   QString m_shapeA = "*Missing code!*";
   QString m_shapeAFunctionCode = "*Missing code!*";
-  QString m_shapeAShaderCode = "*Missing code!*";
+  QString m_shapeAShaderCode = "*Missing code!*\n";
   QString m_shapeB = "*Missing code!*";
   QString m_shapeBFunctionCode = "*Missing code!*";
-  QString m_shapeBShaderCode = "*Missing code!*";
+  QString m_shapeBShaderCode = "*Missing code!*\n";
 };

@@ -69,6 +69,34 @@ unsigned int RayMarchNode::nPorts(PortType _portType) const
     return result;
 }
 
+bool RayMarchNode::portCaptionVisible(PortType _portType, PortIndex _portIndex) const
+{
+    Q_UNUSED(_portType);
+    Q_UNUSED(_portIndex);
+    return true;
+}
+
+QString RayMarchNode::portCaption(PortType _portType, PortIndex _portIndex) const
+{
+    switch (_portType)
+    {
+        case PortType::In:
+        {
+            if (_portIndex == 0)
+            {
+                return QStringLiteral("SDF Input");
+            }
+            break;
+        }
+
+        default:
+        {
+            break;
+        }
+    }
+    return QString();
+}
+
 NodeDataType RayMarchNode::dataType(PortType _portType, PortIndex _portIndex) const
 {
     return ShaderCodeData().type();

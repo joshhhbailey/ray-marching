@@ -24,7 +24,7 @@ public:
     m_functionCode = _functionCode;
   }
 
-  NodeDataType type() const override { return NodeDataType {"SDF", "Output"}; }
+  NodeDataType type() const override { return NodeDataType {"SDF", "SDF Output"}; }
 
   QString getShaderCode() const { return m_shaderCode; }
   void setShaderCode(QString const _shaderCode) { m_shaderCode = _shaderCode; }

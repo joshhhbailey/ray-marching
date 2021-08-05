@@ -57,6 +57,43 @@ unsigned int UnionNode::nPorts(PortType _portType) const
     return result;
 }
 
+bool UnionNode::portCaptionVisible(PortType _portType, PortIndex _portIndex) const
+{
+    Q_UNUSED(_portType);
+    Q_UNUSED(_portIndex);
+    return true;
+}
+
+QString UnionNode::portCaption(PortType _portType, PortIndex _portIndex) const
+{
+    switch (_portType)
+    {
+        case PortType::In:
+        {
+            if (_portIndex == 0)
+            {
+                return QStringLiteral("SDF A");
+            }
+            else if (_portIndex == 1)
+            {
+                return QStringLiteral("SDF B");
+            }
+            break;
+        }
+
+        case PortType::Out:
+        {
+            return QStringLiteral("SDF Output");
+        }
+
+        default:
+        {
+            break;
+        }
+    }
+    return QString();
+}
+
 NodeDataType UnionNode::dataType(PortType _portType, PortIndex _portIndex) const
 {
     return ShaderCodeData().type();
@@ -105,13 +142,13 @@ void UnionNode::inputConnectionDeleted(Connection const&_connection)
   {
       m_shapeA = "*Missing code!*";
       m_shapeAFunctionCode = "*Missing code!*";
-      m_shapeAShaderCode = "*Missing code!*";
+      m_shapeAShaderCode = "*Missing code!*\n";
   }
   if (_connection.getPortIndex(PortType::In) == 1)
   {
       m_shapeB = "*Missing code!*";
       m_shapeBFunctionCode = "*Missing code!*";
-      m_shapeBShaderCode = "*Missing code!*";
+      m_shapeBShaderCode = "*Missing code!*\n";
   }
   updateCode();
 }
