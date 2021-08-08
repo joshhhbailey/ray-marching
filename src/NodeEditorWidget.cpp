@@ -30,6 +30,13 @@ void NodeEditorWidget::createWidgets()
     m_compileButton = new QPushButton("Compile");
     m_pauseButton = new QPushButton("Pause/Unpause");
 
+    m_inspectCodeButton = new QPushButton("Inspect Code");
+    m_codeEditor = new CodeEditor();
+    m_codeEditor->setPlainText("Awaiting successful compilation.");
+    m_codeEditor->setReadOnly(true);
+    m_codeEditor->hide();
+    m_syntaxHighlighter = new SyntaxHighlighter(m_codeEditor->document());
+
     m_outputLabel = new QLabel();
     m_outputLabel->setText("[" + QTime::currentTime().toString() + "] Welcome to fragOut!");
 
@@ -39,11 +46,12 @@ void NodeEditorWidget::createWidgets()
 void NodeEditorWidget::createLayouts()
 {
     QGridLayout *mainLayout = new QGridLayout();
-    mainLayout->addWidget(m_nodeEditorView, 0, 0, 1, 2);
+    mainLayout->addWidget(m_nodeEditorView, 0, 0, 1, 3);
     mainLayout->addWidget(m_compileButton, 1, 0, 1, 1);
     mainLayout->addWidget(m_pauseButton, 1, 1, 1, 1);
-    mainLayout->addWidget(m_outputLabel, 2, 0, 1, 2);
-    mainLayout->addWidget(m_timerLabel, 3, 0, 1, 2);
+    mainLayout->addWidget(m_inspectCodeButton, 1, 2, 1, 1);
+    mainLayout->addWidget(m_outputLabel, 2, 0, 1, 3);
+    mainLayout->addWidget(m_timerLabel, 3, 0, 1, 3);
     setLayout(mainLayout);
 }
 
@@ -51,6 +59,7 @@ void NodeEditorWidget::createConnections()
 {
     connect(m_compileButton, SIGNAL(clicked()), this, SLOT(compileButtonClicked()));
     connect(m_pauseButton, SIGNAL(clicked()), this, SLOT(pauseButtonClicked()));
+    connect(m_inspectCodeButton, SIGNAL(clicked()), this, SLOT(inspectCodeButtonClicked()));
 }
 
 void NodeEditorWidget::setupNodeGraph()
@@ -153,6 +162,7 @@ void NodeEditorWidget::compileButtonClicked()
                     string += "Shader compilation successful!";
                     m_pausedTime = 0;
                     m_pauseTime = false;
+                    m_codeEditor->setPlainText(functions + rmNodeData->getShaderCode());
                 }
                 else
                 {
@@ -191,6 +201,12 @@ void NodeEditorWidget::pauseButtonClicked()
             m_pauseTime = false;
         }
     }
+}
+
+void NodeEditorWidget::inspectCodeButtonClicked()
+{
+    m_codeEditor->show();
+    m_codeEditor->raise();
 }
 
 void NodeEditorWidget::timerEvent(QTimerEvent *_event)

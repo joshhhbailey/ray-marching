@@ -13,6 +13,8 @@
 #include <nodes/ConnectionStyle>
 
 #include "NGLScene.h"
+#include "CodeEditor.h"
+#include "SyntaxHighlighter.h"
 
 using QtNodes::DataModelRegistry;
 using QtNodes::FlowScene;
@@ -32,6 +34,7 @@ public:
 public slots:
     void compileButtonClicked();
     void pauseButtonClicked();
+    void inspectCodeButtonClicked();
 
 private:
     void createWidgets();
@@ -46,8 +49,12 @@ private:
     QtNodes::FlowScene *m_nodeEditorScene;
     QtNodes::FlowView *m_nodeEditorView;
 
+    CodeEditor *m_codeEditor;
+    SyntaxHighlighter *m_syntaxHighlighter;
+
     QPushButton *m_compileButton;
     QPushButton *m_pauseButton;
+    QPushButton *m_inspectCodeButton;
     QLabel *m_outputLabel;
     QLabel *m_timerLabel;
 
