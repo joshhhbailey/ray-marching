@@ -32,6 +32,7 @@ public:
   bool portCaptionVisible(PortType _portType, PortIndex _portIndex) const override;
   QString portCaption(PortType _portType, PortIndex _portIndex) const override;
   NodeDataType dataType(PortType _portType, PortIndex _portIndex) const override;
+  ConnectionPolicy portOutConnectionPolicy(PortIndex) const override { return ConnectionPolicy::One; }
   void setInData(std::shared_ptr<NodeData>, int) override;
   std::shared_ptr<NodeData> outData(PortIndex _port) override;
   QWidget* embeddedWidget() override;
@@ -60,6 +61,7 @@ private:
   std::shared_ptr<ShaderCodeData> m_receivedNodeA;
   std::shared_ptr<ShaderCodeData> m_receivedNodeB;
 
+  // Union looping
   QString m_shaderCode;
   QString m_shapeA = "/*Missing code!*/";
   QString m_shapeAShaderCode = "/*Missing code!*/\n";

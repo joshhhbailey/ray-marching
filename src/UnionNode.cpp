@@ -148,8 +148,16 @@ void UnionNode::setInData(std::shared_ptr<NodeData> _data, PortIndex _portIndex)
     }
     if (m_receivedNodeA && m_receivedNodeB)
     {
-      updateCode();
-      m_modelValidationState = NodeValidationState::Valid;
+      if (m_receivedNodeA->getBooleanOp() && m_receivedNodeB->getBooleanOp())
+      {
+        m_modelValidationState = NodeValidationState::Error;
+        m_modelValidationError = QStringLiteral("Invalid inputs!");
+      }
+      else
+      {
+        updateCode();
+        m_modelValidationState = NodeValidationState::Valid;
+      }
     }
 }
 
@@ -188,6 +196,7 @@ void UnionNode::inputConnectionDeleted(Connection const&_connection)
   }
   updateCode();
   m_modelValidationState = NodeValidationState::Error;
+  m_modelValidationError = QStringLiteral("Missing inputs!");
 }
 
 QJsonObject UnionNode::save() const

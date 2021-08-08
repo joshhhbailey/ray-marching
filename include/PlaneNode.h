@@ -27,6 +27,7 @@ public:
   QString name() const override;
   unsigned int nPorts(PortType portType) const override;
   NodeDataType dataType(PortType portType, PortIndex portIndex) const override;
+  ConnectionPolicy portOutConnectionPolicy(PortIndex) const override { return ConnectionPolicy::One; }
   void setInData(std::shared_ptr<NodeData>, int) override { }
   std::shared_ptr<NodeData> outData(PortIndex port) override;
   QWidget* embeddedWidget() override;
