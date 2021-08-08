@@ -37,16 +37,6 @@ public:
   bool getBooleanOp() const { return m_isBooleanOp; }
   void setBooleanOp(bool _bool) { m_isBooleanOp = _bool; }
 
-  QString getShapeA() const { return m_shapeA; }
-  void setShapeA(QString const _shapeA) { m_shapeA = _shapeA; }
-
-  QString getShapeB() const { return m_shapeB; }
-  void setShapeB(QString const _shapeB) { m_shapeB = _shapeB; }
-
-  int getIteration() { return m_iteration; }
-  void setIteration(int _iteration) { m_iteration = _iteration; };
-  void addIteration() { m_iteration++; }
-
 private:
   QString m_shaderCode;
   QString m_variableName;
@@ -54,7 +44,4 @@ private:
 
   // Boolean Operators
   bool m_isBooleanOp = false;
-  QString m_shapeA;
-  QString m_shapeB;
-  int m_iteration = 0;
 };

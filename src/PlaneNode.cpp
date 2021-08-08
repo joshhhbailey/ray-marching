@@ -6,7 +6,7 @@
 
 PlaneNode::PlaneNode()
 {
-    m_variableName = "plane";
+    m_variableName = "plane0";
     QString shaderCode = "float " + m_variableName + " = sdPlane(_p, 0);\n";
     QString functionCall = " = sdPlane(_p, 0);\n";
 
@@ -25,6 +25,7 @@ PlaneNode::PlaneNode()
 
 void PlaneNode::createConnections()
 {
+  connect(m_planeWidget->getIDWidget(), SIGNAL(valueChanged(int)), this, SLOT(updateNode()));
   connect(m_planeWidget->getYPosWidget(), SIGNAL(valueChanged(double)), this, SLOT(updateNode()));
   connect(m_planeWidget->getInspectCodeButton(), SIGNAL(clicked()), this, SLOT(inspectCodeButtonClicked()));
 }
@@ -87,6 +88,7 @@ QJsonObject PlaneNode::save() const
     modelJson["shaderCode"] = m_planeData->getShaderCode();
     modelJson["variableName"] = m_planeData->getVariableName();
     modelJson["yPos"] = m_planeWidget->getYPosWidget()->value();
+    modelJson["id"] = m_planeWidget->getIDWidget()->value();
   }
 
   return modelJson;
@@ -97,6 +99,7 @@ void PlaneNode::restore(QJsonObject const &_p)
   QJsonValue sc = _p["shaderCode"];
   QJsonValue vn = _p["variableName"];
   QJsonValue yp = _p["yPos"];
+  QJsonValue id = _p["id"];
 
   m_planeData = std::make_shared<ShaderCodeData>();
 
@@ -117,6 +120,11 @@ void PlaneNode::restore(QJsonObject const &_p)
     double yPos = yp.toDouble();
     m_planeWidget->getYPosWidget()->setValue(yPos);
   }
+
+  if (!id.isUndefined())
+  {
+    m_planeWidget->getIDWidget()->setValue(id.toInt());
+  }
 }
 
 void PlaneNode::updateNode()
@@ -127,7 +135,10 @@ void PlaneNode::updateNode()
   // Convert to string
   QString position = QString::number(yPos);
 
-  // Update function code
+  // Update node data
+  m_variableName = "plane" + QString::number(m_planeWidget->getIDWidget()->value());
+  m_planeData->setVariableName(m_variableName);
+
   QString shaderCode = "float " + m_variableName + " = sdPlane(_p, " + position + ");\n";
   m_planeData->setShaderCode(shaderCode);
 

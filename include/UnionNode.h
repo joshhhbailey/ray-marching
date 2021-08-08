@@ -64,7 +64,9 @@ private:
   QString m_shapeA = "/*Missing code!*/";
   QString m_shapeAShaderCode = "/*Missing code!*/\n";
   QString m_shapeAfunctionCall = "/*Missing code!*/";
+  bool m_shapeAisBoolean = false;
   QString m_shapeB = "/*Missing code!*/";
   QString m_shapeBShaderCode = "/*Missing code!*/\n";
   QString m_shapeBfunctionCall = "/*Missing code!*/";
+  bool m_shapeBisBoolean = false;
 };

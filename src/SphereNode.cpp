@@ -6,7 +6,7 @@
 
 SphereNode::SphereNode()
 {
-    m_variableName = "sphere";
+    m_variableName = "sphere0";
     QString shaderCode = "float " + m_variableName + " = sdSphere(_p, vec3(0, 0, 0), 1.0);\n";
     QString functionCall = " = sdSphere(_p, vec3(0, 0, 0), 1.0);\n";
 
@@ -25,6 +25,7 @@ SphereNode::SphereNode()
 
 void SphereNode::createConnections()
 {
+  connect(m_sphereWidget->getIDWidget(), SIGNAL(valueChanged(int)), this, SLOT(updateNode()));
   connect(m_sphereWidget->getPositionWidget()->m_xField, SIGNAL(valueChanged(double)), this, SLOT(updateNode()));
   connect(m_sphereWidget->getPositionWidget()->m_yField, SIGNAL(valueChanged(double)), this, SLOT(updateNode()));
   connect(m_sphereWidget->getPositionWidget()->m_zField, SIGNAL(valueChanged(double)), this, SLOT(updateNode()));
@@ -93,6 +94,7 @@ QJsonObject SphereNode::save() const
     modelJson["yPos"] = m_sphereWidget->getPositionWidget()->getVec3().m_y;
     modelJson["zPos"] = m_sphereWidget->getPositionWidget()->getVec3().m_z;
     modelJson["radius"] = m_sphereWidget->getRadiusWidget()->value();
+    modelJson["id"] = m_sphereWidget->getIDWidget()->value();
   }
 
   return modelJson;
@@ -106,6 +108,7 @@ void SphereNode::restore(QJsonObject const &_p)
   QJsonValue yp = _p["yPos"];
   QJsonValue zp = _p["zPos"];
   QJsonValue r  = _p["radius"];
+  QJsonValue id = _p["id"];
 
   m_sphereData = std::make_shared<ShaderCodeData>();
 
@@ -131,6 +134,11 @@ void SphereNode::restore(QJsonObject const &_p)
   {
     m_sphereWidget->getRadiusWidget()->setValue(r.toDouble());
   }
+
+  if (!id.isUndefined())
+  {
+    m_sphereWidget->getIDWidget()->setValue(id.toInt());
+  }
 }
 
 void SphereNode::updateNode()
@@ -146,6 +154,9 @@ void SphereNode::updateNode()
   QString radius = QString::number(m_sphereWidget->getRadiusWidget()->value());
 
   // Update node data
+  m_variableName = "sphere" + QString::number(m_sphereWidget->getIDWidget()->value());
+  m_sphereData->setVariableName(m_variableName);
+
   QString shaderCode = "float " + m_variableName + " = sdSphere(_p, vec3(" + position + "), " + radius + ");\n";
   m_sphereData->setShaderCode(shaderCode);
 
