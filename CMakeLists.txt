@@ -49,15 +49,21 @@ target_sources(${TargetName} PRIVATE
 	${PROJECT_SOURCE_DIR}/src/SphereNode.cpp
 	${PROJECT_SOURCE_DIR}/src/PlaneNode.cpp
 	${PROJECT_SOURCE_DIR}/src/CapsuleNode.cpp
+	${PROJECT_SOURCE_DIR}/src/CylinderNode.cpp
+	${PROJECT_SOURCE_DIR}/src/BoxNode.cpp
+	${PROJECT_SOURCE_DIR}/src/TorusNode.cpp
 	${PROJECT_SOURCE_DIR}/src/RayMarchNode.cpp
 	${PROJECT_SOURCE_DIR}/src/BooleanNode.cpp
 	
 	${PROJECT_SOURCE_DIR}/src/SphereNodeWidget.cpp
 	${PROJECT_SOURCE_DIR}/src/PlaneNodeWidget.cpp
 	${PROJECT_SOURCE_DIR}/src/CapsuleNodeWidget.cpp
+	${PROJECT_SOURCE_DIR}/src/BoxNodeWidget.cpp
+	${PROJECT_SOURCE_DIR}/src/TorusNodeWidget.cpp
 	${PROJECT_SOURCE_DIR}/src/RayMarchNodeWidget.cpp
 	${PROJECT_SOURCE_DIR}/src/BooleanNodeWidget.cpp
 
+	${PROJECT_SOURCE_DIR}/src/Vec2Widget.cpp
 	${PROJECT_SOURCE_DIR}/src/Vec3Widget.cpp
 
 	# .h
@@ -77,16 +83,22 @@ target_sources(${TargetName} PRIVATE
 	${PROJECT_SOURCE_DIR}/include/SphereNode.h
 	${PROJECT_SOURCE_DIR}/include/PlaneNode.h
 	${PROJECT_SOURCE_DIR}/include/CapsuleNode.h
+	${PROJECT_SOURCE_DIR}/include/CylinderNode.h
+	${PROJECT_SOURCE_DIR}/include/BoxNode.h
+	${PROJECT_SOURCE_DIR}/include/TorusNode.h
 	${PROJECT_SOURCE_DIR}/include/RayMarchNode.h
 	${PROJECT_SOURCE_DIR}/include/BooleanNode.h
 
 	${PROJECT_SOURCE_DIR}/include/SphereNodeWidget.h
 	${PROJECT_SOURCE_DIR}/include/PlaneNodeWidget.h
 	${PROJECT_SOURCE_DIR}/include/CapsuleNodeWidget.h
+	${PROJECT_SOURCE_DIR}/include/BoxNodeWidget.h
+	${PROJECT_SOURCE_DIR}/include/TorusNodeWidget.h
 	${PROJECT_SOURCE_DIR}/include/RayMarchNodeWidget.h
 	${PROJECT_SOURCE_DIR}/include/BooleanNodeWidget.h
 
 	${PROJECT_SOURCE_DIR}/include/ShaderCodeData.h
+	${PROJECT_SOURCE_DIR}/include/Vec2Widget.h
 	${PROJECT_SOURCE_DIR}/include/Vec3Widget.h
 
 	#.glsl

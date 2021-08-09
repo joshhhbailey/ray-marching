@@ -3,6 +3,9 @@
 #include "SphereNode.h"
 #include "PlaneNode.h"
 #include "CapsuleNode.h"
+#include "CylinderNode.h"
+#include "BoxNode.h"
+#include "TorusNode.h"
 #include "RayMarchNode.h"
 #include "BooleanNode.h"
 
@@ -82,17 +85,47 @@ void NodeEditorWidget::loadFunctions()
                                          "}\n\n");
 
     m_functions.insert("Capsule", "float sdCapsule(vec3 _p, vec3 _a, vec3 _b, float _r)\n"
-                                 "{\n"
-                                 "vec3 ab = _b - _a;\n"
-                                 "vec3 ap = _p - _a;\n"
-                                 "\n"
-                                 "float t = dot(ab, ap) / dot(ab, ab);\n"
-                                 "t = clamp(t, 0.0, 1.0);\n"
-                                 "\n"
-                                 "vec3 c = _a + (t * ab);\n"
-                                 "\n"
-                                 "return length(_p - c) - _r;\n"
-                                 "}\n\n");
+                                  "{\n"
+                                   "    vec3 ab = _b - _a;\n"
+                                   "    vec3 ap = _p - _a;\n"
+                                   "\n"
+                                   "    float t = dot(ab, ap) / dot(ab, ab);\n"
+                                   "    t = clamp(t, 0.0, 1.0);\n"
+                                   "\n"
+                                   "    vec3 c = _a + (t * ab);\n"
+                                   "\n"
+                                   "    return length(_p - c) - _r;\n"
+                                   "}\n\n");
+
+    m_functions.insert("Cylinder", "float sdCylinder(vec3 _p, vec3 _a, vec3 _b, float _r)\n"
+                                  "{\n"
+                                   "    vec3 ab = _b - _a;\n"
+                                   "    vec3 ap = _p - _a;\n"
+                                   "\n"
+                                   "    float t = dot(ab, ap) / dot(ab, ab);\n"
+                                   "\n"
+                                   "    vec3 c = _a + (t * ab);\n"
+                                   "\n"
+                                   "    float x = length(_p - c) - _r;\n"
+                                   "    float y = (abs(t - 0.5) - 0.5) * length(ab);\n"
+                                   "    float e = length(max(vec2(x, y), 0.0));\n"
+                                   "    float i = min(max(x, y), 0.0);\n"
+                                   "\n"
+                                   "    return e + i;\n"
+                                   "}\n\n");
+
+    m_functions.insert("Torus", "float sdTorus(vec3 _p, vec3 _pos, vec2 _r)\n"
+                                "{\n"
+                                "   vec3 p = _p - _pos;;\n"
+                                "   float x = length(p.xz) - _r.x;\n"
+                                "   return length(vec2(x, p.y)) - _r.y;\n"
+                                "}\n\n");
+
+    m_functions.insert("Box", "float sdBox(vec3 _p, vec3 _pos, vec3 _size)\n"
+                              "{\n"
+                              "    vec3 p = _p - _pos;\n"
+                              "    return length(max(abs(p) - _size, 0.0));\n"
+                              "}\n\n");
 
     m_functions.insert("Boolean", "float sdIntersection(float _a, float _b)\n"
                                   "{\n"
@@ -117,6 +150,9 @@ std::shared_ptr<DataModelRegistry> NodeEditorWidget::registerDataModels()
     dataModels->registerModel<SphereNode>("SDFs");
     dataModels->registerModel<PlaneNode>("SDFs");
     dataModels->registerModel<CapsuleNode>("SDFs");
+    dataModels->registerModel<CylinderNode>("SDFs");
+    dataModels->registerModel<BoxNode>("SDFs");
+    dataModels->registerModel<TorusNode>("SDFs");
     dataModels->registerModel<RayMarchNode>("RayMarching");
     dataModels->registerModel<BooleanNode>("Operators");
 
