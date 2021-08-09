@@ -2,6 +2,7 @@
 
 #include "SphereNode.h"
 #include "PlaneNode.h"
+#include "CapsuleNode.h"
 #include "RayMarchNode.h"
 #include "BooleanNode.h"
 
@@ -80,6 +81,19 @@ void NodeEditorWidget::loadFunctions()
                                          "   return _p.y - _y;\n"
                                          "}\n\n");
 
+    m_functions.insert("Capsule", "float sdCapsule(vec3 _p, vec3 _a, vec3 _b, float _r)\n"
+                                 "{\n"
+                                 "vec3 ab = _b - _a;\n"
+                                 "vec3 ap = _p - _a;\n"
+                                 "\n"
+                                 "float t = dot(ab, ap) / dot(ab, ab);\n"
+                                 "t = clamp(t, 0.0, 1.0);\n"
+                                 "\n"
+                                 "vec3 c = _a + (t * ab);\n"
+                                 "\n"
+                                 "return length(_p - c) - _r;\n"
+                                 "}\n\n");
+
     m_functions.insert("Boolean", "float sdIntersection(float _a, float _b)\n"
                                   "{\n"
                                   "   return max(_a, _b);\n"
@@ -102,6 +116,7 @@ std::shared_ptr<DataModelRegistry> NodeEditorWidget::registerDataModels()
     
     dataModels->registerModel<SphereNode>("SDFs");
     dataModels->registerModel<PlaneNode>("SDFs");
+    dataModels->registerModel<CapsuleNode>("SDFs");
     dataModels->registerModel<RayMarchNode>("RayMarching");
     dataModels->registerModel<BooleanNode>("Operators");
 
