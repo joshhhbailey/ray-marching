@@ -6,7 +6,7 @@
 #include <nodes/Connection>
 
 #include "ShaderCodeData.h"
-#include "UnionNodeWidget.h"
+#include "BooleanNodeWidget.h"
 #include "CodeEditor.h"
 #include "SyntaxHighlighter.h"
 
@@ -18,13 +18,13 @@ using QtNodes::PortIndex;
 using QtNodes::NodeValidationState;
 using QtNodes::Connection;
 
-class UnionNode : public NodeDataModel
+class BooleanNode : public NodeDataModel
 {
   Q_OBJECT
 
 public:
-  UnionNode();
-  virtual ~UnionNode() {}
+  BooleanNode();
+  virtual ~BooleanNode() {}
   void createConnections();
   QString caption() const override;
   QString name() const override;
@@ -44,16 +44,15 @@ public:
 
 public slots:
   void inspectCodeButtonClicked();
-
-private:
   void updateCode();
 
+private:
   // Validation
   NodeValidationState m_modelValidationState = NodeValidationState::Error;
   QString m_modelValidationError = QStringLiteral("Missing inputs!");
 
-  std::shared_ptr<ShaderCodeData> m_unionData;
-  UnionNodeWidget *m_unionWidget;
+  std::shared_ptr<ShaderCodeData> m_booleanData;
+  BooleanNodeWidget *m_booleanWidget;
 
   CodeEditor *m_codeEditor;
   SyntaxHighlighter *m_syntaxHighlighter;
@@ -61,7 +60,8 @@ private:
   std::shared_ptr<ShaderCodeData> m_receivedNodeA;
   std::shared_ptr<ShaderCodeData> m_receivedNodeB;
 
-  // Union looping
+  // Boolean looping
+  QString m_operatorCall = "sdIntersection";
   QString m_shaderCode;
   QString m_shapeA = "/*Missing code!*/";
   QString m_shapeAShaderCode = "/*Missing code!*/\n";

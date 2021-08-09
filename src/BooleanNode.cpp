@@ -1,14 +1,14 @@
-#include "UnionNode.h"
+#include "BooleanNode.h"
 
 #include <ngl/Vec3.h>
 
 #include <iostream>
 
-UnionNode::UnionNode()
+BooleanNode::BooleanNode()
 {
-    m_unionData = std::make_shared<ShaderCodeData>();
-    m_unionData->setBooleanOp(true);
-    m_unionWidget = new UnionNodeWidget;
+    m_booleanData = std::make_shared<ShaderCodeData>();
+    m_booleanData->setBooleanOp(true);
+    m_booleanWidget = new BooleanNodeWidget;
     m_codeEditor = new CodeEditor();
     updateCode();
     m_codeEditor->setReadOnly(true);
@@ -18,22 +18,23 @@ UnionNode::UnionNode()
     createConnections();
 }
 
-void UnionNode::createConnections()
+void BooleanNode::createConnections()
 {
-  connect(m_unionWidget->getInspectCodeButton(), SIGNAL(clicked()), this, SLOT(inspectCodeButtonClicked()));
+  connect(m_booleanWidget->getOperatorCB(), SIGNAL(currentIndexChanged(int)), this, SLOT(updateCode()));
+  connect(m_booleanWidget->getInspectCodeButton(), SIGNAL(clicked()), this, SLOT(inspectCodeButtonClicked()));
 }
 
-QString UnionNode::caption() const
+QString BooleanNode::caption() const
 {
-    return QString("Union");
+    return QString("Boolean");
 }
 
-QString UnionNode::name() const
+QString BooleanNode::name() const
 {
-    return QString("Union");
+    return QString("Boolean");
 }
 
-unsigned int UnionNode::nPorts(PortType _portType) const
+unsigned int BooleanNode::nPorts(PortType _portType) const
 {
     unsigned int result = 1;
 
@@ -57,14 +58,14 @@ unsigned int UnionNode::nPorts(PortType _portType) const
     return result;
 }
 
-bool UnionNode::portCaptionVisible(PortType _portType, PortIndex _portIndex) const
+bool BooleanNode::portCaptionVisible(PortType _portType, PortIndex _portIndex) const
 {
     Q_UNUSED(_portType);
     Q_UNUSED(_portIndex);
     return true;
 }
 
-QString UnionNode::portCaption(PortType _portType, PortIndex _portIndex) const
+QString BooleanNode::portCaption(PortType _portType, PortIndex _portIndex) const
 {
     switch (_portType)
     {
@@ -94,17 +95,17 @@ QString UnionNode::portCaption(PortType _portType, PortIndex _portIndex) const
     return QString();
 }
 
-NodeDataType UnionNode::dataType(PortType _portType, PortIndex _portIndex) const
+NodeDataType BooleanNode::dataType(PortType _portType, PortIndex _portIndex) const
 {
     return ShaderCodeData().type();
 }
 
-std::shared_ptr<NodeData> UnionNode::outData(PortIndex)
+std::shared_ptr<NodeData> BooleanNode::outData(PortIndex)
 {
-    return m_unionData;
+    return m_booleanData;
 }
 
-void UnionNode::setInData(std::shared_ptr<NodeData> _data, PortIndex _portIndex)
+void BooleanNode::setInData(std::shared_ptr<NodeData> _data, PortIndex _portIndex)
 {
     // Data received
     if (_portIndex == 0)
@@ -161,22 +162,22 @@ void UnionNode::setInData(std::shared_ptr<NodeData> _data, PortIndex _portIndex)
     }
 }
 
-QWidget* UnionNode::embeddedWidget()
+QWidget* BooleanNode::embeddedWidget()
 {
-    return m_unionWidget;
+    return m_booleanWidget;
 }
 
-NodeValidationState UnionNode::validationState() const
+NodeValidationState BooleanNode::validationState() const
 {
   return m_modelValidationState;
 }
 
-QString UnionNode::validationMessage() const
+QString BooleanNode::validationMessage() const
 {
   return m_modelValidationError;
 }
 
-void UnionNode::inputConnectionDeleted(Connection const&_connection)
+void BooleanNode::inputConnectionDeleted(Connection const&_connection)
 {
   if (_connection.getPortIndex(PortType::In) == 0)
   {
@@ -199,12 +200,13 @@ void UnionNode::inputConnectionDeleted(Connection const&_connection)
   m_modelValidationError = QStringLiteral("Missing inputs!");
 }
 
-QJsonObject UnionNode::save() const
+QJsonObject BooleanNode::save() const
 {
   QJsonObject modelJson = NodeDataModel::save();
 
-  if (m_unionData)
+  if (m_booleanData)
   {
+    modelJson["operatorCall"] = m_operatorCall;
     modelJson["shaderCode"] = m_shaderCode;
     modelJson["shapeA"] = m_shapeA;
     modelJson["shapeABooleanOp"] = m_shapeAisBoolean;
@@ -219,8 +221,9 @@ QJsonObject UnionNode::save() const
   return modelJson;
 }
 
-void UnionNode::restore(QJsonObject const &_p)
+void BooleanNode::restore(QJsonObject const &_p)
 {
+  QJsonValue oc = _p["operatorCall"];
   QJsonValue sc = _p["shaderCode"];
   QJsonValue sa = _p["shapeA"];
   QJsonValue sabo = _p["shapeABooleanOp"];
@@ -231,12 +234,18 @@ void UnionNode::restore(QJsonObject const &_p)
   QJsonValue sbsc = _p["shapeBShaderCode"];
   QJsonValue sbfc = _p["shapeBfunctionCall"];
 
-  m_unionData = std::make_shared<ShaderCodeData>();
+  m_booleanData = std::make_shared<ShaderCodeData>();
+
+  if (!oc.isUndefined())
+  {
+    QString operatorCall = oc.toString();
+    m_operatorCall = operatorCall;
+  }
 
   if (!sc.isUndefined())
   {
     QString shaderCode = sc.toString();
-    m_unionData->setShaderCode(shaderCode);
+    m_booleanData->setShaderCode(shaderCode);
     m_shaderCode = shaderCode;
   }
 
@@ -289,13 +298,27 @@ void UnionNode::restore(QJsonObject const &_p)
   }
 }
 
-void UnionNode::updateCode()
+void BooleanNode::updateCode()
 {
+    // Operator selection
+    if (m_booleanWidget->getOperatorCB()->currentIndex() == 0)
+    {
+      m_operatorCall = "sdIntersection";
+    }
+    else if (m_booleanWidget->getOperatorCB()->currentIndex() == 1)
+    {
+      m_operatorCall = "sdUnion";
+    }
+    else
+    {
+      m_operatorCall = "sdDifference";
+    }
+
     // Setup variables
     m_shaderCode =
     "float " + m_shapeA + m_shapeAfunctionCall +
     "float " + m_shapeB + m_shapeBfunctionCall +
-    "distance = sdUnion(" + m_shapeA + ", " + m_shapeB + ");\n";
+    "distance = " + m_operatorCall + "(" + m_shapeA + ", " + m_shapeB + ");\n";
 
     if (m_shapeAisBoolean)
     {
@@ -304,7 +327,7 @@ void UnionNode::updateCode()
       m_shaderCode =
       m_shapeAShaderCode +
       "float " + m_shapeB + m_shapeBfunctionCall +
-      "distance = sdUnion(" + m_shapeA + ", " + m_shapeB + ");\n";
+      "distance = " + m_operatorCall + "(" + m_shapeA + ", " + m_shapeB + ");\n";
     }
 
     if (m_shapeBisBoolean)
@@ -314,19 +337,19 @@ void UnionNode::updateCode()
       m_shaderCode =
       m_shapeBShaderCode +
       "float " + m_shapeA + m_shapeAfunctionCall +
-      "distance = sdUnion(" + m_shapeA + ", " + m_shapeB + ");\n";
+      "distance = " + m_operatorCall + "(" + m_shapeA + ", " + m_shapeB + ");\n";
     }
 
     // Update node data
-    m_unionData->setVariableName("0");
-    m_unionData->setShaderCode(m_shaderCode);
+    m_booleanData->setVariableName("0");
+    m_booleanData->setShaderCode(m_shaderCode);
     m_codeEditor->setPlainText(m_shaderCode);
 
     // Tell connected node to update received data
     Q_EMIT dataUpdated(0);
 }
 
-void UnionNode::inspectCodeButtonClicked()
+void BooleanNode::inspectCodeButtonClicked()
 {
   m_codeEditor->show();
   m_codeEditor->raise();

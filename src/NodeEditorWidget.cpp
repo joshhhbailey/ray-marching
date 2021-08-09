@@ -3,7 +3,7 @@
 #include "SphereNode.h"
 #include "PlaneNode.h"
 #include "RayMarchNode.h"
-#include "UnionNode.h"
+#include "BooleanNode.h"
 
 #include <QtWidgets/QFormLayout>
 #include <QTime>
@@ -80,10 +80,20 @@ void NodeEditorWidget::loadFunctions()
                                          "   return _p.y - _y;\n"
                                          "}\n\n");
 
-    m_functions.insert("Union", "float sdUnion(float _a, float _b)\n"
-                                "{\n"
-                                "   return min(_a, _b);\n"
-                                "}\n\n");
+    m_functions.insert("Boolean", "float sdIntersection(float _a, float _b)\n"
+                                  "{\n"
+                                  "   return max(_a, _b);\n"
+                                  "}\n"
+                                  "\n"
+                                  "float sdUnion(float _a, float _b)\n"
+                                  "{\n"
+                                  "   return min(_a, _b);\n"
+                                  "}\n"
+                                  "\n"
+                                  "float sdDifference(float _a, float _b)\n"
+                                  "{\n"
+                                  "   return max(_a, -_b);\n"
+                                  "}\n\n");
 }
 
 std::shared_ptr<DataModelRegistry> NodeEditorWidget::registerDataModels()
@@ -93,9 +103,7 @@ std::shared_ptr<DataModelRegistry> NodeEditorWidget::registerDataModels()
     dataModels->registerModel<SphereNode>("SDFs");
     dataModels->registerModel<PlaneNode>("SDFs");
     dataModels->registerModel<RayMarchNode>("RayMarching");
-    dataModels->registerModel<UnionNode>("Boolean Operators");
-    /*dataModels->registerModel<IntersectionNode>("Boolean Operators");
-    dataModels->registerModel<DifferenceNode>("Boolean Operators");*/
+    dataModels->registerModel<BooleanNode>("Operators");
 
   return dataModels;
 }
