@@ -42,6 +42,7 @@ void ShaderCodeContainer::openFile()
         QTextStream in(&file);
         QString text = in.readAll();
         m_shaderCodeWidget->getCodeEditor()->setShaderCode(text);
+        file.close();
     }
     else
     {

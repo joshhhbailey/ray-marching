@@ -65,6 +65,7 @@ target_sources(${TargetName} PRIVATE
 
 	${PROJECT_SOURCE_DIR}/src/Vec2Widget.cpp
 	${PROJECT_SOURCE_DIR}/src/Vec3Widget.cpp
+	${PROJECT_SOURCE_DIR}/src/AboutWidget.cpp
 
 	# .h
 	${PROJECT_SOURCE_DIR}/include/WindowParams.h
@@ -100,6 +101,7 @@ target_sources(${TargetName} PRIVATE
 	${PROJECT_SOURCE_DIR}/include/ShaderCodeData.h
 	${PROJECT_SOURCE_DIR}/include/Vec2Widget.h
 	${PROJECT_SOURCE_DIR}/include/Vec3Widget.h
+	${PROJECT_SOURCE_DIR}/include/AboutWidget.h
 
 	#.glsl
 	${PROJECT_SOURCE_DIR}/shaders/DefaultFragment.glsl

@@ -16,8 +16,6 @@ SphereNode::SphereNode()
     m_sphereWidget = new SphereNodeWidget();
     m_codeEditor = new CodeEditor();
     m_codeEditor->setPlainText(shaderCode);
-    m_codeEditor->setReadOnly(true);
-    m_codeEditor->hide();
     m_syntaxHighlighter = new SyntaxHighlighter(m_codeEditor->document());
 
     createConnections();

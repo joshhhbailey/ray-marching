@@ -25,22 +25,18 @@ void Window::timerEvent(QTimerEvent *_event)
     // When docked limit window width (25-50%), otherwise uncapped
     if (!m_shaderEditorDock->isWindow())
     {
-        m_shaderEditorDock->setMinimumWidth(size().width() / 4);
         m_shaderEditorDock->setMaximumWidth(size().width() / 2);
     }
     else
     {
-        m_shaderEditorDock->setMinimumWidth(0);
         m_shaderEditorDock->setMaximumWidth(QWIDGETSIZE_MAX);
     }
     if (!m_nodeEditorDock->isWindow())
     {
-        m_nodeEditorDock->setMinimumWidth(size().width() / 4);
         m_nodeEditorDock->setMaximumWidth(size().width() / 2);
     }
     else
     {
-        m_nodeEditorDock->setMinimumWidth(0);
         m_nodeEditorDock->setMaximumWidth(QWIDGETSIZE_MAX);
     }
 
@@ -126,6 +122,7 @@ void Window::createWidgets()
     m_shaderEditorDock = new QDockWidget(tr("Code Editor"), this);
     m_shaderEditorDock->setAllowedAreas(Qt::RightDockWidgetArea | Qt::LeftDockWidgetArea);
     m_shaderEditorDock->setWidget(m_shaderCodeContainer);
+    m_shaderEditorDock->setMinimumWidth(size().width() / 4);
     addDockWidget(Qt::RightDockWidgetArea, m_shaderEditorDock);
 
     // Create Node Editor Container dockable widget
@@ -133,8 +130,13 @@ void Window::createWidgets()
     m_nodeEditorDock = new QDockWidget(tr("Node Editor"), this);
     m_nodeEditorDock->setAllowedAreas(Qt::RightDockWidgetArea | Qt::LeftDockWidgetArea);
     m_nodeEditorDock->setWidget(m_nodeEditorContainer);
+    m_nodeEditorDock->setMinimumWidth(size().width() / 4);
     addDockWidget(Qt::LeftDockWidgetArea, m_nodeEditorDock);
     m_nodeEditorDock->hide();
+
+    // Create About widget
+    m_aboutWidget = new AboutWidget();
+    m_aboutWidget->setFixedSize(400, 600);
 }
 
 void Window::createLayouts()
@@ -163,6 +165,7 @@ void Window::createConnections()
     connect(m_exitAction, SIGNAL(triggered()), m_application, SLOT(quit()));
     connect(m_shaderEditorAction, SIGNAL(triggered()), m_shaderEditorDock, SLOT(show()));
     connect(m_nodeEditorAction, SIGNAL(triggered()), m_nodeEditorDock, SLOT(show()));
+    connect(m_aboutAction, SIGNAL(triggered()), m_aboutWidget, SLOT(show()));
 }
 
 QPalette *Window::darkPalette()

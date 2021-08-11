@@ -18,6 +18,7 @@ public:
 public slots:
     void compileButtonClicked();
     void pauseButtonClicked();
+    void libraryButtonClicked();
 
 private:
     void createWidgets();
@@ -25,12 +26,20 @@ private:
     void createConnections();
     void timerEvent(QTimerEvent *_event);
 
+    void loadLibrary();
+
     CodeEditor *m_codeEditor;
     SyntaxHighlighter *m_syntaxHighlighter;
+
+    CodeEditor *m_libraryEditor;
+    SyntaxHighlighter *m_libraryHighlighter;
+    bool m_libraryLoaded = false;
+
     QLabel *m_fontSizeLabel;
     QSpinBox *m_fontSize;
     QPushButton *m_compileButton;
     QPushButton *m_pauseButton;
+    QPushButton *m_libraryButton;
     QLabel *m_outputLabel;
     QLabel *m_timerLabel;
 

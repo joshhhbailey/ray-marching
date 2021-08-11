@@ -10,7 +10,6 @@ RayMarchNode::RayMarchNode()
     m_rayMarchWidget = new RayMarchNodeWidget();
     m_codeEditor = new CodeEditor();
     m_codeEditor->setReadOnly(true);
-    m_codeEditor->hide();
     m_syntaxHighlighter = new SyntaxHighlighter(m_codeEditor->document());
 
     m_shaderCode = "/*Missing code!*/\n";

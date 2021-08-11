@@ -7,6 +7,7 @@
 #include "NGLScene.h"
 #include "ShaderCodeContainer.h"
 #include "NodeEditorContainer.h"
+#include "AboutWidget.h"
 
 class Window : public QMainWindow
 {
@@ -55,4 +56,6 @@ private:
 
     ShaderCodeContainer *m_shaderCodeContainer;
     QDockWidget *m_shaderEditorDock;
+
+    AboutWidget *m_aboutWidget;
 };

@@ -12,7 +12,6 @@ BooleanNode::BooleanNode()
     m_codeEditor = new CodeEditor();
     updateCode();
     m_codeEditor->setReadOnly(true);
-    m_codeEditor->hide();
     m_syntaxHighlighter = new SyntaxHighlighter(m_codeEditor->document());
 
     createConnections();

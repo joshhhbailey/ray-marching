@@ -22,13 +22,9 @@ float GetDistance(vec3 _p)
 {
     float plane = sdPlane(_p, 0);
     float sphere = sdSphere(_p, vec3(0, 1, 6), 1.0);
-    //float capsule = sdCapsule(_p, vec3(0, 1, 6), vec3(1, 2, 6), 0.2);
-    
-
 
     // Return distance of closest scene object
     float closestDistance = min(sphere, plane);
-    //closestDistance = min(closestDistance, capsule);
 
     return closestDistance;
 }
