@@ -7,6 +7,7 @@
 SphereNode::SphereNode()
 {
     m_variableName = "sphere0";
+    m_material.insert(m_variableName, ngl::Vec3(0.0, 0.0, 0.0));
     QString shaderCode = "float " + m_variableName + " = sdSphere(_p, vec3(0, 0, 0), 1.0);\n";
     QString functionCall = " = sdSphere(_p, vec3(0, 0, 0), 1.0);\n";
 
@@ -28,6 +29,9 @@ void SphereNode::createConnections()
   connect(m_sphereWidget->getPositionWidget()->m_yField, SIGNAL(valueChanged(double)), this, SLOT(updateNode()));
   connect(m_sphereWidget->getPositionWidget()->m_zField, SIGNAL(valueChanged(double)), this, SLOT(updateNode()));
   connect(m_sphereWidget->getRadiusWidget(), SIGNAL(valueChanged(double)), this, SLOT(updateNode()));
+  connect(m_sphereWidget->getColourWidget()->m_xField, SIGNAL(valueChanged(double)), this, SLOT(updateNode()));
+  connect(m_sphereWidget->getColourWidget()->m_yField, SIGNAL(valueChanged(double)), this, SLOT(updateNode()));
+  connect(m_sphereWidget->getColourWidget()->m_zField, SIGNAL(valueChanged(double)), this, SLOT(updateNode()));
   connect(m_sphereWidget->getInspectCodeButton(), SIGNAL(clicked()), this, SLOT(inspectCodeButtonClicked()));
 }
 
@@ -92,6 +96,9 @@ QJsonObject SphereNode::save() const
     modelJson["yPos"] = m_sphereWidget->getPositionWidget()->getVec3().m_y;
     modelJson["zPos"] = m_sphereWidget->getPositionWidget()->getVec3().m_z;
     modelJson["radius"] = m_sphereWidget->getRadiusWidget()->value();
+    modelJson["R"] = m_sphereWidget->getColourWidget()->getVec3().m_x;
+    modelJson["G"] = m_sphereWidget->getColourWidget()->getVec3().m_y;
+    modelJson["B"] = m_sphereWidget->getColourWidget()->getVec3().m_z;
     modelJson["id"] = m_sphereWidget->getIDWidget()->value();
   }
 
@@ -106,6 +113,9 @@ void SphereNode::restore(QJsonObject const &_p)
   QJsonValue yp = _p["yPos"];
   QJsonValue zp = _p["zPos"];
   QJsonValue r  = _p["radius"];
+  QJsonValue R = _p["R"];
+  QJsonValue G = _p["G"];
+  QJsonValue B = _p["B"];
   QJsonValue id = _p["id"];
 
   m_sphereData = std::make_shared<ShaderCodeData>();
@@ -131,6 +141,12 @@ void SphereNode::restore(QJsonObject const &_p)
   if (!r.isUndefined())
   {
     m_sphereWidget->getRadiusWidget()->setValue(r.toDouble());
+  }
+
+  if (!R.isUndefined() && !G.isUndefined() && !B.isUndefined())
+  {
+    ngl::Vec3 colour = ngl::Vec3(R.toDouble(), G.toDouble(), B.toDouble());
+    m_sphereWidget->getColourWidget()->setVec3(colour);
   }
 
   if (!id.isUndefined())
@@ -160,6 +176,10 @@ void SphereNode::updateNode()
 
   QString functionCall = " = sdSphere(_p, vec3(" + position + "), " + radius + ");\n";
   m_sphereData->setFunctionCall(functionCall);
+
+  m_material.clear();
+  m_material.insert(m_variableName, m_sphereWidget->getColourWidget()->getVec3());
+  m_sphereData->setMaterials(m_material);
 
   // Tell connected node to update received data
   Q_EMIT dataUpdated(0);

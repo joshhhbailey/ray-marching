@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QString>
+#include <QMap>
 
 #include <nodes/NodeData>
 
@@ -37,10 +38,14 @@ public:
   bool getBooleanOp() const { return m_isBooleanOp; }
   void setBooleanOp(bool _bool) { m_isBooleanOp = _bool; }
 
+  QMap<QString, ngl::Vec3> getMaterials() const { return m_materials; }
+  void setMaterials(QMap<QString, ngl::Vec3> _materials) { m_materials = _materials; }
+
 private:
   QString m_shaderCode;
   QString m_variableName;
   QString m_functionCall;
+  QMap<QString, ngl::Vec3> m_materials;
 
   // Boolean Operators
   bool m_isBooleanOp = false;

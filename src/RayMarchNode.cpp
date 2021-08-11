@@ -117,6 +117,7 @@ void RayMarchNode::setInData(std::shared_ptr<NodeData> _data, PortIndex _portInd
     {
       m_shaderCode = receivedNode->getShaderCode();
       m_variableName = receivedNode->getVariableName();
+      m_materials = receivedNode->getMaterials();
       updateCode();
 
       m_modelValidationState = NodeValidationState::Valid;
@@ -158,7 +159,6 @@ QJsonObject RayMarchNode::save() const
 
   if (m_rayMarchData)
   {
-    modelJson["shaderCode"] = m_rayMarchData->getShaderCode();
     modelJson["ROxPos"] = m_rayMarchWidget->getRayOriginWidget()->getVec3().m_x;
     modelJson["ROyPos"] = m_rayMarchWidget->getRayOriginWidget()->getVec3().m_y;
     modelJson["ROzPos"] = m_rayMarchWidget->getRayOriginWidget()->getVec3().m_z;
@@ -171,7 +171,6 @@ QJsonObject RayMarchNode::save() const
 
 void RayMarchNode::restore(QJsonObject const &_p)
 {
-  QJsonValue sc = _p["shaderCode"];
   QJsonValue ROxp = _p["ROxPos"];
   QJsonValue ROyp = _p["ROyPos"];
   QJsonValue ROzp = _p["ROzPos"];
@@ -180,12 +179,6 @@ void RayMarchNode::restore(QJsonObject const &_p)
   QJsonValue lightzp = _p["lightzPos"];
 
   m_rayMarchData = std::make_shared<ShaderCodeData>();
-
-  if (!sc.isUndefined())
-  {
-    QString shaderCode = sc.toString();
-    m_rayMarchData->setShaderCode(shaderCode);
-  }
 
   if (!ROxp.isUndefined() && !ROyp.isUndefined() && !ROzp.isUndefined())
   {
@@ -198,62 +191,94 @@ void RayMarchNode::restore(QJsonObject const &_p)
     ngl::Vec3 lightPosition = ngl::Vec3(lightxp.toDouble(), lightyp.toDouble(), lightzp.toDouble());
     m_rayMarchWidget->getLightPositionWidget()->setVec3(lightPosition);
   }
+  updateNode();
 }
 
 void RayMarchNode::updateCode()
 {
+  QString materialIndexes = QString();
+  QString materialDefinitions = QString();
+  int i = 0;
+
+  for (auto name : m_materials.keys())
+  {
+    materialIndexes +=
+      "if (distance == " + name + ")\n"
+      "{\n"
+      "    material = " + QString::number(i) + ";\n"
+      "}\n\n";
+
+    ngl::Vec3 colourVec = m_materials.value(name);
+    QString colour = QString::number(colourVec.m_x) + ", " + QString::number(colourVec.m_y) + ", " + QString::number(colourVec.m_z);
+
+    materialDefinitions +=
+      "if (material == " + QString::number(i) + ")\n"
+      "{\n"
+      "      colour *= vec3(" + colour + ");\n"
+      "}\n\n";
+    
+    i++;
+  }
+
+
   m_evaluatedCode =
     "#define MAX_STEPS 100\n"
     "#define MAX_DISTANCE 100.0\n"
     "#define SURFACE_DISTANCE 0.01\n"
     "\n"
-    "float GetDistance(vec3 _p)\n"
+    "vec2 GetDistance(vec3 _p)\n"
     "{\n"
     "float distance = 1000;\n"
     + m_shaderCode +
     "\n"
+    "int material = 0;\n"
+    "if (distance != 1000)\n"
+    "{\n"
+    + materialIndexes +
+    "}\n"
     "   // Return distance of closest scene object\n"
     "  if (distance == 1000)\n"
     "  {\n"
-	  "    return " + m_variableName + ";\n"
+	  "    return vec2(" + m_variableName + ", material);\n"
     "  }"
     "\n"
-    "   return distance;\n"
+    "   return vec2(distance, material);\n"
     "}\n"
     "\n"
-    "float RayMarch(vec3 _rayOrigin, vec3 _rayDirection)\n"
+    "vec2 RayMarch(vec3 _rayOrigin, vec3 _rayDirection)\n"
     "{\n"
     "   float originDistance = 0.0;\n"
+    "   vec2 sceneDistance = vec2(0.0);\n"
     "   for (int i = 0; i < MAX_STEPS; i++)\n"
     "   {\n"
     "       // Marching point\n"
     "       vec3 p = _rayOrigin + (originDistance * _rayDirection);\n"
     "\n"
     "       // Calculate distance from current point (p) to scene object\n"
-    "       float sceneDistance = GetDistance(p);\n"
-    "       originDistance += sceneDistance;\n"
+    "       sceneDistance = GetDistance(p);\n"
+    "       originDistance += sceneDistance.x;\n"
     "\n"
     "       // Scene has been hit, or surpassed MAX_DISTANCE\n"
-    "       if (sceneDistance < SURFACE_DISTANCE || originDistance > MAX_DISTANCE)\n"
+    "       if (abs(sceneDistance.x) < SURFACE_DISTANCE || originDistance > MAX_DISTANCE)\n"
     "       {\n"
     "           break;\n"
     "       }\n"
     "   }\n"
-    "   return originDistance;\n"
+    "   return vec2(originDistance, sceneDistance.y);\n"
     "}\n"
     "\n"
     "vec3 GetNormal(vec3 _p)\n"
     "{\n"
     "    // Distance from point _p to surface\n"
-    "    float surfaceDistance = GetDistance(_p);\n"
+    "    float surfaceDistance = GetDistance(_p).x;\n"
     "\n"
     "    // Distance to sample surrounding points\n"
     "    vec2 threshold = vec2(0.01, 0);\n"
     "\n"
     "    // Sample points\n"
-    "    vec3 normal = surfaceDistance - vec3(GetDistance(_p - threshold.xyy),\n"
-    "                                       GetDistance(_p - threshold.yxy),\n"
-    "                                       GetDistance(_p - threshold.yyx));\n"
+    "    vec3 normal = surfaceDistance - vec3(GetDistance(_p - threshold.xyy).x,\n"
+    "                                       GetDistance(_p - threshold.yxy).x,\n"
+    "                                       GetDistance(_p - threshold.yyx).x);\n"
     "\n"
     "    return normalize(normal);\n"
     "}\n"
@@ -272,7 +297,7 @@ void RayMarchNode::updateCode()
     "   float diffuse = clamp(dot(normal, lightVector), 0.0, 1.0);\n"
     "\n"
     "   // Calculate distance between _p and light source\n"
-    "   float lightDistance = RayMarch(_p + (normal * SURFACE_DISTANCE * 2.0), lightVector);\n"
+    "   float lightDistance = RayMarch(_p + (normal * SURFACE_DISTANCE * 2.0), lightVector).x;\n"
     "\n"
     "   // Hit something\n"
     "   if (lightDistance < length(lightPosition - _p))\n"
@@ -296,15 +321,21 @@ void RayMarchNode::updateCode()
     "   vec3 rayDirection = normalize(vec3(uv.x, uv.y, 1));\n"
     "\n"
     "   // Fire rays, return distance to intersection\n"
-    "   float rayDistance = RayMarch(rayOrigin, rayDirection);\n"
+    "   vec2 rayDistance = RayMarch(rayOrigin, rayDirection);\n"
     "\n"
-    "   // Get point of intersection\n"
-    "   vec3 p = rayOrigin + (rayDirection * rayDistance);\n"
+    "   if (rayDistance.x < MAX_DISTANCE)\n"
+    "   {\n"
+    "       // Get point of intersection\n"
+    "       vec3 p = rayOrigin + (rayDirection * rayDistance.x);\n"
     "\n"
-    "   // Calculate lighting and shadows\n"
-    "   float diffuse = GetLight(p);\n"
-    "   colour = vec3(diffuse);\n"
+    "       // Calculate lighting and shadows\n"
+    "       float diffuse = GetLight(p);\n"
+    "       colour = vec3(diffuse);\n"
     "\n"
+    "       int material = int(rayDistance.y);\n"
+    "\n"
+    + materialDefinitions +
+    "   }\n"
     "   fragColour = vec4(colour, 1.0);\n"
     "}\n";
 

@@ -4,6 +4,8 @@
 
 #include <nodes/NodeDataModel>
 
+#include <ngl/Vec3.h>
+
 #include "ShaderCodeData.h"
 #include "SphereNodeWidget.h"
 #include "CodeEditor.h"
@@ -43,6 +45,7 @@ private:
   SphereNodeWidget *m_sphereWidget;
 
   QString m_variableName;
+  QMap<QString, ngl::Vec3> m_material;
 
   CodeEditor *m_codeEditor;
   SyntaxHighlighter *m_syntaxHighlighter;
