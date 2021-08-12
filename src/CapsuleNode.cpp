@@ -7,11 +7,12 @@
 CapsuleNode::CapsuleNode()
 {
     m_variableName = "capsule0";
+    m_materialMap.insert(m_variableName, ngl::Vec3(1.0f, 1.0f, 1.0f));
     QString shaderCode = "float " + m_variableName + " = sdCapsule(_p, vec3(0, 0, 0), vec3(0, 0, 0), 1.0);\n";
     QString functionCall = " = sdCapsule(_p, vec3(0, 0, 0), vec3(0, 0, 0), 1.0);\n";
 
-    m_capsuleData = std::make_shared<ShaderCodeData>(shaderCode, m_variableName);
-    m_capsuleData->setFunctionCall(functionCall);
+    m_nodeData = std::make_shared<ShaderCodeData>(shaderCode, m_variableName);
+    m_nodeData->setFunctionCall(functionCall);
 
     m_capsuleWidget = new CapsuleNodeWidget();
     m_codeEditor = new CodeEditor();
@@ -45,38 +46,26 @@ QString CapsuleNode::name() const
     return QString("Capsule");
 }
 
-unsigned int CapsuleNode::nPorts(PortType _portType) const
-{
-    unsigned int result = 1;
-
-    switch (_portType)
-    {
-        case PortType::In:
-        {
-            result = 0;
-            break;
-        }
-        case PortType::Out:
-        {
-            result = 1;
-            break;
-        }
-        case PortType::None:
-        {
-            break;
-        }
-    }
-    return result;
-}
-
-NodeDataType CapsuleNode::dataType(PortType _portType, PortIndex _portIndex) const
-{
-    return ShaderCodeData().type();
-}
-
 std::shared_ptr<NodeData> CapsuleNode::outData(PortIndex)
 {
-    return m_capsuleData;
+    return m_nodeData;
+}
+
+void CapsuleNode::setInData(std::shared_ptr<NodeData> _data, PortIndex _portIndex)
+{
+    m_receivedNode = std::dynamic_pointer_cast<ShaderCodeData>(_data);
+
+    // Data received
+    if (m_receivedNode)
+    {
+        if (_portIndex == 0)
+        {
+            m_materialMap.clear();
+            m_materialMap.insert(m_variableName, m_receivedNode->getMaterial());
+            m_nodeData->setMaterialMap(m_materialMap);
+        }
+    }
+    updateNode();
 }
 
 QWidget* CapsuleNode::embeddedWidget()
@@ -88,10 +77,10 @@ QJsonObject CapsuleNode::save() const
 {
   QJsonObject modelJson = NodeDataModel::save();
 
-  if (m_capsuleData)
+  if (m_nodeData)
   {
-    modelJson["shaderCode"] = m_capsuleData->getShaderCode();
-    modelJson["variableName"] = m_capsuleData->getVariableName();
+    modelJson["shaderCode"] = m_nodeData->getShaderCode();
+    modelJson["variableName"] = m_nodeData->getVariableName();
     modelJson["AxPos"] = m_capsuleWidget->getPositionAWidget()->getVec3().m_x;
     modelJson["AyPos"] = m_capsuleWidget->getPositionAWidget()->getVec3().m_y;
     modelJson["AzPos"] = m_capsuleWidget->getPositionAWidget()->getVec3().m_z;
@@ -118,18 +107,18 @@ void CapsuleNode::restore(QJsonObject const &_p)
   QJsonValue r  = _p["radius"];
   QJsonValue id = _p["id"];
 
-  m_capsuleData = std::make_shared<ShaderCodeData>();
+  m_nodeData = std::make_shared<ShaderCodeData>();
 
   if (!sc.isUndefined())
   {
     QString shaderCode = sc.toString();
-    m_capsuleData->setShaderCode(shaderCode);
+    m_nodeData->setShaderCode(shaderCode);
   }
 
   if (!vn.isUndefined())
   {
     QString variableName = vn.toString();
-    m_capsuleData->setVariableName(variableName);
+    m_nodeData->setVariableName(variableName);
   }
 
   if (!Axp.isUndefined() && !Ayp.isUndefined() && !Azp.isUndefined())
@@ -155,18 +144,27 @@ void CapsuleNode::restore(QJsonObject const &_p)
   }
 }
 
+void CapsuleNode::inputConnectionDeleted(Connection const&)
+{
+  m_receivedNode = nullptr;
+  m_materialMap.clear();
+  m_materialMap.insert(m_variableName, ngl::Vec3(1.0f, 1.0f, 1.0f));
+  m_nodeData->setMaterialMap(m_materialMap);
+  updateNode();
+}
+
 void CapsuleNode::updateNode()
 {
   // Setup variables
   ngl::Vec3 posA = m_capsuleWidget->getPositionAWidget()->getVec3();
-  int Ax = posA.m_x;
-  int Ay = posA.m_y;
-  int Az = posA.m_z;
+  double Ax = posA.m_x;
+  double Ay = posA.m_y;
+  double Az = posA.m_z;
 
   ngl::Vec3 posB = m_capsuleWidget->getPositionBWidget()->getVec3();
-  int Bx = posB.m_x;
-  int By = posB.m_y;
-  int Bz = posB.m_z;
+  double Bx = posB.m_x;
+  double By = posB.m_y;
+  double Bz = posB.m_z;
 
   // Convert to string
   QString positionA = QString::number(Ax) + ", " + QString::number(Ay) + ", " + QString::number(Az);
@@ -175,13 +173,20 @@ void CapsuleNode::updateNode()
 
   // Update node data
   m_variableName = "capsule" + QString::number(m_capsuleWidget->getIDWidget()->value());
-  m_capsuleData->setVariableName(m_variableName);
+  m_nodeData->setVariableName(m_variableName);
 
   QString shaderCode = "float " + m_variableName + " = sdCapsule(_p, vec3(" + positionA + "), vec3(" + positionB + "), " + radius + ");\n";
-  m_capsuleData->setShaderCode(shaderCode);
+  m_nodeData->setShaderCode(shaderCode);
 
   QString functionCall = " = sdCapsule(_p, vec3(" + positionA + "), vec3(" + positionB + "), " + radius + ");\n";
-  m_capsuleData->setFunctionCall(functionCall);
+  m_nodeData->setFunctionCall(functionCall);
+
+  if (m_receivedNode)
+  {
+    m_materialMap.clear();
+    m_materialMap.insert(m_variableName, m_receivedNode->getMaterial());
+    m_nodeData->setMaterialMap(m_materialMap);
+  }
 
   // Tell connected node to update received data
   Q_EMIT dataUpdated(0);

@@ -7,11 +7,12 @@
 BoxNode::BoxNode()
 {
     m_variableName = "box0";
+    m_materialMap.insert(m_variableName, ngl::Vec3(1.0f, 1.0f, 1.0f));
     QString shaderCode = "float " + m_variableName + " = sdBox(_p, vec3(0, 0, 0), vec3(0, 0, 0));\n";
     QString functionCall = " = sdBox(_p, vec3(0, 0, 0), vec3(0, 0, 0));\n";
 
-    m_boxData = std::make_shared<ShaderCodeData>(shaderCode, m_variableName);
-    m_boxData->setFunctionCall(functionCall);
+    m_nodeData = std::make_shared<ShaderCodeData>(shaderCode, m_variableName);
+    m_nodeData->setFunctionCall(functionCall);
 
     m_boxWidget = new BoxNodeWidget();
     m_codeEditor = new CodeEditor();
@@ -44,38 +45,26 @@ QString BoxNode::name() const
     return QString("Box");
 }
 
-unsigned int BoxNode::nPorts(PortType _portType) const
-{
-    unsigned int result = 1;
-
-    switch (_portType)
-    {
-        case PortType::In:
-        {
-            result = 0;
-            break;
-        }
-        case PortType::Out:
-        {
-            result = 1;
-            break;
-        }
-        case PortType::None:
-        {
-            break;
-        }
-    }
-    return result;
-}
-
-NodeDataType BoxNode::dataType(PortType _portType, PortIndex _portIndex) const
-{
-    return ShaderCodeData().type();
-}
-
 std::shared_ptr<NodeData> BoxNode::outData(PortIndex)
 {
-    return m_boxData;
+    return m_nodeData;
+}
+
+void BoxNode::setInData(std::shared_ptr<NodeData> _data, PortIndex _portIndex)
+{
+    m_receivedNode = std::dynamic_pointer_cast<ShaderCodeData>(_data);
+
+    // Data received
+    if (m_receivedNode)
+    {
+        if (_portIndex == 0)
+        {
+            m_materialMap.clear();
+            m_materialMap.insert(m_variableName, m_receivedNode->getMaterial());
+            m_nodeData->setMaterialMap(m_materialMap);
+        }
+    }
+    updateNode();
 }
 
 QWidget* BoxNode::embeddedWidget()
@@ -87,10 +76,10 @@ QJsonObject BoxNode::save() const
 {
   QJsonObject modelJson = NodeDataModel::save();
 
-  if (m_boxData)
+  if (m_nodeData)
   {
-    modelJson["shaderCode"] = m_boxData->getShaderCode();
-    modelJson["variableName"] = m_boxData->getVariableName();
+    modelJson["shaderCode"] = m_nodeData->getShaderCode();
+    modelJson["variableName"] = m_nodeData->getVariableName();
     modelJson["xPos"] = m_boxWidget->getPositionWidget()->getVec3().m_x;
     modelJson["yPos"] = m_boxWidget->getPositionWidget()->getVec3().m_y;
     modelJson["zPos"] = m_boxWidget->getPositionWidget()->getVec3().m_z;
@@ -115,18 +104,18 @@ void BoxNode::restore(QJsonObject const &_p)
   QJsonValue zs  = _p["zSize"];
   QJsonValue id = _p["id"];
 
-  m_boxData = std::make_shared<ShaderCodeData>();
+  m_nodeData = std::make_shared<ShaderCodeData>();
 
   if (!sc.isUndefined())
   {
     QString shaderCode = sc.toString();
-    m_boxData->setShaderCode(shaderCode);
+    m_nodeData->setShaderCode(shaderCode);
   }
 
   if (!vn.isUndefined())
   {
     QString variableName = vn.toString();
-    m_boxData->setVariableName(variableName);
+    m_nodeData->setVariableName(variableName);
   }
 
   if (!xp.isUndefined() && !yp.isUndefined() && !zp.isUndefined())
@@ -147,18 +136,27 @@ void BoxNode::restore(QJsonObject const &_p)
   }
 }
 
+void BoxNode::inputConnectionDeleted(Connection const&)
+{
+  m_receivedNode = nullptr;
+  m_materialMap.clear();
+  m_materialMap.insert(m_variableName, ngl::Vec3(1.0f, 1.0f, 1.0f));
+  m_nodeData->setMaterialMap(m_materialMap);
+  updateNode();
+}
+
 void BoxNode::updateNode()
 {
   // Setup variables
   ngl::Vec3 pos = m_boxWidget->getPositionWidget()->getVec3();
-  int px = pos.m_x;
-  int py = pos.m_y;
-  int pz = pos.m_z;
+  double px = pos.m_x;
+  double py = pos.m_y;
+  double pz = pos.m_z;
 
   ngl::Vec3 sizeVec = m_boxWidget->getSizeWidget()->getVec3();
-  int sx = sizeVec.m_x;
-  int sy = sizeVec.m_y;
-  int sz = sizeVec.m_z;
+  double sx = sizeVec.m_x;
+  double sy = sizeVec.m_y;
+  double sz = sizeVec.m_z;
 
   // Convert to string
   QString position = QString::number(px) + ", " + QString::number(py) + ", " + QString::number(pz);
@@ -166,13 +164,20 @@ void BoxNode::updateNode()
 
   // Update node data
   m_variableName = "box" + QString::number(m_boxWidget->getIDWidget()->value());
-  m_boxData->setVariableName(m_variableName);
+  m_nodeData->setVariableName(m_variableName);
 
   QString shaderCode = "float " + m_variableName + " = sdBox(_p, vec3(" + position + "), vec3(" + size + "));\n";
-  m_boxData->setShaderCode(shaderCode);
+  m_nodeData->setShaderCode(shaderCode);
 
   QString functionCall = " = sdBox(_p, vec3(" + position + "), vec3(" + size + "));\n";
-  m_boxData->setFunctionCall(functionCall);
+  m_nodeData->setFunctionCall(functionCall);
+
+  if (m_receivedNode)
+  {
+    m_materialMap.clear();
+    m_materialMap.insert(m_variableName, m_receivedNode->getMaterial());
+    m_nodeData->setMaterialMap(m_materialMap);
+  }
 
   // Tell connected node to update received data
   Q_EMIT dataUpdated(0);

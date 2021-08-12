@@ -46,6 +46,7 @@ target_sources(${TargetName} PRIVATE
 	${PROJECT_SOURCE_DIR}/src/NodeEditorContainer.cpp
 	${PROJECT_SOURCE_DIR}/src/NodeEditorWidget.cpp
 
+	${PROJECT_SOURCE_DIR}/src/MasterSDFNode.cpp
 	${PROJECT_SOURCE_DIR}/src/SphereNode.cpp
 	${PROJECT_SOURCE_DIR}/src/PlaneNode.cpp
 	${PROJECT_SOURCE_DIR}/src/CapsuleNode.cpp
@@ -54,6 +55,7 @@ target_sources(${TargetName} PRIVATE
 	${PROJECT_SOURCE_DIR}/src/TorusNode.cpp
 	${PROJECT_SOURCE_DIR}/src/RayMarchNode.cpp
 	${PROJECT_SOURCE_DIR}/src/BooleanNode.cpp
+	${PROJECT_SOURCE_DIR}/src/MaterialNode.cpp
 	
 	${PROJECT_SOURCE_DIR}/src/SphereNodeWidget.cpp
 	${PROJECT_SOURCE_DIR}/src/PlaneNodeWidget.cpp
@@ -62,6 +64,7 @@ target_sources(${TargetName} PRIVATE
 	${PROJECT_SOURCE_DIR}/src/TorusNodeWidget.cpp
 	${PROJECT_SOURCE_DIR}/src/RayMarchNodeWidget.cpp
 	${PROJECT_SOURCE_DIR}/src/BooleanNodeWidget.cpp
+	${PROJECT_SOURCE_DIR}/src/MaterialNodeWidget.cpp
 
 	${PROJECT_SOURCE_DIR}/src/Vec2Widget.cpp
 	${PROJECT_SOURCE_DIR}/src/Vec3Widget.cpp
@@ -81,6 +84,7 @@ target_sources(${TargetName} PRIVATE
 	${PROJECT_SOURCE_DIR}/include/NodeEditorContainer.h
 	${PROJECT_SOURCE_DIR}/include/NodeEditorWidget.h
 
+	${PROJECT_SOURCE_DIR}/include/MasterSDFNode.h
 	${PROJECT_SOURCE_DIR}/include/SphereNode.h
 	${PROJECT_SOURCE_DIR}/include/PlaneNode.h
 	${PROJECT_SOURCE_DIR}/include/CapsuleNode.h
@@ -89,6 +93,7 @@ target_sources(${TargetName} PRIVATE
 	${PROJECT_SOURCE_DIR}/include/TorusNode.h
 	${PROJECT_SOURCE_DIR}/include/RayMarchNode.h
 	${PROJECT_SOURCE_DIR}/include/BooleanNode.h
+	${PROJECT_SOURCE_DIR}/include/MaterialNode.h
 
 	${PROJECT_SOURCE_DIR}/include/SphereNodeWidget.h
 	${PROJECT_SOURCE_DIR}/include/PlaneNodeWidget.h
@@ -97,6 +102,7 @@ target_sources(${TargetName} PRIVATE
 	${PROJECT_SOURCE_DIR}/include/TorusNodeWidget.h
 	${PROJECT_SOURCE_DIR}/include/RayMarchNodeWidget.h
 	${PROJECT_SOURCE_DIR}/include/BooleanNodeWidget.h
+	${PROJECT_SOURCE_DIR}/include/MaterialNodeWidget.h
 
 	${PROJECT_SOURCE_DIR}/include/ShaderCodeData.h
 	${PROJECT_SOURCE_DIR}/include/Vec2Widget.h
@@ -106,9 +112,7 @@ target_sources(${TargetName} PRIVATE
 	#.glsl
 	${PROJECT_SOURCE_DIR}/shaders/DefaultFragment.glsl
 	${PROJECT_SOURCE_DIR}/shaders/DefaultVertex.glsl
-	${PROJECT_SOURCE_DIR}/shaders/SDFs/Capsule.glsl
-	${PROJECT_SOURCE_DIR}/shaders/SDFs/Plane.glsl
-	${PROJECT_SOURCE_DIR}/shaders/SDFs/Sphere.glsl
+	${PROJECT_SOURCE_DIR}/shaders/hg_sdf.glsl
 )
 
 # Add NGL and nodeeditor include paths

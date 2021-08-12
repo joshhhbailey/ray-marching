@@ -8,6 +8,7 @@
 #include "TorusNode.h"
 #include "RayMarchNode.h"
 #include "BooleanNode.h"
+#include "MaterialNode.h"
 
 #include <QtWidgets/QFormLayout>
 #include <QTime>
@@ -116,7 +117,7 @@ void NodeEditorWidget::loadFunctions()
 
     m_functions.insert("Torus", "float sdTorus(vec3 _p, vec3 _pos, vec2 _r)\n"
                                 "{\n"
-                                "   vec3 p = _p - _pos;;\n"
+                                "   vec3 p = _p - _pos;\n"
                                 "   float x = length(p.xz) - _r.x;\n"
                                 "   return length(vec2(x, p.y)) - _r.y;\n"
                                 "}\n\n");
@@ -155,6 +156,7 @@ std::shared_ptr<DataModelRegistry> NodeEditorWidget::registerDataModels()
     dataModels->registerModel<TorusNode>("SDFs");
     dataModels->registerModel<RayMarchNode>("RayMarching");
     dataModels->registerModel<BooleanNode>("Operators");
+    dataModels->registerModel<MaterialNode>("Materials");
 
   return dataModels;
 }

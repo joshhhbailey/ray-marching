@@ -61,7 +61,7 @@ private:
   QString m_variableName;
   QString m_evaluatedCode;
 
-  QMap<QString, ngl::Vec3> m_materials;
+  QMap<QString, ngl::Vec3> m_materialMap;
 
   QString m_rayOrigin;
   QString m_lightPosition;

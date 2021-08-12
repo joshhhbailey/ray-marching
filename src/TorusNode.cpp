@@ -8,11 +8,12 @@
 TorusNode::TorusNode()
 {
     m_variableName = "torus0";
+    m_materialMap.insert(m_variableName, ngl::Vec3(1.0f, 1.0f, 1.0f));
     QString shaderCode = "float " + m_variableName + " = sdTorus(_p, vec3(0, 0, 0), vec2(0, 0));\n";
     QString functionCall = " = sdTorus(_p, vec3(0, 0, 0), vec2(0, 0));\n";
 
-    m_torusData = std::make_shared<ShaderCodeData>(shaderCode, m_variableName);
-    m_torusData->setFunctionCall(functionCall);
+    m_nodeData = std::make_shared<ShaderCodeData>(shaderCode, m_variableName);
+    m_nodeData->setFunctionCall(functionCall);
 
     m_torusWidget = new TorusNodeWidget();
     m_codeEditor = new CodeEditor();
@@ -44,38 +45,26 @@ QString TorusNode::name() const
     return QString("Torus");
 }
 
-unsigned int TorusNode::nPorts(PortType _portType) const
-{
-    unsigned int result = 1;
-
-    switch (_portType)
-    {
-        case PortType::In:
-        {
-            result = 0;
-            break;
-        }
-        case PortType::Out:
-        {
-            result = 1;
-            break;
-        }
-        case PortType::None:
-        {
-            break;
-        }
-    }
-    return result;
-}
-
-NodeDataType TorusNode::dataType(PortType _portType, PortIndex _portIndex) const
-{
-    return ShaderCodeData().type();
-}
-
 std::shared_ptr<NodeData> TorusNode::outData(PortIndex)
 {
-    return m_torusData;
+    return m_nodeData;
+}
+
+void TorusNode::setInData(std::shared_ptr<NodeData> _data, PortIndex _portIndex)
+{
+    m_receivedNode = std::dynamic_pointer_cast<ShaderCodeData>(_data);
+
+    // Data received
+    if (m_receivedNode)
+    {
+        if (_portIndex == 0)
+        {
+            m_materialMap.clear();
+            m_materialMap.insert(m_variableName, m_receivedNode->getMaterial());
+            m_nodeData->setMaterialMap(m_materialMap);
+        }
+    }
+    updateNode();
 }
 
 QWidget* TorusNode::embeddedWidget()
@@ -87,10 +76,10 @@ QJsonObject TorusNode::save() const
 {
   QJsonObject modelJson = NodeDataModel::save();
 
-  if (m_torusData)
+  if (m_nodeData)
   {
-    modelJson["shaderCode"] = m_torusData->getShaderCode();
-    modelJson["variableName"] = m_torusData->getVariableName();
+    modelJson["shaderCode"] = m_nodeData->getShaderCode();
+    modelJson["variableName"] = m_nodeData->getVariableName();
     modelJson["xPos"] = m_torusWidget->getPositionWidget()->getVec3().m_x;
     modelJson["yPos"] = m_torusWidget->getPositionWidget()->getVec3().m_y;
     modelJson["zPos"] = m_torusWidget->getPositionWidget()->getVec3().m_z;
@@ -113,18 +102,18 @@ void TorusNode::restore(QJsonObject const &_p)
   QJsonValue yr  = _p["yRadius"];
   QJsonValue id = _p["id"];
 
-  m_torusData = std::make_shared<ShaderCodeData>();
+  m_nodeData = std::make_shared<ShaderCodeData>();
 
   if (!sc.isUndefined())
   {
     QString shaderCode = sc.toString();
-    m_torusData->setShaderCode(shaderCode);
+    m_nodeData->setShaderCode(shaderCode);
   }
 
   if (!vn.isUndefined())
   {
     QString variableName = vn.toString();
-    m_torusData->setVariableName(variableName);
+    m_nodeData->setVariableName(variableName);
   }
 
   if (!xp.isUndefined() && !yp.isUndefined() && !zp.isUndefined())
@@ -145,17 +134,26 @@ void TorusNode::restore(QJsonObject const &_p)
   }
 }
 
+void TorusNode::inputConnectionDeleted(Connection const&)
+{
+  m_receivedNode = nullptr;
+  m_materialMap.clear();
+  m_materialMap.insert(m_variableName, ngl::Vec3(1.0f, 1.0f, 1.0f));
+  m_nodeData->setMaterialMap(m_materialMap);
+  updateNode();
+}
+
 void TorusNode::updateNode()
 {
   // Setup variables
   ngl::Vec3 pos = m_torusWidget->getPositionWidget()->getVec3();
-  int px = pos.m_x;
-  int py = pos.m_y;
-  int pz = pos.m_z;
+  double px = pos.m_x;
+  double py = pos.m_y;
+  double pz = pos.m_z;
 
   ngl::Vec2 radiusVec = m_torusWidget->getRadiusWidget()->getVec2();
-  int rx = radiusVec.m_x;
-  int ry = radiusVec.m_y;
+  double rx = radiusVec.m_x;
+  double ry = radiusVec.m_y;
 
   // Convert to string
   QString position = QString::number(px) + ", " + QString::number(py) + ", " + QString::number(pz);
@@ -163,13 +161,20 @@ void TorusNode::updateNode()
 
   // Update node data
   m_variableName = "torus" + QString::number(m_torusWidget->getIDWidget()->value());
-  m_torusData->setVariableName(m_variableName);
+  m_nodeData->setVariableName(m_variableName);
 
   QString shaderCode = "float " + m_variableName + " = sdTorus(_p, vec3(" + position + "), vec2(" + radius + "));\n";
-  m_torusData->setShaderCode(shaderCode);
+  m_nodeData->setShaderCode(shaderCode);
 
   QString functionCall = " = sdTorus(_p, vec3(" + position + "), vec2(" + radius + "));\n";
-  m_torusData->setFunctionCall(functionCall);
+  m_nodeData->setFunctionCall(functionCall);
+
+  if (m_receivedNode)
+  {
+    m_materialMap.clear();
+    m_materialMap.insert(m_variableName, m_receivedNode->getMaterial());
+    m_nodeData->setMaterialMap(m_materialMap);
+  }
 
   // Tell connected node to update received data
   Q_EMIT dataUpdated(0);

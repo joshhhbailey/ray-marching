@@ -7,11 +7,12 @@
 PlaneNode::PlaneNode()
 {
     m_variableName = "plane0";
+    m_materialMap.insert(m_variableName, ngl::Vec3(1.0f, 1.0f, 1.0f));
     QString shaderCode = "float " + m_variableName + " = sdPlane(_p, 0);\n";
     QString functionCall = " = sdPlane(_p, 0);\n";
 
-    m_planeData = std::make_shared<ShaderCodeData>(shaderCode, m_variableName);
-    m_planeData->setFunctionCall(functionCall);
+    m_nodeData = std::make_shared<ShaderCodeData>(shaderCode, m_variableName);
+    m_nodeData->setFunctionCall(functionCall);
 
     m_planeWidget = new PlaneNodeWidget();
     m_codeEditor = new CodeEditor();
@@ -39,38 +40,26 @@ QString PlaneNode::name() const
     return QString("Infinite Plane");
 }
 
-unsigned int PlaneNode::nPorts(PortType _portType) const
-{
-    unsigned int result = 1;
-
-    switch (_portType)
-    {
-        case PortType::In:
-        {
-            result = 0;
-            break;
-        }
-        case PortType::Out:
-        {
-            result = 1;
-            break;
-        }
-        case PortType::None:
-        {
-            break;
-        }
-    }
-    return result;
-}
-
-NodeDataType PlaneNode::dataType(PortType _portType, PortIndex _portIndex) const
-{
-    return ShaderCodeData().type();
-}
-
 std::shared_ptr<NodeData> PlaneNode::outData(PortIndex)
 {
-    return m_planeData;
+    return m_nodeData;
+}
+
+void PlaneNode::setInData(std::shared_ptr<NodeData> _data, PortIndex _portIndex)
+{
+    m_receivedNode = std::dynamic_pointer_cast<ShaderCodeData>(_data);
+
+    // Data received
+    if (m_receivedNode)
+    {
+        if (_portIndex == 0)
+        {
+            m_materialMap.clear();
+            m_materialMap.insert(m_variableName, m_receivedNode->getMaterial());
+            m_nodeData->setMaterialMap(m_materialMap);
+        }
+    }
+    updateNode();
 }
 
 QWidget* PlaneNode::embeddedWidget()
@@ -82,10 +71,10 @@ QJsonObject PlaneNode::save() const
 {
   QJsonObject modelJson = NodeDataModel::save();
 
-  if (m_planeData)
+  if (m_nodeData)
   {
-    modelJson["shaderCode"] = m_planeData->getShaderCode();
-    modelJson["variableName"] = m_planeData->getVariableName();
+    modelJson["shaderCode"] = m_nodeData->getShaderCode();
+    modelJson["variableName"] = m_nodeData->getVariableName();
     modelJson["yPos"] = m_planeWidget->getYPosWidget()->value();
     modelJson["id"] = m_planeWidget->getIDWidget()->value();
   }
@@ -100,18 +89,18 @@ void PlaneNode::restore(QJsonObject const &_p)
   QJsonValue yp = _p["yPos"];
   QJsonValue id = _p["id"];
 
-  m_planeData = std::make_shared<ShaderCodeData>();
+  m_nodeData = std::make_shared<ShaderCodeData>();
 
   if (!sc.isUndefined())
   {
     QString shaderCode = sc.toString();
-    m_planeData->setShaderCode(shaderCode);
+    m_nodeData->setShaderCode(shaderCode);
   }
 
   if (!vn.isUndefined())
   {
     QString variableName = vn.toString();
-    m_planeData->setVariableName(variableName);
+    m_nodeData->setVariableName(variableName);
   }
 
   if (!yp.isUndefined())
@@ -126,6 +115,15 @@ void PlaneNode::restore(QJsonObject const &_p)
   }
 }
 
+void PlaneNode::inputConnectionDeleted(Connection const&)
+{
+  m_receivedNode = nullptr;
+  m_materialMap.clear();
+  m_materialMap.insert(m_variableName, ngl::Vec3(1.0f, 1.0f, 1.0f));
+  m_nodeData->setMaterialMap(m_materialMap);
+  updateNode();
+}
+
 void PlaneNode::updateNode()
 {
   // Setup variables
@@ -136,13 +134,20 @@ void PlaneNode::updateNode()
 
   // Update node data
   m_variableName = "plane" + QString::number(m_planeWidget->getIDWidget()->value());
-  m_planeData->setVariableName(m_variableName);
+  m_nodeData->setVariableName(m_variableName);
 
   QString shaderCode = "float " + m_variableName + " = sdPlane(_p, " + position + ");\n";
-  m_planeData->setShaderCode(shaderCode);
+  m_nodeData->setShaderCode(shaderCode);
 
   QString functionCall = " = sdPlane(_p, " + position + ");\n";
-  m_planeData->setFunctionCall(functionCall);
+  m_nodeData->setFunctionCall(functionCall);
+
+  if (m_receivedNode)
+  {
+    m_materialMap.clear();
+    m_materialMap.insert(m_variableName, m_receivedNode->getMaterial());
+    m_nodeData->setMaterialMap(m_materialMap);
+  }
 
   // Tell connected node to update received data
   Q_EMIT dataUpdated(0);

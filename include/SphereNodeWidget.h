@@ -15,7 +15,6 @@ public:
     QSpinBox* getIDWidget() { return m_idWidget; }
     Vec3Widget* getPositionWidget() { return m_positionWidget; }
     QDoubleSpinBox* getRadiusWidget() { return m_radiusWidget; }
-    Vec3Widget* getColourWidget() { return m_colourWidget; }
     QPushButton* getInspectCodeButton() { return m_inspectCodeButton; }
 
 private:
@@ -25,6 +24,5 @@ private:
     QSpinBox *m_idWidget;
     Vec3Widget *m_positionWidget;
     QDoubleSpinBox *m_radiusWidget;
-    Vec3Widget *m_colourWidget;
     QPushButton *m_inspectCodeButton;
 };

@@ -13,10 +13,7 @@ using QtNodes::NodeDataType;
 class ShaderCodeData : public NodeData
 {
 public:
-  ShaderCodeData()
-  {
-
-  }
+  ShaderCodeData() {}
 
   ShaderCodeData(QString const _shaderCode, QString const _variableName)
   {
@@ -38,14 +35,18 @@ public:
   bool getBooleanOp() const { return m_isBooleanOp; }
   void setBooleanOp(bool _bool) { m_isBooleanOp = _bool; }
 
-  QMap<QString, ngl::Vec3> getMaterials() const { return m_materials; }
-  void setMaterials(QMap<QString, ngl::Vec3> _materials) { m_materials = _materials; }
+  ngl::Vec3 getMaterial() const { return m_material; }
+  void setMaterial(ngl::Vec3 _material) { m_material = _material; }
+
+  QMap<QString, ngl::Vec3> getMaterialMap() const { return m_materialMap; }
+  void setMaterialMap(QMap<QString, ngl::Vec3> _materialMap) { m_materialMap = _materialMap; }
 
 private:
   QString m_shaderCode;
   QString m_variableName;
   QString m_functionCall;
-  QMap<QString, ngl::Vec3> m_materials;
+  ngl::Vec3 m_material;
+  QMap<QString, ngl::Vec3> m_materialMap;
 
   // Boolean Operators
   bool m_isBooleanOp = false;

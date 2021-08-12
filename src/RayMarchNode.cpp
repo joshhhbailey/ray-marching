@@ -117,7 +117,7 @@ void RayMarchNode::setInData(std::shared_ptr<NodeData> _data, PortIndex _portInd
     {
       m_shaderCode = receivedNode->getShaderCode();
       m_variableName = receivedNode->getVariableName();
-      m_materials = receivedNode->getMaterials();
+      m_materialMap = receivedNode->getMaterialMap();
       updateCode();
 
       m_modelValidationState = NodeValidationState::Valid;
@@ -200,7 +200,7 @@ void RayMarchNode::updateCode()
   QString materialDefinitions = QString();
   int i = 0;
 
-  for (auto name : m_materials.keys())
+  for (auto name : m_materialMap.keys())
   {
     materialIndexes +=
       "if (distance == " + name + ")\n"
@@ -208,7 +208,7 @@ void RayMarchNode::updateCode()
       "    material = " + QString::number(i) + ";\n"
       "}\n\n";
 
-    ngl::Vec3 colourVec = m_materials.value(name);
+    ngl::Vec3 colourVec = m_materialMap.value(name);
     QString colour = QString::number(colourVec.m_x) + ", " + QString::number(colourVec.m_y) + ", " + QString::number(colourVec.m_z);
 
     materialDefinitions +=
@@ -347,14 +347,14 @@ void RayMarchNode::updateNode()
 {
   // Setup variables
   ngl::Vec3 ROpos = m_rayMarchWidget->getRayOriginWidget()->getVec3();
-  int ROx = ROpos.m_x;
-  int ROy = ROpos.m_y;
-  int ROz = ROpos.m_z;
+  double ROx = ROpos.m_x;
+  double ROy = ROpos.m_y;
+  double ROz = ROpos.m_z;
 
   ngl::Vec3 lightPos = m_rayMarchWidget->getLightPositionWidget()->getVec3();
-  int lightx = lightPos.m_x;
-  int lighty = lightPos.m_y;
-  int lightz = lightPos.m_z;
+  double lightx = lightPos.m_x;
+  double lighty = lightPos.m_y;
+  double lightz = lightPos.m_z;
 
   // Convert to string
   QString ROposition = QString::number(ROx) + ", " + QString::number(ROy) + ", " + QString::number(ROz);

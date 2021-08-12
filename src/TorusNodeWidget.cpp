@@ -16,8 +16,8 @@ void TorusNodeWidget::createWidgets()
     m_idWidget = new QSpinBox();
     m_idWidget->setRange(0, 9999);
     m_idWidget->setValue(0);
-    m_positionWidget = new Vec3Widget("Position:", ngl::Vec3(0.0, 0.0, 0.0));
-    m_radiusWidget = new Vec2Widget("Inner/Outer Radius:", ngl::Vec2(0.0, 0.0));
+    m_positionWidget = new Vec3Widget("Position:", ngl::Vec3(0.0f, 0.0f, 0.0f));
+    m_radiusWidget = new Vec2Widget("Inner/Outer Radius:", ngl::Vec2(0.0f, 0.0f));
     m_inspectCodeButton = new QPushButton("Inspect Code");
 }
 

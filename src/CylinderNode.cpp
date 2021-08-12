@@ -7,11 +7,12 @@
 CylinderNode::CylinderNode()
 {
     m_variableName = "cylinder0";
+    m_materialMap.insert(m_variableName, ngl::Vec3(1.0f, 1.0f, 1.0f));
     QString shaderCode = "float " + m_variableName + " = sdCylinder(_p, vec3(0, 0, 0), vec3(0, 0, 0), 1.0);\n";
     QString functionCall = " = sdCylinder(_p, vec3(0, 0, 0), vec3(0, 0, 0), 1.0);\n";
 
-    m_cylinderData = std::make_shared<ShaderCodeData>(shaderCode, m_variableName);
-    m_cylinderData->setFunctionCall(functionCall);
+    m_nodeData = std::make_shared<ShaderCodeData>(shaderCode, m_variableName);
+    m_nodeData->setFunctionCall(functionCall);
 
     m_cylinderWidget = new CapsuleNodeWidget();
     m_codeEditor = new CodeEditor();
@@ -45,38 +46,26 @@ QString CylinderNode::name() const
     return QString("Cylinder");
 }
 
-unsigned int CylinderNode::nPorts(PortType _portType) const
-{
-    unsigned int result = 1;
-
-    switch (_portType)
-    {
-        case PortType::In:
-        {
-            result = 0;
-            break;
-        }
-        case PortType::Out:
-        {
-            result = 1;
-            break;
-        }
-        case PortType::None:
-        {
-            break;
-        }
-    }
-    return result;
-}
-
-NodeDataType CylinderNode::dataType(PortType _portType, PortIndex _portIndex) const
-{
-    return ShaderCodeData().type();
-}
-
 std::shared_ptr<NodeData> CylinderNode::outData(PortIndex)
 {
-    return m_cylinderData;
+    return m_nodeData;
+}
+
+void CylinderNode::setInData(std::shared_ptr<NodeData> _data, PortIndex _portIndex)
+{
+    m_receivedNode = std::dynamic_pointer_cast<ShaderCodeData>(_data);
+
+    // Data received
+    if (m_receivedNode)
+    {
+        if (_portIndex == 0)
+        {
+            m_materialMap.clear();
+            m_materialMap.insert(m_variableName, m_receivedNode->getMaterial());
+            m_nodeData->setMaterialMap(m_materialMap);
+        }
+    }
+    updateNode();
 }
 
 QWidget* CylinderNode::embeddedWidget()
@@ -88,10 +77,10 @@ QJsonObject CylinderNode::save() const
 {
   QJsonObject modelJson = NodeDataModel::save();
 
-  if (m_cylinderData)
+  if (m_nodeData)
   {
-    modelJson["shaderCode"] = m_cylinderData->getShaderCode();
-    modelJson["variableName"] = m_cylinderData->getVariableName();
+    modelJson["shaderCode"] = m_nodeData->getShaderCode();
+    modelJson["variableName"] = m_nodeData->getVariableName();
     modelJson["AxPos"] = m_cylinderWidget->getPositionAWidget()->getVec3().m_x;
     modelJson["AyPos"] = m_cylinderWidget->getPositionAWidget()->getVec3().m_y;
     modelJson["AzPos"] = m_cylinderWidget->getPositionAWidget()->getVec3().m_z;
@@ -118,18 +107,18 @@ void CylinderNode::restore(QJsonObject const &_p)
   QJsonValue r  = _p["radius"];
   QJsonValue id = _p["id"];
 
-  m_cylinderData = std::make_shared<ShaderCodeData>();
+  m_nodeData = std::make_shared<ShaderCodeData>();
 
   if (!sc.isUndefined())
   {
     QString shaderCode = sc.toString();
-    m_cylinderData->setShaderCode(shaderCode);
+    m_nodeData->setShaderCode(shaderCode);
   }
 
   if (!vn.isUndefined())
   {
     QString variableName = vn.toString();
-    m_cylinderData->setVariableName(variableName);
+    m_nodeData->setVariableName(variableName);
   }
 
   if (!Axp.isUndefined() && !Ayp.isUndefined() && !Azp.isUndefined())
@@ -155,18 +144,27 @@ void CylinderNode::restore(QJsonObject const &_p)
   }
 }
 
+void CylinderNode::inputConnectionDeleted(Connection const&)
+{
+  m_receivedNode = nullptr;
+  m_materialMap.clear();
+  m_materialMap.insert(m_variableName, ngl::Vec3(1.0f, 1.0f, 1.0f));
+  m_nodeData->setMaterialMap(m_materialMap);
+  updateNode();
+}
+
 void CylinderNode::updateNode()
 {
   // Setup variables
   ngl::Vec3 posA = m_cylinderWidget->getPositionAWidget()->getVec3();
-  int Ax = posA.m_x;
-  int Ay = posA.m_y;
-  int Az = posA.m_z;
+  double Ax = posA.m_x;
+  double Ay = posA.m_y;
+  double Az = posA.m_z;
 
   ngl::Vec3 posB = m_cylinderWidget->getPositionBWidget()->getVec3();
-  int Bx = posB.m_x;
-  int By = posB.m_y;
-  int Bz = posB.m_z;
+  double Bx = posB.m_x;
+  double By = posB.m_y;
+  double Bz = posB.m_z;
 
   // Convert to string
   QString positionA = QString::number(Ax) + ", " + QString::number(Ay) + ", " + QString::number(Az);
@@ -175,13 +173,20 @@ void CylinderNode::updateNode()
 
   // Update node data
   m_variableName = "capsule" + QString::number(m_cylinderWidget->getIDWidget()->value());
-  m_cylinderData->setVariableName(m_variableName);
+  m_nodeData->setVariableName(m_variableName);
 
   QString shaderCode = "float " + m_variableName + " = sdCylinder(_p, vec3(" + positionA + "), vec3(" + positionB + "), " + radius + ");\n";
-  m_cylinderData->setShaderCode(shaderCode);
+  m_nodeData->setShaderCode(shaderCode);
 
   QString functionCall = " = sdCylinder(_p, vec3(" + positionA + "), vec3(" + positionB + "), " + radius + ");\n";
-  m_cylinderData->setFunctionCall(functionCall);
+  m_nodeData->setFunctionCall(functionCall);
+
+  if (m_receivedNode)
+  {
+    m_materialMap.clear();
+    m_materialMap.insert(m_variableName, m_receivedNode->getMaterial());
+    m_nodeData->setMaterialMap(m_materialMap);
+  }
 
   // Tell connected node to update received data
   Q_EMIT dataUpdated(0);

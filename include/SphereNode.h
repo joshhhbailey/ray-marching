@@ -2,22 +2,12 @@
 
 #include <QtCore/QObject>
 
-#include <nodes/NodeDataModel>
-
 #include <ngl/Vec3.h>
 
-#include "ShaderCodeData.h"
+#include "MasterSDFNode.h"
 #include "SphereNodeWidget.h"
-#include "CodeEditor.h"
-#include "SyntaxHighlighter.h"
 
-using QtNodes::NodeData;
-using QtNodes::NodeDataType;
-using QtNodes::NodeDataModel;
-using QtNodes::PortType;
-using QtNodes::PortIndex;
-
-class SphereNode : public NodeDataModel
+class SphereNode : public MasterSDFNode
 {
   Q_OBJECT
 
@@ -27,26 +17,17 @@ public:
   void createConnections();
   QString caption() const override;
   QString name() const override;
-  unsigned int nPorts(PortType portType) const override;
-  NodeDataType dataType(PortType portType, PortIndex portIndex) const override;
-  ConnectionPolicy portOutConnectionPolicy(PortIndex) const override { return ConnectionPolicy::One; }
-  void setInData(std::shared_ptr<NodeData>, int) override { }
+  void setInData(std::shared_ptr<NodeData>, int) override;
   std::shared_ptr<NodeData> outData(PortIndex port) override;
   QWidget* embeddedWidget() override;
   QJsonObject save() const override;
   void restore(QJsonObject const &_p) override;
+  void inputConnectionDeleted(Connection const&) override;
 
 public slots:
   void updateNode();
   void inspectCodeButtonClicked();
 
 private:
-  std::shared_ptr<ShaderCodeData> m_sphereData;
   SphereNodeWidget *m_sphereWidget;
-
-  QString m_variableName;
-  QMap<QString, ngl::Vec3> m_material;
-
-  CodeEditor *m_codeEditor;
-  SyntaxHighlighter *m_syntaxHighlighter;
 };
