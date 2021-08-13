@@ -60,13 +60,19 @@ private:
   std::shared_ptr<ShaderCodeData> m_receivedNodeA;
   std::shared_ptr<ShaderCodeData> m_receivedNodeB;
 
+  QMap<QString, ngl::Vec3> m_materialMapA;
+  QMap<QString, ngl::Vec3> m_materialMapB;
+  QMap<QString, ngl::Vec3> m_materialMapCombined;
+
   // Boolean looping
   QString m_operatorCall = "sdIntersection";
   QString m_shaderCode;
+
   QString m_shapeA = "/*Missing code!*/";
   QString m_shapeAShaderCode = "/*Missing code!*/\n";
   QString m_shapeAfunctionCall = "/*Missing code!*/";
   bool m_shapeAisBoolean = false;
+
   QString m_shapeB = "/*Missing code!*/";
   QString m_shapeBShaderCode = "/*Missing code!*/\n";
   QString m_shapeBfunctionCall = "/*Missing code!*/";

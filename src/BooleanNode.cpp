@@ -124,6 +124,9 @@ void BooleanNode::setInData(std::shared_ptr<NodeData> _data, PortIndex _portInde
             }
             m_shapeAShaderCode = m_receivedNodeA->getShaderCode();
             m_shapeAfunctionCall = m_receivedNodeA->getFunctionCall();
+
+            m_materialMapA.clear();
+            m_materialMapA = m_receivedNodeA->getMaterialMap();
         }
     }
 
@@ -144,6 +147,9 @@ void BooleanNode::setInData(std::shared_ptr<NodeData> _data, PortIndex _portInde
             }
             m_shapeBShaderCode = m_receivedNodeB->getShaderCode();
             m_shapeBfunctionCall = m_receivedNodeB->getFunctionCall();
+
+            m_materialMapB.clear();
+            m_materialMapB = m_receivedNodeB->getMaterialMap();
         }
     }
     if (m_receivedNodeA && m_receivedNodeB)
@@ -185,6 +191,7 @@ void BooleanNode::inputConnectionDeleted(Connection const&_connection)
       m_shapeAfunctionCall = "/*Missing code!*/";
       m_shapeAisBoolean = false;
       m_receivedNodeA = nullptr;
+      m_materialMapA.clear();
   }
   if (_connection.getPortIndex(PortType::In) == 1)
   {
@@ -193,7 +200,9 @@ void BooleanNode::inputConnectionDeleted(Connection const&_connection)
       m_shapeBfunctionCall = "/*Missing code!*/";
       m_shapeBisBoolean = false;
       m_receivedNodeB = nullptr;
+      m_materialMapB.clear();
   }
+  m_materialMapCombined.clear();
   updateCode();
   m_modelValidationState = NodeValidationState::Error;
   m_modelValidationError = QStringLiteral("Missing inputs!");
@@ -205,6 +214,7 @@ QJsonObject BooleanNode::save() const
 
   if (m_booleanData)
   {
+    modelJson["operator"] = m_booleanWidget->getOperatorCB()->currentIndex();
     modelJson["operatorCall"] = m_operatorCall;
     modelJson["shaderCode"] = m_shaderCode;
     modelJson["shapeA"] = m_shapeA;
@@ -222,6 +232,7 @@ QJsonObject BooleanNode::save() const
 
 void BooleanNode::restore(QJsonObject const &_p)
 {
+  QJsonValue o = _p["operator"];
   QJsonValue oc = _p["operatorCall"];
   QJsonValue sc = _p["shaderCode"];
   QJsonValue sa = _p["shapeA"];
@@ -234,6 +245,12 @@ void BooleanNode::restore(QJsonObject const &_p)
   QJsonValue sbfc = _p["shapeBfunctionCall"];
 
   m_booleanData = std::make_shared<ShaderCodeData>();
+
+  if (!o.isUndefined())
+  {
+    int op = o.toInt();
+    m_booleanWidget->getOperatorCB()->setCurrentIndex(op);
+  }
 
   if (!oc.isUndefined())
   {
@@ -299,6 +316,16 @@ void BooleanNode::restore(QJsonObject const &_p)
 
 void BooleanNode::updateCode()
 {
+    // Combine material maps
+    for (auto A : m_materialMapA.keys())
+    {
+      m_materialMapCombined.insert(A, m_materialMapA.value(A));
+    }
+    for (auto B : m_materialMapB.keys())
+    {
+      m_materialMapCombined.insert(B, m_materialMapB.value(B));
+    }
+
     // Operator selection
     if (m_booleanWidget->getOperatorCB()->currentIndex() == 0)
     {
@@ -342,6 +369,7 @@ void BooleanNode::updateCode()
     // Update node data
     m_booleanData->setVariableName("0");
     m_booleanData->setShaderCode(m_shaderCode);
+    m_booleanData->setMaterialMap(m_materialMapCombined);
     m_codeEditor->setPlainText(m_shaderCode);
 
     // Tell connected node to update received data
