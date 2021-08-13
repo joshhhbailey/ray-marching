@@ -72,11 +72,11 @@ QString BooleanNode::portCaption(PortType _portType, PortIndex _portIndex) const
         {
             if (_portIndex == 0)
             {
-                return QStringLiteral("SDF A");
+                return QStringLiteral("SDF Input A");
             }
             else if (_portIndex == 1)
             {
-                return QStringLiteral("SDF B");
+                return QStringLiteral("SDF Input B");
             }
             break;
         }
@@ -216,7 +216,7 @@ QJsonObject BooleanNode::save() const
   {
     modelJson["operator"] = m_booleanWidget->getOperatorCB()->currentIndex();
     modelJson["operatorCall"] = m_operatorCall;
-    modelJson["shaderCode"] = m_shaderCode;
+    /*modelJson["shaderCode"] = m_shaderCode;
     modelJson["shapeA"] = m_shapeA;
     modelJson["shapeABooleanOp"] = m_shapeAisBoolean;
     modelJson["shapeAShaderCode"] = m_shapeAShaderCode;
@@ -224,7 +224,7 @@ QJsonObject BooleanNode::save() const
     modelJson["shapeB"] = m_shapeB;
     modelJson["shapeBBooleanOp"] = m_shapeBisBoolean;
     modelJson["shapeBShaderCode"] = m_shapeBShaderCode;
-    modelJson["shapeBfunctionCall"] = m_shapeBfunctionCall;
+    modelJson["shapeBfunctionCall"] = m_shapeBfunctionCall;*/
   }
 
   return modelJson;
@@ -234,7 +234,7 @@ void BooleanNode::restore(QJsonObject const &_p)
 {
   QJsonValue o = _p["operator"];
   QJsonValue oc = _p["operatorCall"];
-  QJsonValue sc = _p["shaderCode"];
+  /*QJsonValue sc = _p["shaderCode"];
   QJsonValue sa = _p["shapeA"];
   QJsonValue sabo = _p["shapeABooleanOp"];
   QJsonValue sasc = _p["shapeAShaderCode"];
@@ -242,7 +242,7 @@ void BooleanNode::restore(QJsonObject const &_p)
   QJsonValue sb = _p["shapeB"];
   QJsonValue sbbo = _p["shapeBBooleanOp"];
   QJsonValue sbsc = _p["shapeBShaderCode"];
-  QJsonValue sbfc = _p["shapeBfunctionCall"];
+  QJsonValue sbfc = _p["shapeBfunctionCall"];*/
 
   m_booleanData = std::make_shared<ShaderCodeData>();
 
@@ -258,7 +258,7 @@ void BooleanNode::restore(QJsonObject const &_p)
     m_operatorCall = operatorCall;
   }
 
-  if (!sc.isUndefined())
+  /*if (!sc.isUndefined())
   {
     QString shaderCode = sc.toString();
     m_booleanData->setShaderCode(shaderCode);
@@ -311,7 +311,7 @@ void BooleanNode::restore(QJsonObject const &_p)
   {
     QString shapeBfunctionCall = sbfc.toString();
     m_shapeBfunctionCall = shapeBfunctionCall;
-  }
+  }*/
 }
 
 void BooleanNode::updateCode()

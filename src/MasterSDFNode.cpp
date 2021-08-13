@@ -44,7 +44,7 @@ QString MasterSDFNode::portCaption(PortType _portType, PortIndex _portIndex) con
         {
             if (_portIndex == 0)
             {
-                return QStringLiteral("Material");
+                return QStringLiteral("Material Input");
             }
             break;
         }
