@@ -32,14 +32,20 @@ public:
   QString getFunctionCall() const { return m_functionCall; }
   void setFunctionCall(QString const _functionCall) { m_functionCall = _functionCall; }
 
-  bool getBooleanOp() const { return m_isBooleanOp; }
-  void setBooleanOp(bool _bool) { m_isBooleanOp = _bool; }
-
   ngl::Vec3 getMaterial() const { return m_material; }
   void setMaterial(ngl::Vec3 _material) { m_material = _material; }
 
   QMap<QString, ngl::Vec3> getMaterialMap() const { return m_materialMap; }
   void setMaterialMap(QMap<QString, ngl::Vec3> _materialMap) { m_materialMap = _materialMap; }
+
+  bool getIsBooleanOp() const { return m_isBooleanOp; }
+  void setIsBooleanOp(bool _bool) { m_isBooleanOp = _bool; }
+
+  bool getIsMaterial() const { return m_isMaterial; }
+  void setIsMaterial(bool _bool) { m_isMaterial = _bool; }
+
+  bool getIsSDF() const { return m_isSDF; }
+  void setIsSDF(bool _bool) { m_isSDF = _bool; }
 
 private:
   QString m_shaderCode;
@@ -48,6 +54,7 @@ private:
   ngl::Vec3 m_material;
   QMap<QString, ngl::Vec3> m_materialMap;
 
-  // Boolean Operators
   bool m_isBooleanOp = false;
+  bool m_isMaterial = false;
+  bool m_isSDF = false;
 };

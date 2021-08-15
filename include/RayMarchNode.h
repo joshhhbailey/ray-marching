@@ -49,7 +49,7 @@ private:
 
   // Validation
   NodeValidationState m_modelValidationState = NodeValidationState::Error;
-  QString m_modelValidationError = QStringLiteral("Missing inputs!");
+  QString m_modelValidationError = QStringLiteral("Missing input!");
 
   std::shared_ptr<ShaderCodeData> m_rayMarchData;
   RayMarchNodeWidget *m_rayMarchWidget;

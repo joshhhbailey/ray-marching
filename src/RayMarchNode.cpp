@@ -112,15 +112,23 @@ void RayMarchNode::setInData(std::shared_ptr<NodeData> _data, PortIndex _portInd
 
   if (receivedNode)
   {
-    // Data received
-    if (_portIndex == 0)
+    if (receivedNode->getIsSDF() || receivedNode->getIsBooleanOp())
     {
-      m_shaderCode = receivedNode->getShaderCode();
-      m_variableName = receivedNode->getVariableName();
-      m_materialMap = receivedNode->getMaterialMap();
-      updateCode();
+      // Data received
+      if (_portIndex == 0)
+      {
+        m_shaderCode = receivedNode->getShaderCode();
+        m_variableName = receivedNode->getVariableName();
+        m_materialMap = receivedNode->getMaterialMap();
+        updateCode();
 
-      m_modelValidationState = NodeValidationState::Valid;
+        m_modelValidationState = NodeValidationState::Valid;
+      }
+    }
+    else
+    {
+        m_modelValidationState = NodeValidationState::Error;
+        m_modelValidationError = QStringLiteral("Invalid input!");
     }
   }
 }
@@ -144,6 +152,7 @@ void RayMarchNode::inputConnectionDeleted(Connection const&)
 {
   // Reset node
   m_modelValidationState = NodeValidationState::Error;
+  m_modelValidationError = QStringLiteral("Missing input!");
   m_rayMarchData = std::make_shared<ShaderCodeData>();
   m_shaderCode = QString();
   m_variableName = QString();

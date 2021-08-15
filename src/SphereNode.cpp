@@ -12,6 +12,7 @@ SphereNode::SphereNode()
     QString functionCall = " = sdSphere(_p, vec3(0, 0, 0), 1.0);\n";
 
     m_nodeData = std::make_shared<ShaderCodeData>(shaderCode, m_variableName);
+    m_nodeData->setIsSDF(true);
     m_nodeData->setFunctionCall(functionCall);
 
     m_sphereWidget = new SphereNodeWidget();
@@ -45,23 +46,6 @@ QString SphereNode::name() const
 std::shared_ptr<NodeData> SphereNode::outData(PortIndex)
 {
     return m_nodeData;
-}
-
-void SphereNode::setInData(std::shared_ptr<NodeData> _data, PortIndex _portIndex)
-{
-    m_receivedNode = std::dynamic_pointer_cast<ShaderCodeData>(_data);
-
-    // Data received
-    if (m_receivedNode)
-    {
-        if (_portIndex == 0)
-        {
-            m_materialMap.clear();
-            m_materialMap.insert(m_variableName, m_receivedNode->getMaterial());
-            m_nodeData->setMaterialMap(m_materialMap);
-        }
-    }
-    updateNode();
 }
 
 QWidget* SphereNode::embeddedWidget()
@@ -126,15 +110,6 @@ void SphereNode::restore(QJsonObject const &_p)
   {
     m_sphereWidget->getIDWidget()->setValue(id.toInt());
   }
-}
-
-void SphereNode::inputConnectionDeleted(Connection const&)
-{
-  m_receivedNode = nullptr;
-  m_materialMap.clear();
-  m_materialMap.insert(m_variableName, ngl::Vec3(1.0f, 1.0f, 1.0f));
-  m_nodeData->setMaterialMap(m_materialMap);
-  updateNode();
 }
 
 void SphereNode::updateNode()

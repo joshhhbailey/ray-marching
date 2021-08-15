@@ -12,6 +12,7 @@ CylinderNode::CylinderNode()
     QString functionCall = " = sdCylinder(_p, vec3(0, 0, 0), vec3(0, 0, 0), 1.0);\n";
 
     m_nodeData = std::make_shared<ShaderCodeData>(shaderCode, m_variableName);
+    m_nodeData->setIsSDF(true);
     m_nodeData->setFunctionCall(functionCall);
 
     m_cylinderWidget = new CapsuleNodeWidget();
@@ -49,23 +50,6 @@ QString CylinderNode::name() const
 std::shared_ptr<NodeData> CylinderNode::outData(PortIndex)
 {
     return m_nodeData;
-}
-
-void CylinderNode::setInData(std::shared_ptr<NodeData> _data, PortIndex _portIndex)
-{
-    m_receivedNode = std::dynamic_pointer_cast<ShaderCodeData>(_data);
-
-    // Data received
-    if (m_receivedNode)
-    {
-        if (_portIndex == 0)
-        {
-            m_materialMap.clear();
-            m_materialMap.insert(m_variableName, m_receivedNode->getMaterial());
-            m_nodeData->setMaterialMap(m_materialMap);
-        }
-    }
-    updateNode();
 }
 
 QWidget* CylinderNode::embeddedWidget()
@@ -142,15 +126,6 @@ void CylinderNode::restore(QJsonObject const &_p)
   {
     m_cylinderWidget->getIDWidget()->setValue(id.toInt());
   }
-}
-
-void CylinderNode::inputConnectionDeleted(Connection const&)
-{
-  m_receivedNode = nullptr;
-  m_materialMap.clear();
-  m_materialMap.insert(m_variableName, ngl::Vec3(1.0f, 1.0f, 1.0f));
-  m_nodeData->setMaterialMap(m_materialMap);
-  updateNode();
 }
 
 void CylinderNode::updateNode()

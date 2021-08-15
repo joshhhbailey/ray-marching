@@ -7,7 +7,7 @@
 BooleanNode::BooleanNode()
 {
     m_booleanData = std::make_shared<ShaderCodeData>();
-    m_booleanData->setBooleanOp(true);
+    m_booleanData->setIsBooleanOp(true);
     m_booleanWidget = new BooleanNodeWidget;
     m_codeEditor = new CodeEditor();
     updateCode();
@@ -113,7 +113,7 @@ void BooleanNode::setInData(std::shared_ptr<NodeData> _data, PortIndex _portInde
         if (m_receivedNodeA)
         {
             // Input: Boolean Operator
-            if (m_receivedNodeA->getBooleanOp())
+            if (m_receivedNodeA->getIsBooleanOp())
             {
                 m_shapeAisBoolean = true;
             }
@@ -136,7 +136,7 @@ void BooleanNode::setInData(std::shared_ptr<NodeData> _data, PortIndex _portInde
         if (m_receivedNodeB)
         {
             // Input: Boolean Operator
-            if (m_receivedNodeB->getBooleanOp())
+            if (m_receivedNodeB->getIsBooleanOp())
             {
                 m_shapeBisBoolean = true;
             }
@@ -154,10 +154,19 @@ void BooleanNode::setInData(std::shared_ptr<NodeData> _data, PortIndex _portInde
     }
     if (m_receivedNodeA && m_receivedNodeB)
     {
-      if (m_receivedNodeA->getBooleanOp() && m_receivedNodeB->getBooleanOp())
+      // Invalid combinations of inputs
+      if ((m_receivedNodeA->getIsBooleanOp() && m_receivedNodeB->getIsBooleanOp()) ||   // Both boolean
+          (!m_receivedNodeA->getIsSDF() && !m_receivedNodeB->getIsSDF()) ||             // Both NOT SDFs
+          ((m_receivedNodeA->getIsSDF() || m_receivedNodeA->getIsBooleanOp()) &&
+                                           !m_receivedNodeB->getIsSDF() &&
+                                           !m_receivedNodeB->getIsBooleanOp()) ||       // 1 SDF/Bool + Other
+          ((m_receivedNodeB->getIsSDF() || m_receivedNodeB->getIsBooleanOp()) &&
+                                          !m_receivedNodeA->getIsSDF() &&
+                                          !m_receivedNodeA->getIsBooleanOp())           // 1 SDF/Bool + Other
+         )
       {
         m_modelValidationState = NodeValidationState::Error;
-        m_modelValidationError = QStringLiteral("Invalid inputs!");
+        m_modelValidationError = QStringLiteral("Invalid input(s)!");
       }
       else
       {
@@ -205,7 +214,7 @@ void BooleanNode::inputConnectionDeleted(Connection const&_connection)
   m_materialMapCombined.clear();
   updateCode();
   m_modelValidationState = NodeValidationState::Error;
-  m_modelValidationError = QStringLiteral("Missing inputs!");
+  m_modelValidationError = QStringLiteral("Missing input(s)!");
 }
 
 QJsonObject BooleanNode::save() const

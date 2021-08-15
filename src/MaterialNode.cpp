@@ -9,6 +9,7 @@ MaterialNode::MaterialNode()
     m_material = ngl::Vec3(0.0, 0.0, 0.0);
 
     m_materialData = std::make_shared<ShaderCodeData>();
+    m_materialData->setIsMaterial(true);
 
     m_materialWidget = new MaterialNodeWidget();
 
