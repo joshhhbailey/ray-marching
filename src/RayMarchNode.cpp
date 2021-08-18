@@ -296,7 +296,6 @@ void RayMarchNode::updateCode()
     "{\n"
     "   // Define light\n"
     "   vec3 lightPosition = vec3(" + m_lightPosition + ");\n"
-    "   lightPosition.xz += vec2(sin(iTime), cos(iTime)) * 2;\n"
     "   vec3 lightVector = normalize(lightPosition - _p);\n"
     "\n"
     "   // Calculate normal of intersection point\n"

@@ -110,6 +110,8 @@ void SphereNode::restore(QJsonObject const &_p)
   {
     m_sphereWidget->getIDWidget()->setValue(id.toInt());
   }
+
+  m_nodeData->setIsSDF(true);
 }
 
 void SphereNode::updateNode()

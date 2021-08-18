@@ -126,6 +126,8 @@ void CapsuleNode::restore(QJsonObject const &_p)
   {
     m_capsuleWidget->getIDWidget()->setValue(id.toInt());
   }
+
+  m_nodeData->setIsSDF(true);
 }
 
 void CapsuleNode::updateNode()

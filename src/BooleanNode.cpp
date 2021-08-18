@@ -19,6 +19,7 @@ BooleanNode::BooleanNode()
 
 void BooleanNode::createConnections()
 {
+  connect(m_booleanWidget->getIDWidget(), SIGNAL(valueChanged(int)), this, SLOT(updateCode()));
   connect(m_booleanWidget->getOperatorCB(), SIGNAL(currentIndexChanged(int)), this, SLOT(updateCode()));
   connect(m_booleanWidget->getInspectCodeButton(), SIGNAL(clicked()), this, SLOT(inspectCodeButtonClicked()));
 }
@@ -155,8 +156,7 @@ void BooleanNode::setInData(std::shared_ptr<NodeData> _data, PortIndex _portInde
     if (m_receivedNodeA && m_receivedNodeB)
     {
       // Invalid combinations of inputs
-      if ((m_receivedNodeA->getIsBooleanOp() && m_receivedNodeB->getIsBooleanOp()) ||   // Both boolean
-          (!m_receivedNodeA->getIsSDF() && !m_receivedNodeB->getIsSDF()) ||             // Both NOT SDFs
+      if ((!m_receivedNodeA->getIsSDF() && !m_receivedNodeA->getIsBooleanOp() && !m_receivedNodeB->getIsSDF() && m_receivedNodeB->getIsBooleanOp()) ||             // Both NOT SDFs
           ((m_receivedNodeA->getIsSDF() || m_receivedNodeA->getIsBooleanOp()) &&
                                            !m_receivedNodeB->getIsSDF() &&
                                            !m_receivedNodeB->getIsBooleanOp()) ||       // 1 SDF/Bool + Other
@@ -170,6 +170,14 @@ void BooleanNode::setInData(std::shared_ptr<NodeData> _data, PortIndex _portInde
       }
       else
       {
+        // Both inputs are Boolean Operators
+        if (m_receivedNodeA->getIsBooleanOp() && m_receivedNodeB->getIsBooleanOp())
+        {
+          m_booleanWidget->getIDWidget()->setEnabled(true);
+          m_booleanWidget->getIDWidget()->show();
+          m_shapeAShaderCode = m_receivedNodeA->getShaderCode();
+          m_shapeBShaderCode = m_receivedNodeB->getShaderCode();
+        }
         updateCode();
         m_modelValidationState = NodeValidationState::Valid;
       }
@@ -212,6 +220,8 @@ void BooleanNode::inputConnectionDeleted(Connection const&_connection)
       m_materialMapB.clear();
   }
   m_materialMapCombined.clear();
+  m_booleanWidget->getIDWidget()->setEnabled(false);
+  m_booleanWidget->getIDWidget()->hide();
   updateCode();
   m_modelValidationState = NodeValidationState::Error;
   m_modelValidationError = QStringLiteral("Missing input(s)!");
@@ -225,6 +235,7 @@ QJsonObject BooleanNode::save() const
   {
     modelJson["operator"] = m_booleanWidget->getOperatorCB()->currentIndex();
     modelJson["operatorCall"] = m_operatorCall;
+    modelJson["id"] = m_booleanWidget->getIDWidget()->value();
     /*modelJson["shaderCode"] = m_shaderCode;
     modelJson["shapeA"] = m_shapeA;
     modelJson["shapeABooleanOp"] = m_shapeAisBoolean;
@@ -243,6 +254,7 @@ void BooleanNode::restore(QJsonObject const &_p)
 {
   QJsonValue o = _p["operator"];
   QJsonValue oc = _p["operatorCall"];
+  QJsonValue id = _p["id"];
   /*QJsonValue sc = _p["shaderCode"];
   QJsonValue sa = _p["shapeA"];
   QJsonValue sabo = _p["shapeABooleanOp"];
@@ -266,6 +278,13 @@ void BooleanNode::restore(QJsonObject const &_p)
     QString operatorCall = oc.toString();
     m_operatorCall = operatorCall;
   }
+
+  if (!id.isUndefined())
+  {
+    m_booleanWidget->getIDWidget()->setValue(id.toInt());
+  }
+  
+  m_booleanData->setIsBooleanOp(true);
 
   /*if (!sc.isUndefined())
   {
@@ -349,13 +368,21 @@ void BooleanNode::updateCode()
       m_operatorCall = "sdDifference";
     }
 
-    // Setup variables
-    m_shaderCode =
-    "float " + m_shapeA + m_shapeAfunctionCall +
-    "float " + m_shapeB + m_shapeBfunctionCall +
-    "distance = " + m_operatorCall + "(" + m_shapeA + ", " + m_shapeB + ");\n";
+    // Code setup
+    if (m_shapeAisBoolean && m_shapeBisBoolean)
+    {
+      int id = m_booleanWidget->getIDWidget()->value();
+      QString varA = "boolOpA_" + QString::number(id);
+      QString varB = "boolOpB_" + QString::number(id);
 
-    if (m_shapeAisBoolean)
+      m_shaderCode =
+      m_shapeAShaderCode +
+      "float " + varA + " = distance;\n" +
+      m_shapeBShaderCode +
+      "float " + varB + " = distance;\n" +
+      "distance = " + m_operatorCall + "(" + varA + ", " + varB + ");\n";
+    }
+    else if (m_shapeAisBoolean)
     {
       m_shapeA = "distance";
 
@@ -364,14 +391,20 @@ void BooleanNode::updateCode()
       "float " + m_shapeB + m_shapeBfunctionCall +
       "distance = " + m_operatorCall + "(" + m_shapeA + ", " + m_shapeB + ");\n";
     }
-
-    if (m_shapeBisBoolean)
+    else if (m_shapeBisBoolean)
     {
       m_shapeB = "distance";
 
       m_shaderCode =
       m_shapeBShaderCode +
       "float " + m_shapeA + m_shapeAfunctionCall +
+      "distance = " + m_operatorCall + "(" + m_shapeA + ", " + m_shapeB + ");\n";
+    }
+    else
+    {
+      m_shaderCode =
+      "float " + m_shapeA + m_shapeAfunctionCall +
+      "float " + m_shapeB + m_shapeBfunctionCall +
       "distance = " + m_operatorCall + "(" + m_shapeA + ", " + m_shapeB + ");\n";
     }
 

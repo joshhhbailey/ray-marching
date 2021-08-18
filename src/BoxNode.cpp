@@ -8,8 +8,8 @@ BoxNode::BoxNode()
 {
     m_variableName = "box0";
     m_materialMap.insert(m_variableName, ngl::Vec3(1.0f, 1.0f, 1.0f));
-    QString shaderCode = "float " + m_variableName + " = sdBox(_p, vec3(0, 0, 0), vec3(0, 0, 0));\n";
-    QString functionCall = " = sdBox(_p, vec3(0, 0, 0), vec3(0, 0, 0));\n";
+    QString shaderCode = "float " + m_variableName + " = sdBox(_p, vec3(0, 0, 0), vec3(1, 1, 1));\n";
+    QString functionCall = " = sdBox(_p, vec3(0, 0, 0), vec3(1, 1, 1));\n";
 
     m_nodeData = std::make_shared<ShaderCodeData>(shaderCode, m_variableName);
     m_nodeData->setIsSDF(true);
@@ -118,6 +118,8 @@ void BoxNode::restore(QJsonObject const &_p)
   {
     m_boxWidget->getIDWidget()->setValue(id.toInt());
   }
+
+  m_nodeData->setIsSDF(true);
 }
 
 void BoxNode::updateNode()

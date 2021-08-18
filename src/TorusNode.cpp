@@ -9,8 +9,8 @@ TorusNode::TorusNode()
 {
     m_variableName = "torus0";
     m_materialMap.insert(m_variableName, ngl::Vec3(1.0f, 1.0f, 1.0f));
-    QString shaderCode = "float " + m_variableName + " = sdTorus(_p, vec3(0, 0, 0), vec2(0, 0));\n";
-    QString functionCall = " = sdTorus(_p, vec3(0, 0, 0), vec2(0, 0));\n";
+    QString shaderCode = "float " + m_variableName + " = sdTorus(_p, vec3(0, 0, 0), vec2(2.0, 1.0));\n";
+    QString functionCall = " = sdTorus(_p, vec3(0, 0, 0), vec2(2.0, 1.0));\n";
 
     m_nodeData = std::make_shared<ShaderCodeData>(shaderCode, m_variableName);
     m_nodeData->setIsSDF(true);
@@ -116,6 +116,8 @@ void TorusNode::restore(QJsonObject const &_p)
   {
     m_torusWidget->getIDWidget()->setValue(id.toInt());
   }
+
+  m_nodeData->setIsSDF(true);
 }
 
 void TorusNode::updateNode()

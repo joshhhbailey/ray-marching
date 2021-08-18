@@ -126,6 +126,8 @@ void CylinderNode::restore(QJsonObject const &_p)
   {
     m_cylinderWidget->getIDWidget()->setValue(id.toInt());
   }
+
+  m_nodeData->setIsSDF(true);
 }
 
 void CylinderNode::updateNode()

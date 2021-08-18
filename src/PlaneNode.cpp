@@ -97,6 +97,8 @@ void PlaneNode::restore(QJsonObject const &_p)
   {
     m_planeWidget->getIDWidget()->setValue(id.toInt());
   }
+
+  m_nodeData->setIsSDF(true);
 }
 
 void PlaneNode::updateNode()

@@ -123,6 +123,8 @@ void MaterialNode::restore(QJsonObject const &_p)
     ngl::Vec3 colour = ngl::Vec3(R.toDouble(), G.toDouble(), B.toDouble());
     m_materialWidget->getColourWidget()->setVec3(colour);
   }
+
+  m_materialData->setIsMaterial(true);
 }
 
 void MaterialNode::updateNode()
