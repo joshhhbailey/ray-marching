@@ -236,15 +236,6 @@ QJsonObject BooleanNode::save() const
     modelJson["operator"] = m_booleanWidget->getOperatorCB()->currentIndex();
     modelJson["operatorCall"] = m_operatorCall;
     modelJson["id"] = m_booleanWidget->getIDWidget()->value();
-    /*modelJson["shaderCode"] = m_shaderCode;
-    modelJson["shapeA"] = m_shapeA;
-    modelJson["shapeABooleanOp"] = m_shapeAisBoolean;
-    modelJson["shapeAShaderCode"] = m_shapeAShaderCode;
-    modelJson["shapeAfunctionCall"] = m_shapeAfunctionCall;
-    modelJson["shapeB"] = m_shapeB;
-    modelJson["shapeBBooleanOp"] = m_shapeBisBoolean;
-    modelJson["shapeBShaderCode"] = m_shapeBShaderCode;
-    modelJson["shapeBfunctionCall"] = m_shapeBfunctionCall;*/
   }
 
   return modelJson;
@@ -255,15 +246,6 @@ void BooleanNode::restore(QJsonObject const &_p)
   QJsonValue o = _p["operator"];
   QJsonValue oc = _p["operatorCall"];
   QJsonValue id = _p["id"];
-  /*QJsonValue sc = _p["shaderCode"];
-  QJsonValue sa = _p["shapeA"];
-  QJsonValue sabo = _p["shapeABooleanOp"];
-  QJsonValue sasc = _p["shapeAShaderCode"];
-  QJsonValue safc = _p["shapeAfunctionCall"];
-  QJsonValue sb = _p["shapeB"];
-  QJsonValue sbbo = _p["shapeBBooleanOp"];
-  QJsonValue sbsc = _p["shapeBShaderCode"];
-  QJsonValue sbfc = _p["shapeBfunctionCall"];*/
 
   m_booleanData = std::make_shared<ShaderCodeData>();
 
@@ -285,61 +267,6 @@ void BooleanNode::restore(QJsonObject const &_p)
   }
   
   m_booleanData->setIsBooleanOp(true);
-
-  /*if (!sc.isUndefined())
-  {
-    QString shaderCode = sc.toString();
-    m_booleanData->setShaderCode(shaderCode);
-    m_shaderCode = shaderCode;
-  }
-
-  if (!sa.isUndefined())
-  {
-    QString shapeA = sa.toString();
-    m_shapeA = shapeA;
-  }
-
-  if (!sabo.isUndefined())
-  {
-    bool shapeAisBoolean = sabo.toBool();
-    m_shapeAisBoolean = shapeAisBoolean;
-  }
-
-  if (!sasc.isUndefined())
-  {
-    QString shapeAShaderCode = sasc.toString();
-    m_shapeAShaderCode = shapeAShaderCode;
-  }
-
-  if (!safc.isUndefined())
-  {
-    QString shapeAfunctionCall = safc.toString();
-    m_shapeAfunctionCall = shapeAfunctionCall;
-  }
-
-  if (!sb.isUndefined())
-  {
-    QString shapeB = sb.toString();
-    m_shapeB = shapeB;
-  }
-
-  if (!sbbo.isUndefined() )
-  {
-    bool shapeBisBoolean = sbbo.toBool();
-    m_shapeBisBoolean = shapeBisBoolean;
-  }
-
-  if (!sbsc.isUndefined())
-  {
-    QString shapeBShaderCode = sbsc.toString();
-    m_shapeBShaderCode = shapeBShaderCode;
-  }
-
-  if (!sbfc.isUndefined())
-  {
-    QString shapeBfunctionCall = sbfc.toString();
-    m_shapeBfunctionCall = shapeBfunctionCall;
-  }*/
 }
 
 void BooleanNode::updateCode()
