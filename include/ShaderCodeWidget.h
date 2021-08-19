@@ -1,4 +1,10 @@
-#pragma once
+/// \brief Main Shader Code Editor widget
+/// \author Josh Bailey
+/// \date 19/08/21 Updated to NCCA Coding standard
+
+#ifndef SHADERCODEWIDGET_H_
+#define SHADERCODEWIDGET_H_
+
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QSpinBox>
 #include <QtWidgets/QPushButton>
@@ -48,3 +54,5 @@ private:
 
     NGLScene *m_scene;
 };
+
+#endif  // _SHADERCODEWIDGET_H_

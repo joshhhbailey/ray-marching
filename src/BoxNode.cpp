@@ -1,8 +1,7 @@
+///  @file BoxNode.cpp
+///  @brief Handles logic for Box node
+
 #include "BoxNode.h"
-
-#include <ngl/Vec3.h>
-
-#include <iostream>
 
 BoxNode::BoxNode()
 {

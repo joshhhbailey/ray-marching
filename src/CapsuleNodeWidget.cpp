@@ -1,8 +1,11 @@
-#include "CapsuleNodeWidget.h"
+///  @file CapsuleNodeWidget.cpp
+///  @brief Creates editable parameters widget for Capsule / Cylinder node
 
 #include <QtWidgets/QFormLayout>
 
 #include <ngl/Vec3.h>
+
+#include "CapsuleNodeWidget.h"
 
 CapsuleNodeWidget::CapsuleNodeWidget()
 {

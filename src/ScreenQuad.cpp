@@ -1,8 +1,9 @@
-#include "ScreenQuad.h"
-
-#include <iostream>
+///  @file ScreenQuad.cpp
+///  @brief Creates a surface for the fragment shader to be projected to
 
 #include <ngl/ShaderLib.h>
+
+#include "ScreenQuad.h"
 
 ScreenQuad::ScreenQuad()
 {

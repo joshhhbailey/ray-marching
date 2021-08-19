@@ -1,4 +1,9 @@
-#pragma once
+/// \brief Handles logic for Cylinder node
+/// \author Josh Bailey
+/// \date 19/08/21 Updated to NCCA Coding standard
+
+#ifndef CYLINDERNODE_H_
+#define CYLINDERNODE_H_
 
 #include <QtCore/QObject>
 
@@ -27,3 +32,5 @@ public slots:
 private:
   CapsuleNodeWidget *m_cylinderWidget;
 };
+
+#endif  // _CYLINDERNODE_H_

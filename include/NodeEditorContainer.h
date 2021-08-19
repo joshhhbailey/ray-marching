@@ -1,8 +1,14 @@
-#include "NodeEditorWidget.h"
+/// \brief Contains all widgets associated with the Node Editor
+/// \author Josh Bailey
+/// \date 19/08/21 Updated to NCCA Coding standard
 
-#include "NGLScene.h"
+#ifndef NODEEDITORCONTAINER_H_
+#define NODEEDITORCONTAINER_H_
 
 #include <QtWidgets/QWidget>
+
+#include "NodeEditorWidget.h"
+#include "NGLScene.h"
 
 class NodeEditorContainer : public QWidget
 {
@@ -24,3 +30,5 @@ private:
 
     NGLScene *m_scene;
 };
+
+#endif  // _NODEEDITORCONTAINER_H_

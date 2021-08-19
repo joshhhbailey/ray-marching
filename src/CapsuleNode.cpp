@@ -1,8 +1,7 @@
+///  @file CapsuleNode.cpp
+///  @brief Handles logic for Capsule node
+
 #include "CapsuleNode.h"
-
-#include <ngl/Vec3.h>
-
-#include <iostream>
 
 CapsuleNode::CapsuleNode()
 {

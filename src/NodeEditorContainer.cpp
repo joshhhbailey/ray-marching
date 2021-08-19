@@ -1,8 +1,11 @@
-#include "NodeEditorContainer.h"
+///  @file NodeEditorContainer.cpp
+///  @brief Contains all widgets associated with the Node Editor
 
 #include <QtWidgets/QVBoxLayout>
 
 #include <iostream>
+
+#include "NodeEditorContainer.h"
 
 NodeEditorContainer::NodeEditorContainer(NGLScene *_scene)
 {

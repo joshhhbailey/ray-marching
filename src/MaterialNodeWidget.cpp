@@ -1,8 +1,11 @@
-#include "MaterialNodeWidget.h"
+///  @file MaterialNodeWidget.cpp
+///  @brief Creates editable parameters widget for Material node
 
 #include <QtWidgets/QFormLayout>
 
 #include <ngl/Vec3.h>
+
+#include "MaterialNodeWidget.h"
 
 MaterialNodeWidget::MaterialNodeWidget()
 {

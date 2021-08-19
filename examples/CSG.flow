@@ -1,0 +1,351 @@
+{
+    "connections": [
+        {
+            "in_id": "{164d8cea-069c-4838-9ab1-31d3587674a7}",
+            "in_index": 0,
+            "out_id": "{ba0bb161-d4c1-43b7-897f-80eeaba8bd1b}",
+            "out_index": 0
+        },
+        {
+            "in_id": "{ba0bb161-d4c1-43b7-897f-80eeaba8bd1b}",
+            "in_index": 0,
+            "out_id": "{3c297026-08c2-4e52-8397-46ef1476b155}",
+            "out_index": 0
+        },
+        {
+            "in_id": "{ba0bb161-d4c1-43b7-897f-80eeaba8bd1b}",
+            "in_index": 1,
+            "out_id": "{d24fa239-d21b-4aac-8d4a-b4f0e6b33e08}",
+            "out_index": 0
+        },
+        {
+            "in_id": "{d24fa239-d21b-4aac-8d4a-b4f0e6b33e08}",
+            "in_index": 0,
+            "out_id": "{db9d9aa9-579c-4bd6-b65a-bad8df263c69}",
+            "out_index": 0
+        },
+        {
+            "in_id": "{750c1b73-089e-4f50-bfd1-4efca3fc04fe}",
+            "in_index": 0,
+            "out_id": "{9e2f7c1a-71ad-4004-afc7-61a2dfc42733}",
+            "out_index": 0
+        },
+        {
+            "in_id": "{8c0d4c2d-fd2e-466f-bac3-d01ca90e44e4}",
+            "in_index": 0,
+            "out_id": "{a857f0d5-b82b-4f1f-ad7f-49b8980d3e28}",
+            "out_index": 0
+        },
+        {
+            "in_id": "{a07d13bb-792e-4f6f-91dc-44cfec26b474}",
+            "in_index": 1,
+            "out_id": "{8c0d4c2d-fd2e-466f-bac3-d01ca90e44e4}",
+            "out_index": 0
+        },
+        {
+            "in_id": "{3edb4bc8-c6e9-4324-a1ba-2e70ff2c8a8f}",
+            "in_index": 1,
+            "out_id": "{078f2a2a-aee2-4fb8-9ba7-b3f6ef256e91}",
+            "out_index": 0
+        },
+        {
+            "in_id": "{aef3f685-cb97-44a3-9c2e-d697cd1d16d4}",
+            "in_index": 0,
+            "out_id": "{a857f0d5-b82b-4f1f-ad7f-49b8980d3e28}",
+            "out_index": 0
+        },
+        {
+            "in_id": "{078f2a2a-aee2-4fb8-9ba7-b3f6ef256e91}",
+            "in_index": 0,
+            "out_id": "{24d85188-a4db-4457-b37f-f094c34c90aa}",
+            "out_index": 0
+        },
+        {
+            "in_id": "{a07d13bb-792e-4f6f-91dc-44cfec26b474}",
+            "in_index": 0,
+            "out_id": "{aef3f685-cb97-44a3-9c2e-d697cd1d16d4}",
+            "out_index": 0
+        },
+        {
+            "in_id": "{df883f4c-2395-446e-bb72-19e972a4f42b}",
+            "in_index": 1,
+            "out_id": "{24838ac0-e294-4a91-9ae1-c51cb3ce040e}",
+            "out_index": 0
+        },
+        {
+            "in_id": "{24838ac0-e294-4a91-9ae1-c51cb3ce040e}",
+            "in_index": 0,
+            "out_id": "{a857f0d5-b82b-4f1f-ad7f-49b8980d3e28}",
+            "out_index": 0
+        },
+        {
+            "in_id": "{df883f4c-2395-446e-bb72-19e972a4f42b}",
+            "in_index": 0,
+            "out_id": "{a07d13bb-792e-4f6f-91dc-44cfec26b474}",
+            "out_index": 0
+        },
+        {
+            "in_id": "{3c297026-08c2-4e52-8397-46ef1476b155}",
+            "in_index": 1,
+            "out_id": "{df883f4c-2395-446e-bb72-19e972a4f42b}",
+            "out_index": 0
+        },
+        {
+            "in_id": "{3c297026-08c2-4e52-8397-46ef1476b155}",
+            "in_index": 0,
+            "out_id": "{3edb4bc8-c6e9-4324-a1ba-2e70ff2c8a8f}",
+            "out_index": 0
+        },
+        {
+            "in_id": "{3edb4bc8-c6e9-4324-a1ba-2e70ff2c8a8f}",
+            "in_index": 0,
+            "out_id": "{750c1b73-089e-4f50-bfd1-4efca3fc04fe}",
+            "out_index": 0
+        }
+    ],
+    "nodes": [
+        {
+            "id": "{ba0bb161-d4c1-43b7-897f-80eeaba8bd1b}",
+            "model": {
+                "id": 0,
+                "name": "Boolean",
+                "operator": 1,
+                "operatorCall": "sdUnion"
+            },
+            "position": {
+                "x": 1016.7551999999998,
+                "y": 956.6208000000001
+            }
+        },
+        {
+            "id": "{aef3f685-cb97-44a3-9c2e-d697cd1d16d4}",
+            "model": {
+                "AxPos": 0,
+                "AyPos": -2,
+                "AzPos": 0,
+                "BxPos": 0,
+                "ByPos": 2,
+                "BzPos": 0,
+                "id": 0,
+                "name": "Cylinder",
+                "radius": 0.5,
+                "shaderCode": "float capsule0 = sdCylinder(_p, vec3(0, -2, 0), vec3(0, 2, 0), 0.5);\n",
+                "variableName": "capsule0"
+            },
+            "position": {
+                "x": -849,
+                "y": -242
+            }
+        },
+        {
+            "id": "{a857f0d5-b82b-4f1f-ad7f-49b8980d3e28}",
+            "model": {
+                "B": 0,
+                "G": 1,
+                "R": 0,
+                "name": "Material"
+            },
+            "position": {
+                "x": -1586.3039999999994,
+                "y": 90.89280000000002
+            }
+        },
+        {
+            "id": "{078f2a2a-aee2-4fb8-9ba7-b3f6ef256e91}",
+            "model": {
+                "id": 0,
+                "name": "Sphere",
+                "radius": 1.25,
+                "shaderCode": "float sphere0 = sdSphere(_p, vec3(0, 0, 0), 1.25);\n",
+                "variableName": "sphere0",
+                "xPos": 0,
+                "yPos": 0,
+                "zPos": 0
+            },
+            "position": {
+                "x": -815.232,
+                "y": 1198.3488
+            }
+        },
+        {
+            "id": "{d24fa239-d21b-4aac-8d4a-b4f0e6b33e08}",
+            "model": {
+                "id": 0,
+                "name": "Infinite Plane",
+                "shaderCode": "float plane0 = sdPlane(_p, -1);\n",
+                "variableName": "plane0",
+                "yPos": -1
+            },
+            "position": {
+                "x": 482.80319999999995,
+                "y": 1227.2255999999998
+            }
+        },
+        {
+            "id": "{24d85188-a4db-4457-b37f-f094c34c90aa}",
+            "model": {
+                "B": 1,
+                "G": 0,
+                "R": 0,
+                "name": "Material"
+            },
+            "position": {
+                "x": -1412.1215999999997,
+                "y": 1233.792
+            }
+        },
+        {
+            "id": "{24838ac0-e294-4a91-9ae1-c51cb3ce040e}",
+            "model": {
+                "AxPos": 0,
+                "AyPos": 0,
+                "AzPos": -2,
+                "BxPos": 0,
+                "ByPos": 0,
+                "BzPos": 2,
+                "id": 2,
+                "name": "Cylinder",
+                "radius": 0.5,
+                "shaderCode": "float capsule2 = sdCylinder(_p, vec3(0, 0, -2), vec3(0, 0, 2), 0.5);\n",
+                "variableName": "capsule2"
+            },
+            "position": {
+                "x": -844,
+                "y": 428
+            }
+        },
+        {
+            "id": "{750c1b73-089e-4f50-bfd1-4efca3fc04fe}",
+            "model": {
+                "id": 0,
+                "name": "Box",
+                "shaderCode": "float box0 = sdBox(_p, vec3(0, 0, 0), vec3(1, 1, 1));\n",
+                "variableName": "box0",
+                "xPos": 0,
+                "xSize": 1,
+                "yPos": 0,
+                "ySize": 1,
+                "zPos": 0,
+                "zSize": 1
+            },
+            "position": {
+                "x": -818.3999999999999,
+                "y": 883.1999999999999
+            }
+        },
+        {
+            "id": "{3c297026-08c2-4e52-8397-46ef1476b155}",
+            "model": {
+                "id": 0,
+                "name": "Boolean",
+                "operator": 2,
+                "operatorCall": "sdDifference"
+            },
+            "position": {
+                "x": 497.6639999999999,
+                "y": 678.0671999999997
+            }
+        },
+        {
+            "id": "{db9d9aa9-579c-4bd6-b65a-bad8df263c69}",
+            "model": {
+                "B": 1,
+                "G": 1,
+                "R": 1,
+                "name": "Material"
+            },
+            "position": {
+                "x": -117.50400000000002,
+                "y": 1451.5199999999995
+            }
+        },
+        {
+            "id": "{9e2f7c1a-71ad-4004-afc7-61a2dfc42733}",
+            "model": {
+                "B": 0,
+                "G": 0,
+                "R": 1,
+                "name": "Material"
+            },
+            "position": {
+                "x": -1420.4159999999997,
+                "y": 883.3535999999995
+            }
+        },
+        {
+            "id": "{8c0d4c2d-fd2e-466f-bac3-d01ca90e44e4}",
+            "model": {
+                "AxPos": -2,
+                "AyPos": 0,
+                "AzPos": 0,
+                "BxPos": 2,
+                "ByPos": 0,
+                "BzPos": 0,
+                "id": 1,
+                "name": "Cylinder",
+                "radius": 0.5,
+                "shaderCode": "float capsule1 = sdCylinder(_p, vec3(-2, 0, 0), vec3(2, 0, 0), 0.5);\n",
+                "variableName": "capsule1"
+            },
+            "position": {
+                "x": -846,
+                "y": 89
+            }
+        },
+        {
+            "id": "{df883f4c-2395-446e-bb72-19e972a4f42b}",
+            "model": {
+                "id": 0,
+                "name": "Boolean",
+                "operator": 1,
+                "operatorCall": "sdUnion"
+            },
+            "position": {
+                "x": -111.59999999999997,
+                "y": 307.1999999999999
+            }
+        },
+        {
+            "id": "{a07d13bb-792e-4f6f-91dc-44cfec26b474}",
+            "model": {
+                "id": 0,
+                "name": "Boolean",
+                "operator": 1,
+                "operatorCall": "sdUnion"
+            },
+            "position": {
+                "x": -111.59999999999997,
+                "y": -4.799999999999997
+            }
+        },
+        {
+            "id": "{3edb4bc8-c6e9-4324-a1ba-2e70ff2c8a8f}",
+            "model": {
+                "id": 0,
+                "name": "Boolean",
+                "operator": 0,
+                "operatorCall": "sdIntersection"
+            },
+            "position": {
+                "x": -113.5488,
+                "y": 1102.2336
+            }
+        },
+        {
+            "id": "{164d8cea-069c-4838-9ab1-31d3587674a7}",
+            "model": {
+                "ROxPos": 0,
+                "ROyPos": 1.5,
+                "ROzPos": -10,
+                "lightxPos": 0,
+                "lightyPos": 5,
+                "lightzPos": -2,
+                "name": "Ray March"
+            },
+            "position": {
+                "x": 1584.5759999999996,
+                "y": 956.1503999999998
+            }
+        }
+    ]
+}

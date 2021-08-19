@@ -1,3 +1,7 @@
+/// \brief Stores mouse and window parameters
+/// \author Josh Bailey
+/// \date 19/08/21 Updated to NCCA Coding standard
+
 #ifndef WINDOWPARAMS_H_
 #define WINDOWPARAMS_H_
 

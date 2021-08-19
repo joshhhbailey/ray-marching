@@ -1,6 +1,9 @@
-#include "BooleanNodeWidget.h"
+///  @file BooleanNodeWidget.cpp
+///  @brief Creates editable parameters widget for boolean operator node
 
 #include <QtWidgets/QFormLayout>
+
+#include "BooleanNodeWidget.h"
 
 BooleanNodeWidget::BooleanNodeWidget()
 {

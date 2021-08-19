@@ -1,10 +1,11 @@
-#include "ShaderCodeWidget.h"
+///  @file ShaderCodeWidget.cpp
+///  @brief Main Shader Code Editor widget
 
 #include <QtWidgets/QFormLayout>
 #include <QTime>
 #include <QTextStream>
 
-#include <iostream>
+#include "ShaderCodeWidget.h"
 
 ShaderCodeWidget::ShaderCodeWidget(NGLScene *_scene)
 {

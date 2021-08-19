@@ -1,3 +1,6 @@
+///  @file SyntaxHighlighter.cpp
+///  @brief Provides syntax highlighting for code editor widget
+
 // The following code is adapted from:
 // Qt., 2021. Qt Documentation - Syntax Highlighter Example [online]
 // Available from: https://doc.qt.io/qt-5/qtwidgets-richtext-syntaxhighlighter-example.html

@@ -1,3 +1,10 @@
+/// \brief Main program window, handling all menus / widgets
+/// \author Josh Bailey
+/// \date 19/08/21 Updated to NCCA Coding standard
+
+#ifndef WINDOW_H_
+#define WINDOW_H_
+
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
@@ -59,3 +66,5 @@ private:
 
     AboutWidget *m_aboutWidget;
 };
+
+#endif  // _WINDOW_H_

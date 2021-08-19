@@ -1,4 +1,9 @@
-#pragma once
+/// \brief Handles logic for Ray March node
+/// \author Josh Bailey
+/// \date 19/08/21 Updated to NCCA Coding standard
+
+#ifndef RAYMARCHNODE_H_
+#define RAYMARCHNODE_H_
 
 #include <QtCore/QObject>
 
@@ -66,3 +71,5 @@ private:
   QString m_rayOrigin;
   QString m_lightPosition;
 };
+
+#endif  // _RAYMARCHNODE_H_

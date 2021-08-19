@@ -1,4 +1,9 @@
-#pragma once
+/// \brief Creates editable parameters widget for boolean operator node
+/// \author Josh Bailey
+/// \date 19/08/21 Updated to NCCA Coding standard
+
+#ifndef BOOLEANNODEWIDGET_H_
+#define BOOLEANNODEWIDGET_H_
 
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QSpinBox>
@@ -22,3 +27,5 @@ private:
     QComboBox *m_changeOperatorCB;
     QPushButton *m_inspectCodeButton;
 };
+
+#endif  // _BOOLEANNODEWIDGET_H_

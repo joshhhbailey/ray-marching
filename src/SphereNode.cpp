@@ -1,8 +1,7 @@
+///  @file SphereNode.cpp
+///  @brief Handles logic for Sphere node
+
 #include "SphereNode.h"
-
-#include <ngl/Vec3.h>
-
-#include <iostream>
 
 SphereNode::SphereNode()
 {

@@ -1,4 +1,9 @@
-#pragma once
+/// \brief Handles logic for Box node
+/// \author Josh Bailey
+/// \date 19/08/21 Updated to NCCA Coding standard
+
+#ifndef BOXNODE_H_
+#define BOXNODE_H_
 
 #include <QtCore/QObject>
 
@@ -27,3 +32,5 @@ public slots:
 private:
   BoxNodeWidget *m_boxWidget;
 };
+
+#endif  // _BOXNODE_H_

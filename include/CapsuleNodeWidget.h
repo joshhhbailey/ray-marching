@@ -1,4 +1,9 @@
-#pragma once
+/// \brief Creates editable parameters widget for Capsule / Cylinder node
+/// \author Josh Bailey
+/// \date 19/08/21 Updated to NCCA Coding standard
+
+#ifndef CAPSULENODEWIDGET_H_
+#define CAPSULENODEWIDGET_H_
 
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QDoubleSpinBox>
@@ -28,3 +33,5 @@ private:
     QDoubleSpinBox *m_radiusWidget;
     QPushButton *m_inspectCodeButton;
 };
+
+#endif  // _CAPSULENODEWIDGET_H_

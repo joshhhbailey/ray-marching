@@ -1,8 +1,9 @@
-#include "MaterialNode.h"
+///  @file MaterialNode.cpp
+///  @brief Handles logic for Material node
 
 #include <ngl/Vec3.h>
 
-#include <iostream>
+#include "MaterialNode.h"
 
 MaterialNode::MaterialNode()
 {

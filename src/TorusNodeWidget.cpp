@@ -1,9 +1,12 @@
-#include "TorusNodeWidget.h"
+///  @file TorusNodeWidget.cpp
+///  @brief Creates editable parameters widget for Torus node
 
 #include <QtWidgets/QFormLayout>
 
 #include <ngl/Vec2.h>
 #include <ngl/Vec3.h>
+
+#include "TorusNodeWidget.h"
 
 TorusNodeWidget::TorusNodeWidget()
 {

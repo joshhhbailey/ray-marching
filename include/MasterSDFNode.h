@@ -1,9 +1,16 @@
-#pragma once
+/// \brief Handles logic for all SDF nodes
+/// \author Josh Bailey
+/// \date 19/08/21 Updated to NCCA Coding standard
+
+#ifndef MASTERSDFNODE_H_
+#define MASTERSDFNODE_H_
 
 #include <QtCore/QObject>
 
 #include <nodes/NodeDataModel>
 #include <nodes/Connection>
+
+#include <ngl/Vec3.h>
 
 #include "ShaderCodeData.h"
 #include "CodeEditor.h"
@@ -47,3 +54,5 @@ public:
   NodeValidationState m_modelValidationState = NodeValidationState::Warning;
   QString m_modelValidationError = QStringLiteral("Missing material!");
 };
+
+#endif  // _MASTERSDFNODE_H_

@@ -1,6 +1,9 @@
-#include "AboutWidget.h"
+///  @file AboutWidget.cpp
+///  @brief Creates 'About' window
 
 #include <QtWidgets/QFormLayout>
+
+#include "AboutWidget.h"
 
 AboutWidget::AboutWidget()
 {

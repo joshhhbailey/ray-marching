@@ -1,4 +1,9 @@
-#pragma once
+/// \brief Creates editable parameters widget for Material node
+/// \author Josh Bailey
+/// \date 19/08/21 Updated to NCCA Coding standard
+
+#ifndef MATERIALNODEWIDGET_H_
+#define MATERIALNODEWIDGET_H_
 
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QLabel>
@@ -25,3 +30,5 @@ private:
     QLabel *m_colourLabel;
     QPalette m_palette;
 };
+
+#endif  // _MATERIALNODEWIDGET_H_

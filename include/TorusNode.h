@@ -1,4 +1,9 @@
-#pragma once
+/// \brief Handles logic for Torus node
+/// \author Josh Bailey
+/// \date 19/08/21 Updated to NCCA Coding standard
+
+#ifndef TORUSNODE_H_
+#define TORUSNODE_H_
 
 #include <QtCore/QObject>
 
@@ -27,3 +32,5 @@ public slots:
 private:
   TorusNodeWidget *m_torusWidget;
 };
+
+#endif  // _TORUSNODE_H_

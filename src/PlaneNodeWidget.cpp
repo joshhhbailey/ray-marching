@@ -1,6 +1,9 @@
-#include "PlaneNodeWidget.h"
+///  @file PlaneNodeWidget.cpp
+///  @brief Creates editable parameters widget for Plane node
 
 #include <QtWidgets/QFormLayout>
+
+#include "PlaneNodeWidget.h"
 
 PlaneNodeWidget::PlaneNodeWidget()
 {

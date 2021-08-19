@@ -1,3 +1,7 @@
+/// \brief Creates a code editor widget
+/// \author Josh Bailey
+/// \date 19/08/21 Updated to NCCA Coding standard
+
 // The following code is adapted from:
 // Qt., 2021. Qt Documentation - Code Editor Example [online]
 // Available from: https://doc.qt.io/qt-5/qtwidgets-widgets-codeeditor-example.html
@@ -62,4 +66,4 @@ private:
     CodeEditor *m_codeEditor;
 };
 
-#endif
+#endif  // _CODEEDITOR_H

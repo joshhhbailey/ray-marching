@@ -1,9 +1,14 @@
-#pragma once
+/// \brief Vec2 Widget embedded within node widget
+/// \author Josh Bailey
+/// \date 19/08/21 Updated to NCCA Coding standard
 
-#include <ngl/Vec2.h>
+#ifndef VEC2WIDGET_H_
+#define VEC2WIDGET_H_
 
 #include <QtWidgets/QDoubleSpinBox>
 #include <QLabel>
+
+#include <ngl/Vec2.h>
 
 class Vec2Widget : public QWidget
 {
@@ -24,3 +29,5 @@ private:
     void createWidgets();
     void createLayouts();
 };
+
+#endif  // _VEC2WIDGET_H_

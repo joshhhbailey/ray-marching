@@ -1,4 +1,9 @@
-#pragma once
+/// \brief Handles logic for Material node
+/// \author Josh Bailey
+/// \date 19/08/21 Updated to NCCA Coding standard
+
+#ifndef MATERIALNODE_H_
+#define MATERIALNODE_H_
 
 #include <QtCore/QObject>
 
@@ -45,3 +50,5 @@ private:
 
   ngl::Vec3 m_material;
 };
+
+#endif  // _MATERIALNODE_H_

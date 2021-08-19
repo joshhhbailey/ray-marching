@@ -1,5 +1,10 @@
-#include "NodeEditorWidget.h"
+///  @file NodeEditorWidget.cpp
+///  @brief Main Node Editor widget
 
+#include <QtWidgets/QFormLayout>
+#include <QTime>
+
+#include "NodeEditorWidget.h"
 #include "SphereNode.h"
 #include "PlaneNode.h"
 #include "CapsuleNode.h"
@@ -9,11 +14,6 @@
 #include "RayMarchNode.h"
 #include "BooleanNode.h"
 #include "MaterialNode.h"
-
-#include <QtWidgets/QFormLayout>
-#include <QTime>
-
-#include <iostream>
 
 NodeEditorWidget::NodeEditorWidget(NGLScene *_scene)
 {

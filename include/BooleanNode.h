@@ -1,4 +1,9 @@
-#pragma once
+/// \brief Handles logic for Boolean Operator node
+/// \author Josh Bailey
+/// \date 19/08/21 Updated to NCCA Coding standard
+
+#ifndef BOOLEANNODE_H_
+#define BOOLEANNODE_H_
 
 #include <QtCore/QObject>
 
@@ -78,3 +83,5 @@ private:
   QString m_shapeBfunctionCall = "/*Missing code!*/";
   bool m_shapeBisBoolean = false;
 };
+
+#endif  // _BOOLEANNODE_H_

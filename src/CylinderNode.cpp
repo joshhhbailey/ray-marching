@@ -1,8 +1,7 @@
+///  @file CylinderNode.cpp
+///  @brief Handles logic for Cylinder node
+
 #include "CylinderNode.h"
-
-#include <ngl/Vec3.h>
-
-#include <iostream>
 
 CylinderNode::CylinderNode()
 {

@@ -1,7 +1,8 @@
+///  @file main.cpp
+///  @brief Program entry, creates a Qt / OpenGL context
+
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QStyleFactory>
-
-#include <iostream>
 
 #include "Window.h"
 

@@ -1,8 +1,9 @@
-#include "BooleanNode.h"
+///  @file BooleanNode.cpp
+///  @brief Handles logic for Boolean Operator node
 
 #include <ngl/Vec3.h>
 
-#include <iostream>
+#include "BooleanNode.h"
 
 BooleanNode::BooleanNode()
 {

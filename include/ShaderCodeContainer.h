@@ -1,8 +1,14 @@
-#include "ShaderCodeWidget.h"
+/// \brief Contains all widgets associated with the Shader Code Editor
+/// \author Josh Bailey
+/// \date 19/08/21 Updated to NCCA Coding standard
 
-#include "NGLScene.h"
+#ifndef SHADERCODECONTAINER_H_
+#define SHADERCODECONTAINER_H_
 
 #include <QtWidgets/QWidget>
+
+#include "ShaderCodeWidget.h"
+#include "NGLScene.h"
 
 class ShaderCodeContainer : public QWidget
 {
@@ -26,3 +32,5 @@ private:
 
     NGLScene *m_scene;
 };
+
+#endif  // _SHADERCODECONTAINER_H_

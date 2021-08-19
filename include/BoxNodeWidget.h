@@ -1,4 +1,9 @@
-#pragma once
+/// \brief Creates editable parameters widget for Box node
+/// \author Josh Bailey
+/// \date 19/08/21 Updated to NCCA Coding standard
+
+#ifndef BOXNODEWIDGET_H_
+#define BOXNODEWIDGET_H_
 
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QDoubleSpinBox>
@@ -26,3 +31,5 @@ private:
     Vec3Widget *m_sizeWidget;
     QPushButton *m_inspectCodeButton;
 };
+
+#endif  // _BOXNODEWIDGET_H_

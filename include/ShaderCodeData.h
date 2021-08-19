@@ -1,4 +1,9 @@
-#pragma once
+/// \brief Stores node data to be transferred to other nodes
+/// \author Josh Bailey
+/// \date 19/08/21 Updated to NCCA Coding standard
+
+#ifndef SHADERCODEDATA_H_
+#define SHADERCODEDATA_H_
 
 #include <QString>
 #include <QMap>
@@ -58,3 +63,5 @@ private:
   bool m_isMaterial = false;
   bool m_isSDF = false;
 };
+
+#endif  // _SHADERCODEDATA_H_

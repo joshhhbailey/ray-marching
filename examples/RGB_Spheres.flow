@@ -1,0 +1,244 @@
+{
+    "connections": [
+        {
+            "in_id": "{9ddd8978-67db-49a6-8042-72a52ed735ec}",
+            "in_index": 1,
+            "out_id": "{09179294-6119-4178-88be-daa3cfa46506}",
+            "out_index": 0
+        },
+        {
+            "in_id": "{972d6374-4dc9-4e18-a3e3-1b72e10cf823}",
+            "in_index": 1,
+            "out_id": "{a4bc0eaf-c187-46fd-bd34-0df910ebde2e}",
+            "out_index": 0
+        },
+        {
+            "in_id": "{9aaa294d-e3b7-4367-a2fd-8a56071a3258}",
+            "in_index": 0,
+            "out_id": "{9ddd8978-67db-49a6-8042-72a52ed735ec}",
+            "out_index": 0
+        },
+        {
+            "in_id": "{06f00a58-33f9-4b67-9910-56062d7337c2}",
+            "in_index": 0,
+            "out_id": "{f54d1d99-7f90-4d65-8a9c-c0ff25030156}",
+            "out_index": 0
+        },
+        {
+            "in_id": "{a4bc0eaf-c187-46fd-bd34-0df910ebde2e}",
+            "in_index": 0,
+            "out_id": "{4cd0d680-fbaf-4fc8-a720-11d500d3807b}",
+            "out_index": 0
+        },
+        {
+            "in_id": "{9ddd8978-67db-49a6-8042-72a52ed735ec}",
+            "in_index": 0,
+            "out_id": "{06f00a58-33f9-4b67-9910-56062d7337c2}",
+            "out_index": 0
+        },
+        {
+            "in_id": "{94acbdd6-f15d-46c5-bf51-e1fbacc20b94}",
+            "in_index": 0,
+            "out_id": "{9aaa294d-e3b7-4367-a2fd-8a56071a3258}",
+            "out_index": 0
+        },
+        {
+            "in_id": "{09179294-6119-4178-88be-daa3cfa46506}",
+            "in_index": 0,
+            "out_id": "{7a6174f4-d69e-4e5b-ad2e-df5cae668b67}",
+            "out_index": 0
+        },
+        {
+            "in_id": "{9aaa294d-e3b7-4367-a2fd-8a56071a3258}",
+            "in_index": 1,
+            "out_id": "{972d6374-4dc9-4e18-a3e3-1b72e10cf823}",
+            "out_index": 0
+        },
+        {
+            "in_id": "{972d6374-4dc9-4e18-a3e3-1b72e10cf823}",
+            "in_index": 0,
+            "out_id": "{bb59ee5e-7cd0-404c-aad4-81e9ded3cd81}",
+            "out_index": 0
+        },
+        {
+            "in_id": "{bb59ee5e-7cd0-404c-aad4-81e9ded3cd81}",
+            "in_index": 0,
+            "out_id": "{4fa2ec6b-58af-4950-b2e9-8e737c07089f}",
+            "out_index": 0
+        }
+    ],
+    "nodes": [
+        {
+            "id": "{94acbdd6-f15d-46c5-bf51-e1fbacc20b94}",
+            "model": {
+                "ROxPos": 0,
+                "ROyPos": 0,
+                "ROzPos": -10,
+                "lightxPos": 0,
+                "lightyPos": 3,
+                "lightzPos": -3,
+                "name": "Ray March"
+            },
+            "position": {
+                "x": -111.9744,
+                "y": 116.95103999999996
+            }
+        },
+        {
+            "id": "{06f00a58-33f9-4b67-9910-56062d7337c2}",
+            "model": {
+                "id": 0,
+                "name": "Infinite Plane",
+                "shaderCode": "float plane0 = sdPlane(_p, -1);\n",
+                "variableName": "plane0",
+                "yPos": -1
+            },
+            "position": {
+                "x": -1715.1168000000002,
+                "y": -268.00000000000006
+            }
+        },
+        {
+            "id": "{9aaa294d-e3b7-4367-a2fd-8a56071a3258}",
+            "model": {
+                "id": 0,
+                "name": "Boolean",
+                "operator": 1,
+                "operatorCall": "sdUnion"
+            },
+            "position": {
+                "x": -664.6496,
+                "y": 125.02111999999998
+            }
+        },
+        {
+            "id": "{a4bc0eaf-c187-46fd-bd34-0df910ebde2e}",
+            "model": {
+                "id": 2,
+                "name": "Sphere",
+                "radius": 1,
+                "shaderCode": "float sphere2 = sdSphere(_p, vec3(3, 0, 0), 1);\n",
+                "variableName": "sphere2",
+                "xPos": 3,
+                "yPos": 0,
+                "zPos": 0
+            },
+            "position": {
+                "x": -1918,
+                "y": 559
+            }
+        },
+        {
+            "id": "{9ddd8978-67db-49a6-8042-72a52ed735ec}",
+            "model": {
+                "id": 0,
+                "name": "Boolean",
+                "operator": 1,
+                "operatorCall": "sdUnion"
+            },
+            "position": {
+                "x": -1153.25472,
+                "y": -120.16352
+            }
+        },
+        {
+            "id": "{09179294-6119-4178-88be-daa3cfa46506}",
+            "model": {
+                "id": 0,
+                "name": "Sphere",
+                "radius": 1,
+                "shaderCode": "float sphere0 = sdSphere(_p, vec3(-3, 0, 0), 1);\n",
+                "variableName": "sphere0",
+                "xPos": -3,
+                "yPos": 0,
+                "zPos": 0
+            },
+            "position": {
+                "x": -1920,
+                "y": -27
+            }
+        },
+        {
+            "id": "{4fa2ec6b-58af-4950-b2e9-8e737c07089f}",
+            "model": {
+                "B": 0,
+                "G": 1,
+                "R": 0,
+                "name": "Material"
+            },
+            "position": {
+                "x": -2507.9065600000004,
+                "y": 304.23359999999997
+            }
+        },
+        {
+            "id": "{7a6174f4-d69e-4e5b-ad2e-df5cae668b67}",
+            "model": {
+                "B": 0,
+                "G": 0,
+                "R": 1,
+                "name": "Material"
+            },
+            "position": {
+                "x": -2509.51168,
+                "y": 15.838720000000023
+            }
+        },
+        {
+            "id": "{4cd0d680-fbaf-4fc8-a720-11d500d3807b}",
+            "model": {
+                "B": 1,
+                "G": 0,
+                "R": 0,
+                "name": "Material"
+            },
+            "position": {
+                "x": -2504.07008,
+                "y": 597.5584000000001
+            }
+        },
+        {
+            "id": "{972d6374-4dc9-4e18-a3e3-1b72e10cf823}",
+            "model": {
+                "id": 0,
+                "name": "Boolean",
+                "operator": 1,
+                "operatorCall": "sdUnion"
+            },
+            "position": {
+                "x": -1129.34816,
+                "y": 408.3203199999999
+            }
+        },
+        {
+            "id": "{bb59ee5e-7cd0-404c-aad4-81e9ded3cd81}",
+            "model": {
+                "id": 1,
+                "name": "Sphere",
+                "radius": 1,
+                "shaderCode": "float sphere1 = sdSphere(_p, vec3(0, 0, 0), 1);\n",
+                "variableName": "sphere1",
+                "xPos": 0,
+                "yPos": 0,
+                "zPos": 0
+            },
+            "position": {
+                "x": -1909,
+                "y": 255
+            }
+        },
+        {
+            "id": "{f54d1d99-7f90-4d65-8a9c-c0ff25030156}",
+            "model": {
+                "B": 1,
+                "G": 1,
+                "R": 1,
+                "name": "Material"
+            },
+            "position": {
+                "x": -2497.5795199999993,
+                "y": -271.2313599999999
+            }
+        }
+    ]
+}

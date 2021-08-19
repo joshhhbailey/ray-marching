@@ -1,3 +1,6 @@
+///  @file CodeEditor.cpp
+///  @brief Creates a code editor widget
+
 // The following code is adapted from:
 // Qt., 2021. Qt Documentation - Code Editor Example [online]
 // Available from: https://doc.qt.io/qt-5/qtwidgets-widgets-codeeditor-example.html

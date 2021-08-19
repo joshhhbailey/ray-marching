@@ -1,5 +1,9 @@
-#include "Vec3Widget.h"
+///  @file Vec3Widget.cpp
+///  @brief Vec3 Widget embedded within node widget
+
 #include <QtWidgets/QGridLayout>
+
+#include "Vec3Widget.h"
 
 Vec3Widget::Vec3Widget(QString _label, ngl::Vec3 _vec3)
 {

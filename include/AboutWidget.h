@@ -1,4 +1,9 @@
-#pragma once
+/// \brief Creates 'About' window
+/// \author Josh Bailey
+/// \date 19/08/21 Updated to NCCA Coding standard
+
+#ifndef ABOUTWIDGET_H_
+#define ABOUTWIDGET_H_
 
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QLabel>
@@ -24,3 +29,5 @@ private:
     QLabel *m_contactLabel;
     QLabel *m_linkTwo;
 };
+
+#endif   // _ABOUTWIDGET_H_

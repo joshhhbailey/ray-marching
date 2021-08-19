@@ -1,10 +1,11 @@
-#include "ShaderCodeContainer.h"
+///  @file ShaderCodeContainer.cpp
+///  @brief Contains all widgets associated with the Shader Code Editor
 
 #include <QtWidgets/QVBoxLayout>
 #include <QFileDialog>
 #include <QTextStream>
 
-#include <iostream>
+#include "ShaderCodeContainer.h"
 
 ShaderCodeContainer::ShaderCodeContainer(NGLScene *_scene)
 {

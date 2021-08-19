@@ -1,8 +1,10 @@
+///  @file RayMarchNode.cpp
+///  @brief Handles logic for Ray March node
+
 #include "RayMarchNode.h"
 
 #include <ngl/Vec3.h>
 
-#include <iostream>
 
 RayMarchNode::RayMarchNode()
 {

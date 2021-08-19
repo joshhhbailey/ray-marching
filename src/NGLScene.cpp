@@ -1,3 +1,6 @@
+///  @file NGLScene.cpp
+///  @brief Handles logic for OpenGL context
+
 #include <QMouseEvent>
 #include <QGuiApplication>
 #include <QTime>
@@ -7,10 +10,9 @@
 #include <ngl/VAOPrimitives.h>
 #include <ngl/ShaderLib.h>
 
-#include "NGLScene.h"
-
-#include <iostream>
 #include <math.h>
+
+#include "NGLScene.h"
 
 NGLScene::NGLScene()
 {

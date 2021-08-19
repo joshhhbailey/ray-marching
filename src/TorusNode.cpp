@@ -1,9 +1,9 @@
-#include "TorusNode.h"
+///  @file TorusNode.cpp
+///  @brief Handles logic for Torus node
 
 #include <ngl/Vec2.h>
-#include <ngl/Vec3.h>
 
-#include <iostream>
+#include "TorusNode.h"
 
 TorusNode::TorusNode()
 {

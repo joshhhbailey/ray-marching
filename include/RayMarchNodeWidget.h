@@ -1,4 +1,9 @@
-#pragma once
+/// \brief Creates editable parameters widget for Ray March node
+/// \author Josh Bailey
+/// \date 19/08/21 Updated to NCCA Coding standard
+
+#ifndef RAYMARCHNODEWIDGET_H_
+#define RAYMARCHNODEWIDGET_H_
 
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QSpinBox>
@@ -28,3 +33,5 @@ private:
     Vec3Widget *m_lightPositionWidget;
     QPushButton *m_inspectCodeButton;
 };
+
+#endif  // _RAYMARCHNODEWIDGET_H_

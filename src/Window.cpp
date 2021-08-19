@@ -1,4 +1,6 @@
-#include <iostream>
+///  @file Window.cpp
+///  @brief Main program window, handling all menus / widgets
+
 #include <QtWidgets/QMenuBar>
 #include <QtGui/QColor>
 #include <QFileDialog>

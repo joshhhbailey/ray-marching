@@ -1,5 +1,9 @@
-#include "Vec2Widget.h"
+///  @file Vec2Widget.cpp
+///  @brief Vec2 Widget embedded within node widget
+
 #include <QtWidgets/QGridLayout>
+
+#include "Vec2Widget.h"
 
 Vec2Widget::Vec2Widget(QString _label, ngl::Vec2 _vec2)
 {

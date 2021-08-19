@@ -1,4 +1,9 @@
-#pragma once
+/// \brief Main Node Editor widget
+/// \author Josh Bailey
+/// \date 19/08/21 Updated to NCCA Coding standard
+
+#ifndef NODEEDITORWIDGET_H_
+#define NODEEDITORWIDGET_H_
 
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QPushButton>
@@ -66,3 +71,5 @@ private:
 
     QMap<QString, QString> m_functions;
 };
+
+#endif  // _NODEEDITORWIDGET_H_

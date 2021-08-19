@@ -1,10 +1,14 @@
+/// \brief Provides syntax highlighting for code editor widget
+/// \author Josh Bailey
+/// \date 19/08/21 Updated to NCCA Coding standard
+
 // The following code is adapted from:
 // Qt., 2021. Qt Documentation - Syntax Highlighter Example [online]
 // Available from: https://doc.qt.io/qt-5/qtwidgets-richtext-syntaxhighlighter-example.html
 // Accessed [22 June 2021]
 
-#ifndef HIGHLIGHTER_H
-#define HIGHLIGHTER_H
+#ifndef SYNTAXHIGHLIGHTER_H
+#define SYNTAXHIGHLIGHTER_H
 
 #include <QSyntaxHighlighter>
 #include <QTextCharFormat>
@@ -41,4 +45,4 @@ private:
     QTextCharFormat m_numberFormat;
 };
 
-#endif // HIGHLIGHTER_H
+#endif  // _SYNTAXHIGHLIGHTER_H

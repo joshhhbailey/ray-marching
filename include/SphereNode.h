@@ -1,4 +1,9 @@
-#pragma once
+/// \brief Handles logic for Sphere node
+/// \author Josh Bailey
+/// \date 19/08/21 Updated to NCCA Coding standard
+
+#ifndef SPHERENODE_H_
+#define SPHERENODE_H_
 
 #include <QtCore/QObject>
 
@@ -29,3 +34,5 @@ public slots:
 private:
   SphereNodeWidget *m_sphereWidget;
 };
+
+#endif  // _SPHERENODE_H_

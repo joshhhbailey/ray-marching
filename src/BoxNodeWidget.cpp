@@ -1,8 +1,11 @@
-#include "BoxNodeWidget.h"
+///  @file BoxNodeWidget.cpp
+///  @brief Creates editable parameters widget for Box node
 
 #include <QtWidgets/QFormLayout>
 
 #include <ngl/Vec3.h>
+
+#include "BoxNodeWidget.h"
 
 BoxNodeWidget::BoxNodeWidget()
 {

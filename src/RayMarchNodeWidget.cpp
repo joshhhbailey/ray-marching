@@ -1,8 +1,11 @@
-#include "RayMarchNodeWidget.h"
+///  @file RayMarchNodeWidget.cpp
+///  @brief Creates editable parameters widget for Ray March node
 
 #include <QtWidgets/QFormLayout>
 
 #include <ngl/Vec3.h>
+
+#include "RayMarchNodeWidget.h"
 
 RayMarchNodeWidget::RayMarchNodeWidget()
 {

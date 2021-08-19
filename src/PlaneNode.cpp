@@ -1,8 +1,7 @@
+///  @file PlaneNode.cpp
+///  @brief Handles logic for Plane node
+
 #include "PlaneNode.h"
-
-#include <ngl/Vec3.h>
-
-#include <iostream>
 
 PlaneNode::PlaneNode()
 {

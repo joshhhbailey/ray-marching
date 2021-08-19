@@ -1,17 +1,18 @@
+/// \brief Handles logic for OpenGL context
+/// \author Josh Bailey
+/// \date 19/08/21 Updated to NCCA Coding standard
+
 #ifndef NGLSCENE_H_
 #define NGLSCENE_H_
-
-#include <ngl/Transformation.h>
-#include <ngl/Text.h>
 
 // this must be included after NGL includes else we get a clash with gl libs
 #include <QtWidgets/QOpenGLWidget>
 #include <QElapsedTimer>
 
+#include <memory>
+
 #include "ScreenQuad.h"
 #include "WindowParams.h"
-
-#include <memory>
 
 class NGLScene : public QOpenGLWidget
 {
@@ -67,4 +68,4 @@ private:
     bool m_shaderEditor = true;
 };
 
-#endif
+#endif  // _NGLSCENE_H

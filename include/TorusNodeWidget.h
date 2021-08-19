@@ -1,4 +1,9 @@
-#pragma once
+/// \brief Creates editable parameters widget for Torus node
+/// \author Josh Bailey
+/// \date 19/08/21 Updated to NCCA Coding standard
+
+#ifndef TORUSNODEWIDGET_H_
+#define TORUSNODEWIDGET_H_
 
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QDoubleSpinBox>
@@ -27,3 +32,5 @@ private:
     Vec2Widget *m_radiusWidget;
     QPushButton *m_inspectCodeButton;
 };
+
+#endif  // _TORUSNODEWIDGET_H_

@@ -1,3 +1,6 @@
+///  @file MasterSDFNode.cpp
+///  @brief Handles logic for all SDF nodes
+
 #include "MasterSDFNode.h"
 
 unsigned int MasterSDFNode::nPorts(PortType _portType) const

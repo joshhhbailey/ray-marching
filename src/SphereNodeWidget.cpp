@@ -1,8 +1,11 @@
-#include "SphereNodeWidget.h"
+///  @file SphereNodeWidget.cpp
+///  @brief Creates editable parameters widget for Sphere node
 
 #include <QtWidgets/QFormLayout>
 
 #include <ngl/Vec3.h>
+
+#include "SphereNodeWidget.h"
 
 SphereNodeWidget::SphereNodeWidget()
 {

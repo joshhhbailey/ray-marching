@@ -1,5 +1,9 @@
-#ifndef SCREEN_QUAD_H_
-#define SCREEN_QUAD_H_
+/// \brief Creates a surface for the fragment shader to be projected to
+/// \author Josh Bailey
+/// \date 19/08/21 Updated to NCCA Coding standard
+
+#ifndef SCREENQUAD_H_
+#define SCREENQUAD_H_
 
 #include <ngl/SimpleVAO.h>
 #include <ngl/VAOFactory.h>
@@ -19,4 +23,4 @@ class ScreenQuad
     std::unique_ptr<ngl::AbstractVAO> m_vao;
 };
 
-#endif  // _SCREEN_QUAD_H_
+#endif  // _SCREENQUAD_H_
