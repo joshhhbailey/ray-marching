@@ -95,6 +95,7 @@ target_sources(${TargetName} PRIVATE
 	${PROJECT_SOURCE_DIR}/include/BooleanNode.h
 	${PROJECT_SOURCE_DIR}/include/MaterialNode.h
 
+	${PROJECT_SOURCE_DIR}/include/MasterSDFNodeWidget.h
 	${PROJECT_SOURCE_DIR}/include/SphereNodeWidget.h
 	${PROJECT_SOURCE_DIR}/include/PlaneNodeWidget.h
 	${PROJECT_SOURCE_DIR}/include/CapsuleNodeWidget.h

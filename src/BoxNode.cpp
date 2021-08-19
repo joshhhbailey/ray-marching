@@ -25,14 +25,14 @@ BoxNode::BoxNode()
 
 void BoxNode::createConnections()
 {
-  connect(m_boxWidget->getIDWidget(), SIGNAL(valueChanged(int)), this, SLOT(updateNode()));
-  connect(m_boxWidget->getPositionWidget()->m_xField, SIGNAL(valueChanged(double)), this, SLOT(updateNode()));
-  connect(m_boxWidget->getPositionWidget()->m_yField, SIGNAL(valueChanged(double)), this, SLOT(updateNode()));
-  connect(m_boxWidget->getPositionWidget()->m_zField, SIGNAL(valueChanged(double)), this, SLOT(updateNode()));
+  connect(m_boxWidget->m_idWidget, SIGNAL(valueChanged(int)), this, SLOT(updateNode()));
+  connect(m_boxWidget->m_positionWidget->m_xField, SIGNAL(valueChanged(double)), this, SLOT(updateNode()));
+  connect(m_boxWidget->m_positionWidget->m_yField, SIGNAL(valueChanged(double)), this, SLOT(updateNode()));
+  connect(m_boxWidget->m_positionWidget->m_zField, SIGNAL(valueChanged(double)), this, SLOT(updateNode()));
   connect(m_boxWidget->getSizeWidget()->m_xField, SIGNAL(valueChanged(double)), this, SLOT(updateNode()));
   connect(m_boxWidget->getSizeWidget()->m_yField, SIGNAL(valueChanged(double)), this, SLOT(updateNode()));
   connect(m_boxWidget->getSizeWidget()->m_zField, SIGNAL(valueChanged(double)), this, SLOT(updateNode()));
-  connect(m_boxWidget->getInspectCodeButton(), SIGNAL(clicked()), this, SLOT(inspectCodeButtonClicked()));
+  connect(m_boxWidget->m_inspectCodeButton, SIGNAL(clicked()), this, SLOT(inspectCodeButtonClicked()));
 }
 
 QString BoxNode::caption() const
@@ -63,13 +63,13 @@ QJsonObject BoxNode::save() const
   {
     modelJson["shaderCode"] = m_nodeData->getShaderCode();
     modelJson["variableName"] = m_nodeData->getVariableName();
-    modelJson["xPos"] = m_boxWidget->getPositionWidget()->getVec3().m_x;
-    modelJson["yPos"] = m_boxWidget->getPositionWidget()->getVec3().m_y;
-    modelJson["zPos"] = m_boxWidget->getPositionWidget()->getVec3().m_z;
+    modelJson["xPos"] = m_boxWidget->m_positionWidget->getVec3().m_x;
+    modelJson["yPos"] = m_boxWidget->m_positionWidget->getVec3().m_y;
+    modelJson["zPos"] = m_boxWidget->m_positionWidget->getVec3().m_z;
     modelJson["xSize"] = m_boxWidget->getSizeWidget()->getVec3().m_x;
     modelJson["ySize"] = m_boxWidget->getSizeWidget()->getVec3().m_y;
     modelJson["zSize"] = m_boxWidget->getSizeWidget()->getVec3().m_z;
-    modelJson["id"] = m_boxWidget->getIDWidget()->value();
+    modelJson["id"] = m_boxWidget->m_idWidget->value();
   }
 
   return modelJson;
@@ -104,7 +104,7 @@ void BoxNode::restore(QJsonObject const &_p)
   if (!xp.isUndefined() && !yp.isUndefined() && !zp.isUndefined())
   {
     ngl::Vec3 position = ngl::Vec3(xp.toDouble(), yp.toDouble(), zp.toDouble());
-    m_boxWidget->getPositionWidget()->setVec3(position);
+    m_boxWidget->m_positionWidget->setVec3(position);
   }
 
   if (!xs.isUndefined() && !ys.isUndefined() && !zs.isUndefined())
@@ -115,7 +115,7 @@ void BoxNode::restore(QJsonObject const &_p)
 
   if (!id.isUndefined())
   {
-    m_boxWidget->getIDWidget()->setValue(id.toInt());
+    m_boxWidget->m_idWidget->setValue(id.toInt());
   }
 
   m_nodeData->setIsSDF(true);
@@ -124,7 +124,7 @@ void BoxNode::restore(QJsonObject const &_p)
 void BoxNode::updateNode()
 {
   // Setup variables
-  ngl::Vec3 pos = m_boxWidget->getPositionWidget()->getVec3();
+  ngl::Vec3 pos = m_boxWidget->m_positionWidget->getVec3();
   double px = pos.m_x;
   double py = pos.m_y;
   double pz = pos.m_z;
@@ -139,7 +139,7 @@ void BoxNode::updateNode()
   QString size = QString::number(sx) + ", " + QString::number(sy) + ", " + QString::number(sz);
 
   // Update node data
-  m_variableName = "box" + QString::number(m_boxWidget->getIDWidget()->value());
+  m_variableName = "box" + QString::number(m_boxWidget->m_idWidget->value());
   m_nodeData->setVariableName(m_variableName);
 
   QString shaderCode = "float " + m_variableName + " = sdBox(_p, vec3(" + position + "), vec3(" + size + "));\n";

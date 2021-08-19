@@ -5,6 +5,8 @@
 #include <QFileDialog>
 #include <QTextStream>
 
+#include <iostream>
+
 #include "ShaderCodeContainer.h"
 
 ShaderCodeContainer::ShaderCodeContainer(NGLScene *_scene)

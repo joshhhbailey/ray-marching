@@ -27,13 +27,13 @@ TorusNode::TorusNode()
 
 void TorusNode::createConnections()
 {
-  connect(m_torusWidget->getIDWidget(), SIGNAL(valueChanged(int)), this, SLOT(updateNode()));
-  connect(m_torusWidget->getPositionWidget()->m_xField, SIGNAL(valueChanged(double)), this, SLOT(updateNode()));
-  connect(m_torusWidget->getPositionWidget()->m_yField, SIGNAL(valueChanged(double)), this, SLOT(updateNode()));
-  connect(m_torusWidget->getPositionWidget()->m_zField, SIGNAL(valueChanged(double)), this, SLOT(updateNode()));
+  connect(m_torusWidget->m_idWidget, SIGNAL(valueChanged(int)), this, SLOT(updateNode()));
+  connect(m_torusWidget->m_positionWidget->m_xField, SIGNAL(valueChanged(double)), this, SLOT(updateNode()));
+  connect(m_torusWidget->m_positionWidget->m_yField, SIGNAL(valueChanged(double)), this, SLOT(updateNode()));
+  connect(m_torusWidget->m_positionWidget->m_zField, SIGNAL(valueChanged(double)), this, SLOT(updateNode()));
   connect(m_torusWidget->getRadiusWidget()->m_xField, SIGNAL(valueChanged(double)), this, SLOT(updateNode()));
   connect(m_torusWidget->getRadiusWidget()->m_yField, SIGNAL(valueChanged(double)), this, SLOT(updateNode()));
-  connect(m_torusWidget->getInspectCodeButton(), SIGNAL(clicked()), this, SLOT(inspectCodeButtonClicked()));
+  connect(m_torusWidget->m_inspectCodeButton, SIGNAL(clicked()), this, SLOT(inspectCodeButtonClicked()));
 }
 
 QString TorusNode::caption() const
@@ -64,12 +64,12 @@ QJsonObject TorusNode::save() const
   {
     modelJson["shaderCode"] = m_nodeData->getShaderCode();
     modelJson["variableName"] = m_nodeData->getVariableName();
-    modelJson["xPos"] = m_torusWidget->getPositionWidget()->getVec3().m_x;
-    modelJson["yPos"] = m_torusWidget->getPositionWidget()->getVec3().m_y;
-    modelJson["zPos"] = m_torusWidget->getPositionWidget()->getVec3().m_z;
+    modelJson["xPos"] = m_torusWidget->m_positionWidget->getVec3().m_x;
+    modelJson["yPos"] = m_torusWidget->m_positionWidget->getVec3().m_y;
+    modelJson["zPos"] = m_torusWidget->m_positionWidget->getVec3().m_z;
     modelJson["xRadius"] = m_torusWidget->getRadiusWidget()->getVec2().m_x;
     modelJson["yRadius"] = m_torusWidget->getRadiusWidget()->getVec2().m_y;
-    modelJson["id"] = m_torusWidget->getIDWidget()->value();
+    modelJson["id"] = m_torusWidget->m_idWidget->value();
   }
 
   return modelJson;
@@ -103,7 +103,7 @@ void TorusNode::restore(QJsonObject const &_p)
   if (!xp.isUndefined() && !yp.isUndefined() && !zp.isUndefined())
   {
     ngl::Vec3 position = ngl::Vec3(xp.toDouble(), yp.toDouble(), zp.toDouble());
-    m_torusWidget->getPositionWidget()->setVec3(position);
+    m_torusWidget->m_positionWidget->setVec3(position);
   }
 
   if (!xr.isUndefined() && !yr.isUndefined())
@@ -114,7 +114,7 @@ void TorusNode::restore(QJsonObject const &_p)
 
   if (!id.isUndefined())
   {
-    m_torusWidget->getIDWidget()->setValue(id.toInt());
+    m_torusWidget->m_idWidget->setValue(id.toInt());
   }
 
   m_nodeData->setIsSDF(true);
@@ -123,7 +123,7 @@ void TorusNode::restore(QJsonObject const &_p)
 void TorusNode::updateNode()
 {
   // Setup variables
-  ngl::Vec3 pos = m_torusWidget->getPositionWidget()->getVec3();
+  ngl::Vec3 pos = m_torusWidget->m_positionWidget->getVec3();
   double px = pos.m_x;
   double py = pos.m_y;
   double pz = pos.m_z;
@@ -137,7 +137,7 @@ void TorusNode::updateNode()
   QString radius = QString::number(rx) + ", " + QString::number(ry);
 
   // Update node data
-  m_variableName = "torus" + QString::number(m_torusWidget->getIDWidget()->value());
+  m_variableName = "torus" + QString::number(m_torusWidget->m_idWidget->value());
   m_nodeData->setVariableName(m_variableName);
 
   QString shaderCode = "float " + m_variableName + " = sdTorus(_p, vec3(" + position + "), vec2(" + radius + "));\n";

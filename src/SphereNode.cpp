@@ -24,12 +24,12 @@ SphereNode::SphereNode()
 
 void SphereNode::createConnections()
 {
-  connect(m_sphereWidget->getIDWidget(), SIGNAL(valueChanged(int)), this, SLOT(updateNode()));
-  connect(m_sphereWidget->getPositionWidget()->m_xField, SIGNAL(valueChanged(double)), this, SLOT(updateNode()));
-  connect(m_sphereWidget->getPositionWidget()->m_yField, SIGNAL(valueChanged(double)), this, SLOT(updateNode()));
-  connect(m_sphereWidget->getPositionWidget()->m_zField, SIGNAL(valueChanged(double)), this, SLOT(updateNode()));
+  connect(m_sphereWidget->m_idWidget, SIGNAL(valueChanged(int)), this, SLOT(updateNode()));
+  connect(m_sphereWidget->m_positionWidget->m_xField, SIGNAL(valueChanged(double)), this, SLOT(updateNode()));
+  connect(m_sphereWidget->m_positionWidget->m_yField, SIGNAL(valueChanged(double)), this, SLOT(updateNode()));
+  connect(m_sphereWidget->m_positionWidget->m_zField, SIGNAL(valueChanged(double)), this, SLOT(updateNode()));
   connect(m_sphereWidget->getRadiusWidget(), SIGNAL(valueChanged(double)), this, SLOT(updateNode()));
-  connect(m_sphereWidget->getInspectCodeButton(), SIGNAL(clicked()), this, SLOT(inspectCodeButtonClicked()));
+  connect(m_sphereWidget->m_inspectCodeButton, SIGNAL(clicked()), this, SLOT(inspectCodeButtonClicked()));
 }
 
 QString SphereNode::caption() const
@@ -60,11 +60,11 @@ QJsonObject SphereNode::save() const
   {
     modelJson["shaderCode"] = m_nodeData->getShaderCode();
     modelJson["variableName"] = m_nodeData->getVariableName();
-    modelJson["xPos"] = m_sphereWidget->getPositionWidget()->getVec3().m_x;
-    modelJson["yPos"] = m_sphereWidget->getPositionWidget()->getVec3().m_y;
-    modelJson["zPos"] = m_sphereWidget->getPositionWidget()->getVec3().m_z;
+    modelJson["xPos"] = m_sphereWidget->m_positionWidget->getVec3().m_x;
+    modelJson["yPos"] = m_sphereWidget->m_positionWidget->getVec3().m_y;
+    modelJson["zPos"] = m_sphereWidget->m_positionWidget->getVec3().m_z;
     modelJson["radius"] = m_sphereWidget->getRadiusWidget()->value();
-    modelJson["id"] = m_sphereWidget->getIDWidget()->value();
+    modelJson["id"] = m_sphereWidget->m_idWidget->value();
   }
 
   return modelJson;
@@ -97,7 +97,7 @@ void SphereNode::restore(QJsonObject const &_p)
   if (!xp.isUndefined() && !yp.isUndefined() && !zp.isUndefined())
   {
     ngl::Vec3 position = ngl::Vec3(xp.toDouble(), yp.toDouble(), zp.toDouble());
-    m_sphereWidget->getPositionWidget()->setVec3(position);
+    m_sphereWidget->m_positionWidget->setVec3(position);
   }
 
   if (!r.isUndefined())
@@ -107,7 +107,7 @@ void SphereNode::restore(QJsonObject const &_p)
 
   if (!id.isUndefined())
   {
-    m_sphereWidget->getIDWidget()->setValue(id.toInt());
+    m_sphereWidget->m_idWidget->setValue(id.toInt());
   }
 
   m_nodeData->setIsSDF(true);
@@ -116,7 +116,7 @@ void SphereNode::restore(QJsonObject const &_p)
 void SphereNode::updateNode()
 {
   // Setup variables
-  ngl::Vec3 pos = m_sphereWidget->getPositionWidget()->getVec3();
+  ngl::Vec3 pos = m_sphereWidget->m_positionWidget->getVec3();
   double x = pos.m_x;
   double y = pos.m_y;
   double z = pos.m_z;
@@ -126,7 +126,7 @@ void SphereNode::updateNode()
   QString radius = QString::number(m_sphereWidget->getRadiusWidget()->value());
 
   // Update node data
-  m_variableName = "sphere" + QString::number(m_sphereWidget->getIDWidget()->value());
+  m_variableName = "sphere" + QString::number(m_sphereWidget->m_idWidget->value());
   m_nodeData->setVariableName(m_variableName);
 
   QString shaderCode = "float " + m_variableName + " = sdSphere(_p, vec3(" + position + "), " + radius + ");\n";

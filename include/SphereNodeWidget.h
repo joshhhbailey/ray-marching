@@ -5,31 +5,20 @@
 #ifndef SPHERENODEWIDGET_H_
 #define SPHERENODEWIDGET_H_
 
-#include <QtWidgets/QGroupBox>
-#include <QtWidgets/QDoubleSpinBox>
-#include <QtWidgets/QSpinBox>
-#include <QtWidgets/QPushButton>
+#include "MasterSDFNodeWidget.h"
 
-#include "Vec3Widget.h"
-
-class SphereNodeWidget : public QGroupBox
+class SphereNodeWidget : public MasterSDFNodeWidget
 {
     Q_OBJECT
 public:
     SphereNodeWidget();
-    QSpinBox* getIDWidget() { return m_idWidget; }
-    Vec3Widget* getPositionWidget() { return m_positionWidget; }
     QDoubleSpinBox* getRadiusWidget() { return m_radiusWidget; }
-    QPushButton* getInspectCodeButton() { return m_inspectCodeButton; }
 
 private:
-    void createWidgets();
-    void createLayouts();
+    void createWidgets() override;
+    void createLayouts() override;
 
-    QSpinBox *m_idWidget;
-    Vec3Widget *m_positionWidget;
     QDoubleSpinBox *m_radiusWidget;
-    QPushButton *m_inspectCodeButton;
 };
 
 #endif  // _SPHERENODEWIDGET_H_
