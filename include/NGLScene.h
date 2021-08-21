@@ -5,6 +5,10 @@
 #ifndef NGLSCENE_H_
 #define NGLSCENE_H_
 
+// Windows fix
+#include <ngl/Transformation.h>
+#include <ngl/Text.h>
+
 // this must be included after NGL includes else we get a clash with gl libs
 #include <QtWidgets/QOpenGLWidget>
 #include <QElapsedTimer>

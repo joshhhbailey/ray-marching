@@ -37,6 +37,7 @@ void NodeEditorWidget::createWidgets()
 
     m_inspectCodeButton = new QPushButton("Inspect Code");
     m_codeEditor = new CodeEditor();
+    m_codeEditor->setWindowTitle("Compiled shader code");
     m_codeEditor->setPlainText("Awaiting successful compilation.");
     m_codeEditor->setReadOnly(true);
     m_codeEditor->hide();

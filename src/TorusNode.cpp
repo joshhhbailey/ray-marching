@@ -18,6 +18,7 @@ TorusNode::TorusNode()
 
     m_torusWidget = new TorusNodeWidget();
     m_codeEditor = new CodeEditor();
+    m_codeEditor->setWindowTitle("Torus Node");
     m_codeEditor->setPlainText(shaderCode);
     m_codeEditor->setReadOnly(true);
     m_syntaxHighlighter = new SyntaxHighlighter(m_codeEditor->document());

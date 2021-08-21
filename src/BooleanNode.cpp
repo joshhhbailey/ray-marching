@@ -11,6 +11,7 @@ BooleanNode::BooleanNode()
     m_booleanData->setIsBooleanOp(true);
     m_booleanWidget = new BooleanNodeWidget;
     m_codeEditor = new CodeEditor();
+    m_codeEditor->setWindowTitle("Boolean Node");
     updateCode();
     m_codeEditor->setReadOnly(true);
     m_syntaxHighlighter = new SyntaxHighlighter(m_codeEditor->document());

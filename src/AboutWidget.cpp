@@ -7,7 +7,7 @@
 
 AboutWidget::AboutWidget()
 {
-    setTitle("About");
+    setWindowTitle("About");
     setAlignment(Qt::AlignHCenter);
     createWidgets();
     createLayouts();

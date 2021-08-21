@@ -16,6 +16,7 @@ CylinderNode::CylinderNode()
 
     m_cylinderWidget = new CapsuleNodeWidget();
     m_codeEditor = new CodeEditor();
+    m_codeEditor->setWindowTitle("Cylinder Node");
     m_codeEditor->setPlainText(shaderCode);
     m_codeEditor->setReadOnly(true);
     m_syntaxHighlighter = new SyntaxHighlighter(m_codeEditor->document());

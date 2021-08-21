@@ -25,6 +25,7 @@ void ShaderCodeWidget::createWidgets()
     m_syntaxHighlighter = new SyntaxHighlighter(m_codeEditor->document());
 
     m_libraryEditor = new CodeEditor();
+    m_libraryEditor->setWindowTitle("hg_sdf");
     m_libraryEditor->setReadOnly(true);
     m_libraryHighlighter = new SyntaxHighlighter(m_libraryEditor->document());
 

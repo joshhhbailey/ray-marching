@@ -16,6 +16,7 @@ CapsuleNode::CapsuleNode()
 
     m_capsuleWidget = new CapsuleNodeWidget();
     m_codeEditor = new CodeEditor();
+    m_codeEditor->setWindowTitle("Capsule Node");
     m_codeEditor->setPlainText(shaderCode);
     m_codeEditor->setReadOnly(true);
     m_syntaxHighlighter = new SyntaxHighlighter(m_codeEditor->document());

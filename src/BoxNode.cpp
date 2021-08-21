@@ -16,6 +16,7 @@ BoxNode::BoxNode()
 
     m_boxWidget = new BoxNodeWidget();
     m_codeEditor = new CodeEditor();
+    m_codeEditor->setWindowTitle("Box Node");
     m_codeEditor->setPlainText(shaderCode);
     m_codeEditor->setReadOnly(true);
     m_syntaxHighlighter = new SyntaxHighlighter(m_codeEditor->document());

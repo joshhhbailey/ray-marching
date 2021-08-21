@@ -11,6 +11,7 @@ RayMarchNode::RayMarchNode()
     m_rayMarchData = std::make_shared<ShaderCodeData>();
     m_rayMarchWidget = new RayMarchNodeWidget();
     m_codeEditor = new CodeEditor();
+    m_codeEditor->setWindowTitle("Ray March Node");
     m_codeEditor->setReadOnly(true);
     m_syntaxHighlighter = new SyntaxHighlighter(m_codeEditor->document());
 

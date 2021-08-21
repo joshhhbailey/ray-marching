@@ -16,6 +16,7 @@ PlaneNode::PlaneNode()
 
     m_planeWidget = new PlaneNodeWidget();
     m_codeEditor = new CodeEditor();
+    m_codeEditor->setWindowTitle("Plane Node");
     m_codeEditor->setPlainText(shaderCode);
     m_codeEditor->setReadOnly(true);
     m_syntaxHighlighter = new SyntaxHighlighter(m_codeEditor->document());
