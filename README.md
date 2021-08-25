@@ -12,7 +12,7 @@
 3. [Dependencies](#dependencies)
 
 ## Overview
-The purpose of this software is to be used as a tool for programmers and artists to create fragment shaders. Offering users with the choice of both a Code or Node Editor.
+The nature of this project was to design and implement an interactive shader editor that is equally accessible to both programmers and artists. The tool provides users with the choice between a code or node editor, to develop fragment shaders. The former requires previous GLSL experience, with users expect to code their shaders from scratch. However, the latter requires no previous programming experiences and takes advantage of a node-based editor, using a pre-implemented Ray Marching algorithm.
 
 ## Project Setup
 ### Windows
