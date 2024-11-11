@@ -141,15 +141,15 @@ QWidget* RayMarchNode::embeddedWidget()
   return m_rayMarchWidget;
 }
 
-NodeValidationState RayMarchNode::validationState() const
+/*NodeState RayMarchNode::validationState() const
 {
   return m_modelValidationState;
-}
+}*/
 
-QString RayMarchNode::validationMessage() const
+/*QString RayMarchNode::validationMessage() const
 {
   return m_modelValidationError;
-}
+}*/
 
 void RayMarchNode::inputConnectionDeleted(Connection const&)
 {
@@ -181,7 +181,7 @@ QJsonObject RayMarchNode::save() const
   return modelJson;
 }
 
-void RayMarchNode::restore(QJsonObject const &_p)
+void RayMarchNode::load(QJsonObject const &_p)
 {
   QJsonValue ROxp = _p["ROxPos"];
   QJsonValue ROyp = _p["ROyPos"];

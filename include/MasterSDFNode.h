@@ -7,8 +7,8 @@
 
 #include <QtCore/QObject>
 
-#include <nodes/NodeDataModel>
-#include <nodes/Connection>
+#include <NodeDelegateModel>
+#include <NodeState>
 
 #include <ngl/Vec3.h>
 
@@ -18,13 +18,14 @@
 
 using QtNodes::NodeData;
 using QtNodes::NodeDataType;
-using QtNodes::NodeDataModel;
+using QtNodes::NodeDelegateModel;
 using QtNodes::PortType;
 using QtNodes::PortIndex;
-using QtNodes::NodeValidationState;
-using QtNodes::Connection;
+using QtNodes::NodeState;
+using QtNodes::ConnectionId;
+using QtNodes::ConnectionPolicy;
 
-class MasterSDFNode : public NodeDataModel
+class MasterSDFNode : public NodeDelegateModel
 {
 public:
   MasterSDFNode() {}
@@ -35,11 +36,11 @@ public:
   NodeDataType dataType(PortType _portType, PortIndex _portIndex) const override;
   bool portCaptionVisible(PortType _portType, PortIndex _portIndex) const override;
   QString portCaption(PortType _portType, PortIndex _portIndex) const override;
-  ConnectionPolicy portOutConnectionPolicy(PortIndex) const override { return ConnectionPolicy::One; }
-  NodeValidationState validationState() const override;
-  QString validationMessage() const override;
-  void inputConnectionDeleted(Connection const&) override;
-  void setInData(std::shared_ptr<NodeData>, int) override;
+  ConnectionPolicy portConnectionPolicy(PortType, PortIndex) const override { return ConnectionPolicy::One; }
+  //NodeState validationState() const override;
+  //QString validationMessage() const override;
+  void inputConnectionDeleted(ConnectionId const&) override;
+  void setInData(std::shared_ptr<NodeData>, PortIndex) override;
 
   std::shared_ptr<ShaderCodeData> m_nodeData;
   std::shared_ptr<ShaderCodeData> m_receivedNode;
@@ -51,7 +52,7 @@ public:
   SyntaxHighlighter *m_syntaxHighlighter;
 
   // Validation
-  NodeValidationState m_modelValidationState = NodeValidationState::Warning;
+  //NodeState m_modelValidationState = NodeState::Warning;
   QString m_modelValidationError = QStringLiteral("Missing material!");
 };
 

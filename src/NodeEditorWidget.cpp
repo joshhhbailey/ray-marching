@@ -29,8 +29,9 @@ NodeEditorWidget::NodeEditorWidget(NGLScene *_scene)
 
 void NodeEditorWidget::createWidgets()
 {
-    m_nodeEditorScene = new QtNodes::FlowScene(registerDataModels());
-    m_nodeEditorView = new QtNodes::FlowView(m_nodeEditorScene);
+    m_dataFlowGraphModel = new DataFlowGraphModel(registerDataModels());
+    m_nodeEditorScene = new DataFlowGraphicsScene(m_dataFlowGraphModel);
+    m_nodeEditorView = new GraphicsView(m_nodeEditorScene);
 
     m_compileButton = new QPushButton("Compile");
     m_pauseButton = new QPushButton("Pause/Unpause");
@@ -145,9 +146,9 @@ void NodeEditorWidget::loadFunctions()
                                   "}\n\n");
 }
 
-std::shared_ptr<DataModelRegistry> NodeEditorWidget::registerDataModels()
+std::shared_ptr<NodeDelegateModelRegistry> NodeEditorWidget::registerDataModels()
 {
-    std::shared_ptr<DataModelRegistry> dataModels = std::make_shared<DataModelRegistry>();
+    std::shared_ptr<NodeDelegateModelRegistry> dataModels = std::make_shared<NodeDelegateModelRegistry>();
     
     dataModels->registerModel<SphereNode>("SDFs");
     dataModels->registerModel<PlaneNode>("SDFs");

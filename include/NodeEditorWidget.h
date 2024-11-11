@@ -10,30 +10,29 @@
 #include <QtWidgets/QLabel>
 #include <QMap>
 
-#include <nodes/Node>
-#include <nodes/NodeData>
-#include <nodes/FlowScene>
-#include <nodes/FlowView>
-#include <nodes/DataModelRegistry>
-#include <nodes/ConnectionStyle>
+#include <ConnectionStyle>
+#include <DataFlowGraphicsScene>
+#include <DataFlowGraphModel>
+#include <GraphicsView>
+#include <NodeData>
+#include <NodeDelegateModelRegistry>
 
 #include "NGLScene.h"
 #include "CodeEditor.h"
 #include "SyntaxHighlighter.h"
 
-using QtNodes::DataModelRegistry;
-using QtNodes::FlowScene;
-using QtNodes::FlowView;
 using QtNodes::ConnectionStyle;
-using QtNodes::Node;
-using QtNodes::NodeValidationState;
+using QtNodes::DataFlowGraphicsScene;
+using QtNodes::DataFlowGraphModel;
+using QtNodes::GraphicsView;
+using QtNodes::NodeDelegateModelRegistry;
 
 class NodeEditorWidget : public QGroupBox
 {
     Q_OBJECT
 public:
     NodeEditorWidget(NGLScene *_scene);
-    QtNodes::FlowScene* getNodeEditorScene() { return m_nodeEditorScene; }
+    QtNodes::DataFlowGraphicsScene* getNodeEditorScene() { return m_nodeEditorScene; }
     void setupNodeGraph();
 
 public slots:
@@ -48,11 +47,12 @@ private:
     void timerEvent(QTimerEvent *_event);
     void loadFunctions();
 
-    std::shared_ptr<DataModelRegistry> registerDataModels();
+    DataFlowGraphModel* m_dataFlowGraphModel;
+    std::shared_ptr<NodeDelegateModelRegistry> registerDataModels();
     void setStyle();
 
-    QtNodes::FlowScene *m_nodeEditorScene;
-    QtNodes::FlowView *m_nodeEditorView;
+    QtNodes::DataFlowGraphicsScene *m_nodeEditorScene;
+    QtNodes::GraphicsView *m_nodeEditorView;
 
     CodeEditor *m_codeEditor;
     SyntaxHighlighter *m_syntaxHighlighter;

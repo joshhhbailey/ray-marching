@@ -66,7 +66,7 @@ QJsonObject PlaneNode::save() const
   return modelJson;
 }
 
-void PlaneNode::restore(QJsonObject const &_p)
+void PlaneNode::load(QJsonObject const &_p)
 {
   QJsonValue sc = _p["shaderCode"];
   QJsonValue vn = _p["variableName"];

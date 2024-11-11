@@ -76,7 +76,7 @@ QJsonObject BoxNode::save() const
   return modelJson;
 }
 
-void BoxNode::restore(QJsonObject const &_p)
+void BoxNode::load(QJsonObject const &_p)
 {
   QJsonValue sc = _p["shaderCode"];
   QJsonValue vn = _p["variableName"];

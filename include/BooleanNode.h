@@ -7,8 +7,7 @@
 
 #include <QtCore/QObject>
 
-#include <nodes/NodeDataModel>
-#include <nodes/Connection>
+#include <NodeDelegateModel>
 
 #include "ShaderCodeData.h"
 #include "BooleanNodeWidget.h"
@@ -17,13 +16,12 @@
 
 using QtNodes::NodeData;
 using QtNodes::NodeDataType;
-using QtNodes::NodeDataModel;
+using QtNodes::NodeDelegateModel;
 using QtNodes::PortType;
 using QtNodes::PortIndex;
-using QtNodes::NodeValidationState;
-using QtNodes::Connection;
+using QtNodes::NodeState;
 
-class BooleanNode : public NodeDataModel
+class BooleanNode : public NodeDelegateModel
 {
   Q_OBJECT
 
@@ -37,15 +35,15 @@ public:
   bool portCaptionVisible(PortType _portType, PortIndex _portIndex) const override;
   QString portCaption(PortType _portType, PortIndex _portIndex) const override;
   NodeDataType dataType(PortType _portType, PortIndex _portIndex) const override;
-  ConnectionPolicy portOutConnectionPolicy(PortIndex) const override { return ConnectionPolicy::One; }
-  void setInData(std::shared_ptr<NodeData>, int) override;
+  ConnectionPolicy portConnectionPolicy(PortType, PortIndex) const override { return ConnectionPolicy::One; }
+  void setInData(std::shared_ptr<NodeData>, PortIndex) override;
   std::shared_ptr<NodeData> outData(PortIndex _port) override;
   QWidget* embeddedWidget() override;
   QJsonObject save() const override;
-  void restore(QJsonObject const &_p) override;
-  NodeValidationState validationState() const override;
-  QString validationMessage() const override;
-  void inputConnectionDeleted(Connection const&_connection) override;
+  void load(QJsonObject const &_p) override;
+  //NodeState validationState() const override;
+  //QString validationMessage() const override;
+  void inputConnectionDeleted(ConnectionId const&_connection) override;
 
 public slots:
   void inspectCodeButtonClicked();
@@ -53,7 +51,7 @@ public slots:
 
 private:
   // Validation
-  NodeValidationState m_modelValidationState = NodeValidationState::Error;
+  //NodeState m_modelValidationState = NodeValidationState::Error;
   QString m_modelValidationError = QStringLiteral("Missing inputs!");
 
   std::shared_ptr<ShaderCodeData> m_booleanData;

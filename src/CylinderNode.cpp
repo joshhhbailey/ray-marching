@@ -78,7 +78,7 @@ QJsonObject CylinderNode::save() const
   return modelJson;
 }
 
-void CylinderNode::restore(QJsonObject const &_p)
+void CylinderNode::load(QJsonObject const &_p)
 {
   QJsonValue sc = _p["shaderCode"];
   QJsonValue vn = _p["variableName"];

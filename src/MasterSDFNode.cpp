@@ -65,15 +65,15 @@ QString MasterSDFNode::portCaption(PortType _portType, PortIndex _portIndex) con
     return QString();
 }
 
-NodeValidationState MasterSDFNode::validationState() const
+/*NodeState MasterSDFNode::validationState() const
 {
   return m_modelValidationState;
-}
+}*/
 
-QString MasterSDFNode::validationMessage() const
+/*QString MasterSDFNode::validationMessage() const
 {
   return m_modelValidationError;
-}
+}*/
 
 void MasterSDFNode::inputConnectionDeleted(Connection const&)
 {

@@ -55,7 +55,7 @@ void ShaderCodeContainer::openFile()
 
 void ShaderCodeContainer::saveFile()
 {
-    if (m_filename == NULL)
+    if (m_filename.isNull())
     {
         saveAsFile();
     }

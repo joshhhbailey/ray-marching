@@ -7,7 +7,7 @@
 
 #include <QtCore/QObject>
 
-#include <nodes/NodeDataModel>
+#include <NodeDelegateModel>
 
 #include "ShaderCodeData.h"
 #include "RayMarchNodeWidget.h"
@@ -16,13 +16,12 @@
 
 using QtNodes::NodeData;
 using QtNodes::NodeDataType;
-using QtNodes::NodeDataModel;
+using QtNodes::NodeDelegateModel;
 using QtNodes::PortType;
 using QtNodes::PortIndex;
-using QtNodes::NodeValidationState;
-using QtNodes::Connection;
+using QtNodes::NodeState;
 
-class RayMarchNode : public NodeDataModel
+class RayMarchNode : public NodeDelegateModel
 {
   Q_OBJECT
 
@@ -40,10 +39,10 @@ public:
   std::shared_ptr<NodeData> outData(PortIndex) override;
   QWidget* embeddedWidget() override;
   QJsonObject save() const override;
-  void restore(QJsonObject const &_p) override;
-  NodeValidationState validationState() const override;
-  QString validationMessage() const override;
-  void inputConnectionDeleted(Connection const&) override;
+  void load(QJsonObject const &_p) override;
+  //NodeState validationState() const override;
+  //QString validationMessage() const override;
+  void inputConnectionDeleted(ConnectionId const&) override;
 
 public slots:
   void updateNode();
@@ -53,7 +52,7 @@ private:
   void updateCode();
 
   // Validation
-  NodeValidationState m_modelValidationState = NodeValidationState::Error;
+  //NodeState m_modelValidationState = NodeValidationState::Error;
   QString m_modelValidationError = QStringLiteral("Missing input!");
 
   std::shared_ptr<ShaderCodeData> m_rayMarchData;

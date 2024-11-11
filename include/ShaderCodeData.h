@@ -8,7 +8,7 @@
 #include <QString>
 #include <QMap>
 
-#include <nodes/NodeData>
+#include <NodeData>
 
 #include <ngl/Vec3.h>
 

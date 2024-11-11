@@ -76,7 +76,7 @@ QJsonObject TorusNode::save() const
   return modelJson;
 }
 
-void TorusNode::restore(QJsonObject const &_p)
+void TorusNode::load(QJsonObject const &_p)
 {
   QJsonValue sc = _p["shaderCode"];
   QJsonValue vn = _p["variableName"];

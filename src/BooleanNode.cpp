@@ -191,15 +191,15 @@ QWidget* BooleanNode::embeddedWidget()
     return m_booleanWidget;
 }
 
-NodeValidationState BooleanNode::validationState() const
+/*NodeState BooleanNode::validationState() const
 {
   return m_modelValidationState;
-}
+}*/
 
-QString BooleanNode::validationMessage() const
+/*QString BooleanNode::validationMessage() const
 {
   return m_modelValidationError;
-}
+}*/
 
 void BooleanNode::inputConnectionDeleted(Connection const&_connection)
 {
@@ -243,7 +243,7 @@ QJsonObject BooleanNode::save() const
   return modelJson;
 }
 
-void BooleanNode::restore(QJsonObject const &_p)
+void BooleanNode::load(QJsonObject const &_p)
 {
   QJsonValue o = _p["operator"];
   QJsonValue oc = _p["operatorCall"];

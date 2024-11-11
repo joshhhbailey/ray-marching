@@ -2,6 +2,7 @@
 ///  @brief Main Shader Code Editor widget
 
 #include <QtWidgets/QFormLayout>
+#include <QFile>
 #include <QTime>
 #include <QTextStream>
 

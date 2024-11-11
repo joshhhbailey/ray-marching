@@ -71,7 +71,7 @@ QJsonObject SphereNode::save() const
   return modelJson;
 }
 
-void SphereNode::restore(QJsonObject const &_p)
+void SphereNode::load(QJsonObject const &_p)
 {
   QJsonValue sc = _p["shaderCode"];
   QJsonValue vn = _p["variableName"];

@@ -10,7 +10,7 @@
 #include <ngl/Text.h>
 
 // this must be included after NGL includes else we get a clash with gl libs
-#include <QtWidgets/QOpenGLWidget>
+#include <QOpenGLWidget>
 #include <QElapsedTimer>
 
 #include <memory>

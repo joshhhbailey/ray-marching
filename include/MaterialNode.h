@@ -7,7 +7,7 @@
 
 #include <QtCore/QObject>
 
-#include <nodes/NodeDataModel>
+#include <NodeDelegateModel>
 
 #include <ngl/Vec3.h>
 
@@ -16,11 +16,11 @@
 
 using QtNodes::NodeData;
 using QtNodes::NodeDataType;
-using QtNodes::NodeDataModel;
+using QtNodes::NodeDelegateModel;
 using QtNodes::PortType;
 using QtNodes::PortIndex;
 
-class MaterialNode : public NodeDataModel
+class MaterialNode : public NodeDelegateModel
 {
   Q_OBJECT
 
@@ -34,12 +34,12 @@ public:
   bool portCaptionVisible(PortType _portType, PortIndex _portIndex) const override;
   QString portCaption(PortType _portType, PortIndex _portIndex) const override;
   NodeDataType dataType(PortType portType, PortIndex portIndex) const override;
-  ConnectionPolicy portOutConnectionPolicy(PortIndex) const override { return ConnectionPolicy::Many; }
-  void setInData(std::shared_ptr<NodeData>, int) override { }
+  ConnectionPolicy portConnectionPolicy(PortType, PortIndex) const override { return ConnectionPolicy::Many; }
+  void setInData(std::shared_ptr<NodeData>, PortIndex) override { }
   std::shared_ptr<NodeData> outData(PortIndex port) override;
   QWidget* embeddedWidget() override;
   QJsonObject save() const override;
-  void restore(QJsonObject const &_p) override;
+  void load(QJsonObject const &_p) override;
 
 public slots:
   void updateNode();

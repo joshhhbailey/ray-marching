@@ -111,7 +111,7 @@ QJsonObject MaterialNode::save() const
   return modelJson;
 }
 
-void MaterialNode::restore(QJsonObject const &_p)
+void MaterialNode::load(QJsonObject const &_p)
 {
   QJsonValue R = _p["R"];
   QJsonValue G = _p["G"];

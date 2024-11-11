@@ -11,7 +11,7 @@ set(TargetName ray-marching)
 # Find Qt packages on Mac (change Qt version depending on your system)
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 	set(CMAKE_PREFIX_PATH "~/Qt/5.12.11/clang_64/")
-	find_package(Qt5 COMPONENTS Widgets OpenGL Core Gui REQUIRED)
+	find_package(Qt6 COMPONENTS Widgets OpenGL Core Gui REQUIRED)
 endif()
 
 # Use C++ 17
@@ -23,7 +23,7 @@ set(CMAKE_CXX_EXTENSIONS ON)
 set(CMAKE_AUTOMOC ON)
 
 # Find vcpkg packages
-find_package(Qt5Widgets)
+find_package(Qt6 REQUIRED COMPONENTS Widgets OpenGLWidgets)
 find_package(fmt CONFIG REQUIRED)
 find_package(OpenImageIO CONFIG REQUIRED)
 find_package(freetype CONFIG REQUIRED)
@@ -117,8 +117,8 @@ target_sources(${TargetName} PRIVATE
 )
 
 # Add NGL and nodeeditor include paths
-include_directories(include $ENV{HOMEDRIVE}/$ENV{HOMEPATH}/$ENV{HOME}/NGL/include)
-include_directories(include $ENV{HOMEDRIVE}/$ENV{HOMEPATH}/$ENV{HOME}/nodeeditor/include)
+include_directories(include $ENV{DEV_HOME}/tools/NGL/include)
+include_directories(include $ENV{DEV_HOME}/tools/nodeeditor/include/QtNodes)
 
 # Mac specific setup
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
@@ -135,25 +135,25 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
 # Windows specific setup
 elseif(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-	link_directories($ENV{HOMEDRIVE}/$ENV{HOMEPATH}/NGL/lib)
-	link_directories($ENV{HOMEDRIVE}/$ENV{HOMEPATH}/nodeeditor/lib)
-	target_link_libraries(${TargetName} PRIVATE $ENV{HOMEDRIVE}/$ENV{HOMEPATH}/NGL/lib/NGL.lib)
-	target_link_libraries(${TargetName} PRIVATE $ENV{HOMEDRIVE}/$ENV{HOMEPATH}/nodeeditor/lib/nodes.lib)
+	link_directories($ENV{DEV_HOME}/tools/NGL/lib)
+	link_directories($ENV{DEV_HOME}/tools/nodeeditor/lib)
+	target_link_libraries(${TargetName} PRIVATE $ENV{DEV_HOME}/tools/NGL/lib/NGL.lib)
+	target_link_libraries(${TargetName} PRIVATE $ENV{DEV_HOME}/tools/nodeeditor/lib/QtNodes.lib)
 	add_compile_definitions(_USE_MATH_DEFINES)
 	add_compile_definitions(NOMINMAX)
 	# NODE_EDITOR_SHARED/STATIC
 	target_compile_definitions(${TargetName} PRIVATE /wd4251 NODE_EDITOR_SHARED)
 	# Need to define this when building shared library or suffer dllimport errors
 	add_compile_definitions(BUILDING_DLL)
-	target_link_directories(${TargetName} PRIVATE $ENV{HOMEDRIVE}/$ENV{HOMEPATH}/nodeeditor/lib)
+	target_link_directories(${TargetName} PRIVATE $ENV{DEV_HOME}/tools/nodeeditor/lib)
 endif()
 
 # Link NGL and nodeeditor
-target_link_directories(${TargetName} PRIVATE $ENV{HOMEDRIVE}/$ENV{HOMEPATH}/$ENV{HOME}/NGL/lib)
+target_link_directories(${TargetName} PRIVATE $ENV{DEV_HOME}/tools/NGL/lib)
 
 # Link packages
 target_link_libraries(${TargetName} PRIVATE OpenImageIO::OpenImageIO OpenImageIO::OpenImageIO_Util)
-target_link_libraries(${TargetName} PRIVATE ${PROJECT_LINK_LIBS} Qt5::Widgets fmt::fmt-header-only freetype)
+target_link_libraries(${TargetName} PRIVATE ${PROJECT_LINK_LIBS} Qt6::Widgets Qt6::OpenGLWidgets fmt::fmt-header-only freetype)
 
 # Copy shaders to .exe directory
 add_custom_target(${TargetName}CopyShaders ALL
